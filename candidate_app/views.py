@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from functools import wraps
+from django.views.decorators.csrf import csrf_protect
 
 
 def welcome(request):
@@ -47,7 +48,7 @@ def signup(request):
     return render(request, 'signup.html')
 
 
-
+@csrf_protect
 def signin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -66,6 +67,7 @@ def signin(request):
         else:
             return HttpResponse("Username or password is incorrect!!!")
     return render(request, 'login.html')
+
 
 
 
