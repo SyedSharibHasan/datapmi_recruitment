@@ -5,13 +5,15 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from functools import wraps
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect,csrf_exempt
+from django.views.generic import ListView,CreateView,UpdateView,DetailView,DeleteView
+from .models import Candidate
+from django.urls import reverse_lazy
+
 
 
 def welcome(request):
     return render(request,'login.html')
-
-
 
 
 
@@ -23,7 +25,6 @@ def main(request):
         # Redirect normal user to user.html
         return render(request,'user.html')
     
-
 
 
 def signup(request):
@@ -48,7 +49,7 @@ def signup(request):
     return render(request, 'signup.html')
 
 
-@csrf_protect
+@csrf_exempt
 def signin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -90,8 +91,16 @@ def admin(request):
 
 @login_required
 def user(request):
-    return render(request,'user.html')
+    candidate = Candidate.objects.all()
+    return render(request,'user.html',context={'candidate':candidate})
 
+
+
+class Createcandidate(CreateView):
+    model = Candidate
+    success_url= reverse_lazy('user')
+    template_name = 'add_candidate.html'
+    fields ="__all__"
 
 
 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new candidate</title>
+</head>
+<body>
+    
+   
+    <form method="post" action="">
+      {% csrf_token %}
+      {{form.as_p}}
+      <input class="btn btn-outline-primary" type="submit" value="submit">
+    <br><br>
+    </form>
+
+    
+</body>
+</html>
+

@@ -1,19 +1,38 @@
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <title>Human resource</title>
 </head>
 <body>
 
     
 <p>This is user page</p>
-{{user}}
+<i class="bi bi-person-circle"></i>  {{user}} 
 
+<br><br><br>
+<center><a href="/create"><button>Add a new candidate</button></a></center>
+
+{% for i in candidate %}
+
+{{i.email}}<br>
+{{i.phone}}<br>
+{{i.first_name}}<br>
+{{i.last_name}}<br>
+{{i.alt_phone}}<br>
+{{i.sex}}<br>
+{{i.qualification }}<br>
+<!-- {{i.email}}
+{{i.email}}
+{{i.email}}
+{{i.email}}
+{{i.email}} -->
+
+{% endfor %}
 </body>
 </html>
 
