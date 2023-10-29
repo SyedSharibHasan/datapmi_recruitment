@@ -12,18 +12,14 @@ from django.urls import reverse_lazy
 
 
 
-def welcome(request):
-    return render(request,'login.html')
 
-
-
-def main(request):
-    if request.user.is_superuser:
-        # Redirect superuser to admin.html
-        return render(request,'admin.html')
-    else:
-        # Redirect normal user to user.html
-        return render(request,'user.html')
+# def main(request):
+#     if request.user.is_superuser:
+#         # Redirect superuser to admin.html
+#         return render(request,'admin.html')
+#     else:
+#         # Redirect normal user to user.html
+#         return render(request,'user.html')
     
 
 
@@ -60,11 +56,11 @@ def signin(request):
             if user.is_superuser:
                 # Redirect superuser to admin.html
                 login(request, user)
-                return render(request, 'admin.html')
+                return redirect('admin')  # Redirect to the admin page
             else:
                 # Redirect normal user to user.html
                 login(request, user)
-                return render(request, 'user.html')
+                return redirect('user')  # Redirect to the user page
         else:
             return HttpResponse("Username or password is incorrect!!!")
     return render(request, 'login.html')
@@ -104,8 +100,29 @@ class Createcandidate(CreateView):
 
 
 
+class Updatecandidate(UpdateView):
+    model = Candidate
+    success_url= reverse_lazy('user')
+    template_name = 'add_candidate.html'
+    fields ="__all__"
+
+
+class Detailcandidate(DetailView):
+    model = Candidate
+    context_object_name ='detail'
+    template_name = 'detail_candidate.html'
 
 
 
+class Deletecandidate(DeleteView):
+    model = Candidate
+    # context_object_name = 'task'
+    success_url = reverse_lazy('user')
+    template_name = 'delete_candidate.html'
+    success_message = 'Deleted succesfully'
 
 
+
+def signout(request):
+    logout(request)
+    return redirect('login')

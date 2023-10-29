@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Candidate(models.Model):
-    id = models.IntegerField(primary_key=True)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15)
     first_name = models.CharField(max_length=150, null=False)

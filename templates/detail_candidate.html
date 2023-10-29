@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail</title>
+    <style>
+        .border {
+            border: 1px solid green;
+            padding: 50px;
+            border-radius: 5px;
+            background-image: url('https://harver.com/wp-content/uploads/2020/09/Diverse-Candidate-Pool@2x.jpg');
+           background-size: cover;
+        }
+    </style>
+</head>
+<body>
+    <br><br>
+    <h3>Candidate Full Details</h3>
+<div class="border">
+    Email: {{detail.email}}<br>
+    Mobile: {{detail.phone}}<br>
+First Name: {{detail.first_name}}<br>
+Second Name: {{detail.last_name}}<br>
+Alternate Mobile: {{detail.alt_phone}}<br>
+Sex: {{detail.sex}}<br>
+Qualification: {{detail.qualification }}<br>
+Skills: {{detail.skills }}<br>
+Experience: {{detail.experience }}<br>
+Current CTC: {{detail.current_ctc }}<br>
+Expected CTC: {{detail.expected_ctc }}<br>
+Notice period: {{detail.notice_period  }}<br>
+Current Company: {{detail.current_company }}<br>
+Location: {{detail.location }}<br>
+Current Company: {{detail.current_company }}<br>
+Updated By: {{detail.updated_by}}<br>
+Updated on: {{detail.updated_on}}<br>
+<p>Download Resume: <a href="{{detail.resume.url}}" download>Resume.pdf</a></p>
+</div>
+
+</body>
+</html>
+
+
+
