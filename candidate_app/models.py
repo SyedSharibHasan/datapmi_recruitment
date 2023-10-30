@@ -1,7 +1,8 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Candidate(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15)
     first_name = models.CharField(max_length=150, null=False)

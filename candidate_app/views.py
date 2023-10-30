@@ -87,24 +87,39 @@ def admin(request):
 
 @login_required
 def user(request):
-    candidate = Candidate.objects.all()
-    return render(request,'user.html',context={'candidate':candidate})
+    # candidate = Candidate.objects.all()
+    return render(request,'user.html')
 
+
+############  this is only for personal crud operations
+class ListCandidate(ListView):
+    model = Candidate
+    fields = ['email','phone','first_name','last_name','alt_phone','sex','qualification','skills','experience','designation','expected_ctc','current_ctc','availability','notice_period','current_company','location','resume','remarks','updated_by','updated_on']
+    template_name = 'mycandidates.html'
+    context_object_name = "list"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list'] = context['list'].filter(user=self.request.user)
+        return context
 
 
 class Createcandidate(CreateView):
     model = Candidate
-    success_url= reverse_lazy('user')
+    success_url= reverse_lazy('list')
     template_name = 'add_candidate.html'
-    fields ="__all__"
+    fields = ['email','phone','first_name','last_name','alt_phone','sex','qualification','skills','experience','designation','expected_ctc','current_ctc','availability','notice_period','current_company','location','resume','remarks','updated_by',]
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(Createcandidate, self).form_valid(form)
 
 
 class Updatecandidate(UpdateView):
     model = Candidate
-    success_url= reverse_lazy('user')
+    success_url= reverse_lazy('list')
     template_name = 'add_candidate.html'
-    fields ="__all__"
+    fields = ['email','phone','first_name','last_name','alt_phone','sex','qualification','skills','experience','designation','expected_ctc','current_ctc','availability','notice_period','current_company','location','resume','remarks','updated_by']
 
 
 class Detailcandidate(DetailView):
@@ -117,7 +132,7 @@ class Detailcandidate(DetailView):
 class Deletecandidate(DeleteView):
     model = Candidate
     # context_object_name = 'task'
-    success_url = reverse_lazy('user')
+    success_url = reverse_lazy('list')
     template_name = 'delete_candidate.html'
     success_message = 'Deleted succesfully'
 
@@ -126,3 +141,13 @@ class Deletecandidate(DeleteView):
 def signout(request):
     logout(request)
     return redirect('login')
+
+
+
+class Allcandidates(ListView):
+    model = Candidate
+    fields = ['email','phone','first_name','last_name','alt_phone','sex','qualification','skills','experience','designation','expected_ctc','current_ctc','availability','notice_period','current_company','location','resume','remarks','updated_by','updated_on']
+    template_name = 'allcandidates.html'
+    context_object_name = "all"
+
+

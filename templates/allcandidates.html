@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My candidates</title>
+</head>
+<body>
+    
+    {% for i in all %}
+        
+    <p style="color: blue;">Name: {{i.first_name}}  {{i.last_name}}</p>
+    <p style="color: blue;">email: {{i.email}}  </p>
+    <p style="color: blue;">phone: {{i.phone}}  </p>
+    <p style="color: blue;">Alt Phone: {{i.alt_phone}}  </p>
+    <p style="color: blue;">created by: {{i.updated_by}}  </p>
+    <br><br><br>
+   
+    {% endfor %}
+
+
+
+</body>
+</html>
