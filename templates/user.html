@@ -43,40 +43,6 @@
 
   
 
-  <script>
-    function toggleDarkMode() {
-      var element = document.body;
-      element.classList.toggle("dark-mode");
-
-      // Save the dark mode preference in local storage
-      var darkModeEnabled = element.classList.contains("dark-mode");
-      localStorage.setItem("darkMode", darkModeEnabled);
-
-      // Toggle the dark mode icon
-      var icon = document.getElementById("darkModeIcon");
-      if (darkModeEnabled) {
-        icon.classList.remove("bi-moon-fill");
-        icon.classList.add("bi-brightness-high-fill");
-      } else {
-        icon.classList.remove("bi-brightness-high-fill");
-        icon.classList.add("bi-moon-fill");
-      }
-    }
-
-    // Apply dark mode on page load if the preference is saved
-    document.addEventListener("DOMContentLoaded", function () {
-      var darkModeEnabled = localStorage.getItem("darkMode");
-      if (darkModeEnabled === "true") {
-        var element = document.body;
-        element.classList.add("dark-mode");
-
-        // Change the icon to the sun if dark mode is enabled
-        var icon = document.getElementById("darkModeIcon");
-        icon.classList.remove("bi-moon-fill");
-        icon.classList.add("bi-brightness-high-fill");
-      }
-    });
-  </script>
 
 
    <nav class="sidebar close">
@@ -215,32 +181,48 @@
 
 
     <script>
-        const body = document.querySelector('body'),
-      sidebar = body.querySelector('nav'),
-      toggle = body.querySelector(".toggle"),
-      searchBtn = body.querySelector(".search-box"),
-      modeSwitch = body.querySelector(".toggle-switch"),
-      modeText = body.querySelector(".mode-text");
+      // Select the required elements
+const body = document.querySelector('body');
+const sidebar = body.querySelector('nav');
+const toggle = body.querySelector('.toggle');
+const searchBtn = body.querySelector('.search-box');
+const modeSwitch = body.querySelector('.toggle-switch');
+const modeText = body.querySelector('.mode-text');
 
+// Function to toggle dark mode
+function toggleDarkMode() {
+    body.classList.toggle('dark');
+    var isDarkMode = body.classList.contains('dark');
+    // Save the dark mode preference in localStorage
+    localStorage.setItem('darkMode', isDarkMode);
+    updateModeText(isDarkMode);
+}
 
-toggle.addEventListener("click" , () =>{
-    sidebar.classList.toggle("close");
-})
+// Function to update mode text based on dark mode state
+function updateModeText(isDarkMode) {
+    modeText.innerText = isDarkMode ? 'Light mode' : 'Dark mode';
+}
 
-searchBtn.addEventListener("click" , () =>{
-    sidebar.classList.remove("close");
-})
-
-modeSwitch.addEventListener("click" , () =>{
-    body.classList.toggle("dark");
-    
-    if(body.classList.contains("dark")){
-        modeText.innerText = "Light mode";
-    }else{
-        modeText.innerText = "Dark mode";
-        
-    }
+// Event listeners for toggling dark mode and sidebar
+toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('close');
 });
+
+searchBtn.addEventListener('click', () => {
+    sidebar.classList.remove('close');
+});
+
+modeSwitch.addEventListener('click', () => {
+    toggleDarkMode();
+});
+
+// Apply dark mode preference from localStorage on page load
+document.addEventListener('DOMContentLoaded', () => {
+    var isDarkMode = localStorage.getItem('darkMode') === 'true';
+    body.classList.toggle('dark', isDarkMode);
+    updateModeText(isDarkMode);
+});
+
     </script>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -255,7 +237,7 @@ modeSwitch.addEventListener("click" , () =>{
 
   
 
-
+  
 </body>
 
 </html>

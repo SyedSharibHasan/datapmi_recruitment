@@ -20,13 +20,16 @@ class Candidate(models.Model):
     notice_period = models.IntegerField()
     current_company = models.CharField(max_length=100)
     location = models.CharField(max_length=50)
-    resume = models.FileField(upload_to='resume/',max_length=200,blank=True)
+    resume = models.FileField(upload_to='resume/',max_length=200,blank=True,null=True)
     remarks = models.TextField()
     updated_by = models.CharField(max_length=50)
     updated_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.email
+
+    class Meta:
+        ordering = ["-updated_on"]
 
 
 
