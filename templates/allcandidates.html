@@ -10,40 +10,47 @@
         <!-- <img src="https://img.freepik.com/free-photo/cloud-storage-background-business-network-design_53876-160252.jpg?w=1380&t=st=1698754070~exp=1698754670~hmac=52a20308745970900c1fa46c8f1cca43208d39c0d085ffdabaf2b083dc54e733" alt="Description of the image"> -->
 
     <style>
+
+        
         .table-container {
             width: 100%;
             overflow-x: auto;
+            
         }
 
         .table {
             width: auto;
             min-width: 1200px;
+            border-collapse: separate;
+            border-spacing: 0.5px;
+            
         }
 
         .table th,
         .table td {
             width: 200px;
             max-width: 400px;
+            height: 5px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            padding: 10px;
+            padding: 6px;
             vertical-align: middle;
             text-align: center; /* Center the data within cells */
-            border: 1px solid #31c574; /* Add border to table cells */
+            border: 1px solid #0000AA   ; /* Add border to table cells */
         }
 
         .scroll-cell {
             max-height: 100px;
             overflow-y: auto;
             width: 100%;
-            border: 1px solid #ccc; /* Optional: Add a border around the cell content */
+            border: 2px solid #0000AA; /* Optional: Add a border around the cell content */
             padding: 5px; /* Optional: Add padding to the cell content */
         }
 
         .table th {
             background-color: #f7f7fc;
-            border: 1px solid #c41616; /* Add border to table header cells */
+            border: 1px solid #0000AA; /* Add border to table header cells */
         }
 
         .page {
@@ -62,6 +69,44 @@
             background-repeat: no-repeat; /* Prevents the background image from repeating */
             background-attachment: fixed; /* Ensures the background image stays fixed as the user scrolls */
         }
+        .custom-btn-dark-blue {
+            color: #0000AA; /* Dark blue color code */
+            border-color: #0000AA; /* Border color to match the text color */
+        }
+
+        .custom-search-input {
+            border-color: #0000AA; /* Border color for the search input field */   
+        }
+
+        .custom-search-button {
+            color: #0000AA; /* Text color for the search button */
+            border-color: #0000AA; /* Border color for the search button */
+        }
+
+        h2.candidate-info {
+            color: #0000AA;
+            font-family: Arial, sans-serif; /* Set the font family */
+            font-size: 40px; /* Set the font size */
+            background-color: #f7f7f7; /* Set the background color */
+            padding: 10px; /* Add padding */
+            border-radius: 100px; /* Add border-radius for rounded corners */
+            text-align: center; /* Center the text */
+            text-shadow: 2px 2px 2px #b11717; /* Add text shadow */        
+        }
+
+        .navbar-brand img {
+            margin-left: 20px; /* Moves the logo to the right within the navbar */
+
+        }
+
+       
+
+
+
+
+
+
+        
 
     </style>
 
@@ -73,9 +118,9 @@
 
     <!-- <button><a href="/user">Return</a></button> -->
 
-    <button type="button" class="btn btn-outline-primary my-3 mx-2">Back</button>
+    
 
-    <nav class="navbar bg-body-tertiary">
+    <!-- <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
           <a class="navbar-brand">Navbar</a>
           <form class="d-flex" role="search">
@@ -83,14 +128,33 @@
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
         </div>
-      </nav>
+      </nav> -->
+
+      <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="https://media.licdn.com/dms/image/C4D0BAQFu_R1oMevPkg/company-logo_200_200/0/1605071690914?e=2147483647&v=beta&t=j78rG7jAcupvGwxXD8DZJxhF4IElEeqPhxNgbMoXBZs" alt="Logo" height="50">
+                
+                <span style="border: 3px solid #0000AA; padding: 5px 10px; border-radius: 5px; color: #0000AA;">DATAPMI</span>
+            </a>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2 custom-search-input" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-primary custom-search-input" type="submit">Search</button>
+            </form>
+            <div class="d-flex">
+                <button type="button" class="btn btn-outline-primary custom-btn-dark-blue my-3 mx-1">Home </button>
+                <button type="button" class="btn btn-outline-primary custom-btn-dark-blue my-3 mx-2">Back</button>
+            </div>
+            
+        </div>
+    </nav>
+
+       <div> <h2 class="candidate-info my-2 mx-2" >Candidate Information</h2>  </div>
     
 
 
-
-    <div class="container-fluid table-container my-2">
-        <h2  style="color: #102ADC;">Candidate Information</h2>
-        <table class="table table-bordered my-4">
+    <div class="container-fluid table-container my-2 mx-3">
+        <table class="table table-bordered my-3" style="border: 2px solid #0000AA;">
             <thead>
                 <tr>
                     <th scope="col">S.No</th>
