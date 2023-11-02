@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My candidates</title>
-  
+{% block title %} All candidates {% endblock %}
+    
+{% block head %}
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <!-- <img src="https://img.freepik.com/free-photo/cloud-storage-background-business-network-design_53876-160252.jpg?w=1380&t=st=1698754070~exp=1698754670~hmac=52a20308745970900c1fa46c8f1cca43208d39c0d085ffdabaf2b083dc54e733" alt="Description of the image"> -->
-
     <style>
 
-        
+
         .table-container {
             width: 100%;
             overflow-x: auto;
@@ -98,60 +93,16 @@
             margin-left: 20px; /* Moves the logo to the right within the navbar */
 
         }
-
-       
-
-
-
-
-
-
-        
-
     </style>
-
+{% endblock %}
     
 
-</head>
 
-<body>
 
-    <!-- <button><a href="/user">Return</a></button> -->
+{% block content %}
 
-    
-
-    <!-- <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand">Navbar</a>
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div>
-      </nav> -->
-
-      <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="https://media.licdn.com/dms/image/C4D0BAQFu_R1oMevPkg/company-logo_200_200/0/1605071690914?e=2147483647&v=beta&t=j78rG7jAcupvGwxXD8DZJxhF4IElEeqPhxNgbMoXBZs" alt="Logo" height="50">
-                
-                <span style="border: 3px solid #0000AA; padding: 5px 10px; border-radius: 5px; color: #0000AA;">DATAPMI</span>
-            </a>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2 custom-search-input" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-primary custom-search-input" type="submit">Search</button>
-            </form>
-            <div class="d-flex">
-                <button type="button" class="btn btn-outline-primary custom-btn-dark-blue my-3 mx-1">Home </button>
-                <button type="button" class="btn btn-outline-primary custom-btn-dark-blue my-3 mx-2">Back</button>
-            </div>
-            
-        </div>
-    </nav>
-
-       <div> <h2 class="candidate-info my-2 mx-2" >Candidate Information</h2>  </div>
-    
-
+{% include 'navbar.html' %}
+    <div> <h2 class="candidate-info my-2 mx-2" >Candidate Information</h2>  </div>
 
     <div class="container-fluid table-container my-2 mx-3">
         <table class="table table-bordered my-3" style="border: 2px solid #0000AA;">
@@ -214,25 +165,6 @@
         </table>
     </div>
 
-   
-   
-        <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
+    {% include 'all_c_pagination.html' %}
       
-
-</body>
-
-</html>
+{% endblock %}
