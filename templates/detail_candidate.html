@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <title>Detail</title>
     <style>
         .border {
@@ -12,6 +13,10 @@
             background-image: url('https://harver.com/wp-content/uploads/2020/09/Diverse-Candidate-Pool@2x.jpg');
            background-size: cover;
         }
+        body{
+    margin-top:20px;
+    background:#f8f8f8
+    }
     </style>
 </head>
 <body>
@@ -38,6 +43,8 @@ Updated By: {{detail.updated_by}}<br>
 Updated on: {{detail.updated_on}}<br>
 <p>Download Resume: <a href="{{detail.resume.url}}" download>Resume.pdf</a></p>
 </div>
+
+
 
 </body>
 </html>
