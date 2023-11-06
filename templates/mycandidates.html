@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,11 +63,11 @@
       background-color: #d5f5e3;
     }
     .even-row {
-      background-color:  #f2d7d5
+      background-color:    #fcf3cf  ;
 ;
     }
     .odd-row {
-      background-color:  #fcf3cf ;
+      background-color:     #fadbd8   ;
     }
 
     .navbar {
@@ -78,24 +79,29 @@
 </head>
 
 <body>
-
   {% block content %}
 
   
 
-  {% include 'sidebar.html' %}
 
-  {% include 'navbar.html' %}
+
+  {% include 'sidebar.html' %}
+ 
+
 
 
   <center>
-    <br><br><br><br>
+   
     <!-- <form>
       <input type="text">
       <button class="btn btn-success">Search</button>
       <br>
     </form>
     <br><br> -->
+
+  {% include 'navbar.html' %}
+
+
 
     <a href="/create"><button class="btn btn-primary">Create New &nbsp;<i class="bi bi-plus-square"></i></button></a>
   </center>
@@ -211,6 +217,10 @@
 
   {% include 'all_c_pagination.html' %}
   {% endblock %}
+
+ 
+
+
 
 </body>
 
