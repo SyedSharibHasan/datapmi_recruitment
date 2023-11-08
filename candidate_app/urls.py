@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates
+from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList
 
 
 
@@ -17,6 +17,10 @@ urlpatterns = [
     path("signout/", signout, name='signout'),
 
     path('all/',Allcandidates.as_view(),name='all'), 
+
+    path('dashboard/',dashboard,name='dashboard'),
+
+    path('profile/',ProfileList.as_view(),name='profile'), 
     ]
 
 

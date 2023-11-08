@@ -151,3 +151,55 @@ class Allcandidates(ListView):
     context_object_name = "all"
 
 
+
+
+#### dashboard
+def dashboard(request):
+    return render(request,'dashboard.html')
+
+
+
+#####cpersonal profile
+from .models import Profile
+from django.http import JsonResponse
+
+class ProfileList(ListView):
+    model = Profile
+    fields="__all__"
+    context_object_name = 'profile'
+    template_name='profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile'] = context['profile'].filter(user=self.request.user)
+        return context
+
+
+
+
+
+class ProfileCreate(CreateView):
+    model = Profile
+    fields = ['image']
+    template_name = 'profile.html'  # Use the same template for rendering the form
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        response_data = {
+            'success': True,
+            'message': 'Profile created successfully.'
+        }
+        return JsonResponse(response_data)
+
+
+
+
+
+
+
+
+
+
+
+
+###### search 

@@ -35,7 +35,11 @@ class Candidate(models.Model):
 
 
 
+class Profile(models.Model):
+     user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
+     image = models.ImageField(upload_to='image/',max_length=400,blank=True)
 
 
 
+    
 
