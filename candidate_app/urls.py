@@ -15,7 +15,7 @@ urlpatterns = [
     path('update/<int:pk>/',Updatecandidate.as_view(),name='update') ,  ## update a candidate
     
     path("signout/", signout, name='signout'),
-
+    
     path('all/',Allcandidates.as_view(),name='all'), 
 
     path('dashboard/',dashboard,name='dashboard'),

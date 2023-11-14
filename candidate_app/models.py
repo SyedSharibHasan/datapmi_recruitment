@@ -5,25 +5,45 @@ class Candidate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15)
-    first_name = models.CharField(max_length=150, null=False)
+    client_name = models.CharField(max_length=15)
+    first_name = models.CharField(max_length=150, null=True)
     last_name = models.CharField(max_length=150)
-    alt_phone = models.CharField(max_length=15)
+    mode_of_work = models.CharField(max_length=150, default='full_time')
+    
+    # alt_phone = models.CharField(max_length=15)
     # dob = models.DateField(null=True)
-    sex = models.CharField(max_length=50)
-    qualification = models.TextField()
-    skills = models.TextField()
-    experience = models.IntegerField()
-    designation = models.CharField(max_length=50)
-    expected_ctc = models.FloatField()
-    current_ctc = models.FloatField()
-    availability = models.BooleanField(default=True)
-    notice_period = models.IntegerField()
-    current_company = models.CharField(max_length=100)
-    location = models.CharField(max_length=50)
+    gender = models.CharField(max_length=50, default='unknown', null=True,blank=True)
+    college = models.CharField(max_length=50, null=True,blank=True)
+    graduation_year= models.CharField(max_length=50, null=True,blank=True)
+    qualification = models.TextField(null=True,blank=True)
+    skills = models.TextField(null=True,blank=True)
+    experience = models.CharField(max_length=50, null=True,blank=True)
+    relevent_experience = models.CharField(max_length=50, null=True,blank=True)
+    designation = models.CharField(max_length=50, null=True,blank=True)
+    expected_ctc = models.CharField(max_length=50, null=True,blank=True)
+    current_ctc = models.CharField(max_length=50, null=True,blank=True)
+    offer_in_hands = models.BooleanField(default=True, null=True,blank=True)
+    offer_details= models.BooleanField(default=True, null=True,blank=True)     ###  hidden box
+    notice_period = models.CharField(max_length=50, null=True,blank=True)
+    current_company = models.CharField(max_length=100, null=True,blank=True)
+    reason_for_change = models.CharField(max_length=2000, null=True,blank=True)          ###  hidden
+    location = models.CharField(max_length=50, null=True,blank=True)
     resume = models.FileField(upload_to='resume/',max_length=200,blank=True,null=True)
-    remarks = models.TextField()
-    updated_by = models.CharField(max_length=50)
-    updated_on = models.DateTimeField(auto_now_add=True)
+    remarks = models.TextField(null=True,blank=True)
+    updated_by = models.CharField(max_length=50, null=True,blank=True)
+    updated_on = models.DateTimeField(auto_now_add=True, null=True)
+    screening_time = models.CharField(max_length=100, null=True,blank=True)
+    recruiter = models.CharField(max_length=50, null=True,blank=True)
+    status = models.CharField(max_length=100, null=True,blank=True)
+    rejection_reason = models.CharField(max_length=100, null=True,blank=True)         ### hidden 
+    additional_status = models.CharField(max_length=100,default=True, null=True,blank=True)
+    rejection_reason_for_r1_r4 = models.CharField(max_length=100, null=True,blank=True)        ## hidden 
+    # r2_reject_additional_status = models.CharField(max_length=100)           ## hidden 
+    # r3_reject_additional_status = models.CharField(max_length=100)           ## hidden 
+    # r4_reject_additional_status = models.CharField(max_length=100)           ## hidden  
+    offer = models.CharField(max_length=100, null=True,blank=True)
+    offer_reject_reason = models.CharField(max_length=100, null=True,blank=True)
+    
 
     def __str__(self):
         return self.email
@@ -41,5 +61,5 @@ class Profile(models.Model):
 
 
 
-    
+
 

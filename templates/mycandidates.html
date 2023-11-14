@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,8 +15,13 @@
 
   <style>
     body {
-      background: #edf1f5;
-      margin-top: 20px;
+      /* background-image: url('https://images.wallpaperscraft.com/image/single/tree_planet_stars_117068_5760x3240.jpg'); */
+      background-image: url('https://images.wallpaperscraft.com/image/single/paw_footprint_art_154465_2560x1080.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      /* background: #edf1f5; */
+      /* margin-top: 20px; */
     }
 
     .card {
@@ -62,18 +66,21 @@
     th {
       background-color: #d5f5e3;
     }
+
     .even-row {
-      background-color:    #fcf3cf  ;
-;
+      background-color: #fcf3cf;
+      ;
     }
+
     .odd-row {
-      background-color:     #fadbd8   ;
+      background-color: #fadbd8;
     }
 
     .navbar {
-            margin-left: 50px; /* Moves the logo to the right within the navbar */
+      margin-left: 50px;
+      /* Moves the logo to the right within the navbar */
 
-        }
+    }
   </style>
 
 </head>
@@ -81,17 +88,17 @@
 <body>
   {% block content %}
 
-  
+
 
 
 
   {% include 'sidebar.html' %}
- 
+
 
 
 
   <center>
-   
+
     <!-- <form>
       <input type="text">
       <button class="btn btn-success">Search</button>
@@ -99,7 +106,7 @@
     </form>
     <br><br> -->
 
-  {% include 'navbar.html' %}
+    {% include 'navbar.html' %}
 
 
 
@@ -121,16 +128,28 @@
           <div class="table-responsive">
             <table class="table no-wrap user-table mb-0">
               <thead>
-                <tr>
+                <!-- <tr>
                   <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium pl-4">SNo
                   </th>
                   <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Name</th>
-                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Occupation
+                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Designation
                   </th>
-                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Email</th>
-                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Added</th>
+                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Contact</th>
+                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Experience
+                  </th>
                   <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Status</th>
                   <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Manage</th>
+                </tr> -->
+
+
+                <tr>
+                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium pl-4">SNo</th>
+                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Name</th>
+                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Designation</th>
+                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Contact</th>
+                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Experience</th>
+                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Status</th>
+                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Manage</th>
                 </tr>
 
               </thead>
@@ -141,23 +160,24 @@
 
                   <td>
                     <h5 style="font-family:garamond;" class="font-medium mb-0">{{i.first_name}} {{i.last_name}}</h5>
-                    <span style="font-family:garamond;" class="text-muted">Texas, Unitedd states</span>
+                    <span style="font-family:garamond;" class="text-muted">{{i.location}} </span>
                   </td>
                   <td>
-                    <span style="font-family:garamond;" class="text-muted">Visual Designer</span><br>
-                    <span style="font-family:garamond;" class="text-muted">Past : teacher</span>
+
+                    <span style="font-family:garamond;" class="text-muted">{{i.designation}} </span><br>
+                    <span style="font-family:garamond;" class="text-muted">{{i.client_name }} </span>
                   </td>
                   <td>
                     <span style="font-family:garamond;" class="text-muted">{{i.email}}</span><br>
                     <span style="font-family:garamond;" class="text-muted">{{i.phone}}</span>
                   </td>
                   <td>
-                    <span style="font-family:garamond;" class="text-muted">{{i.updated_on}}</span><br>
-                    <span style="font-family:garamond;" class="text-muted">10: 55 AM</span>
+                    <span style="font-family:garamond;" class="text-muted">{{i.experience}}</span><br>
+                    <span style="font-family:garamond;" class="text-muted">{{i.relevent_experience}}</span>
                   </td>
                   <td>
                     <span style="font-family:garamond;" class="text-muted">{{i.updated_on}}</span><br>
-                    <span style="font-family:garamond;" class="text-muted">10: 55 AM</span>
+
                   </td>
 
                   <td>
@@ -186,21 +206,21 @@
                 snnoElements.forEach(function (element, index) {
                   element.textContent = index + 1; // Assign the incrementing number (1-based index)
                 });
-                
+
 
 
                 function toggleSidebar() {
-    var sidebar = document.getElementById('sidebar');
-    var content = document.getElementById('content');
+                  var sidebar = document.getElementById('sidebar');
+                  var content = document.getElementById('content');
 
-    if (sidebar.style.width === '250px') {
-        sidebar.style.width = '0';
-        content.style.marginLeft = '0';
-    } else {
-        sidebar.style.width = '250px';
-        content.style.marginLeft = '250px';
-    }
-}
+                  if (sidebar.style.width === '250px') {
+                    sidebar.style.width = '0';
+                    content.style.marginLeft = '0';
+                  } else {
+                    sidebar.style.width = '250px';
+                    content.style.marginLeft = '250px';
+                  }
+                }
               </script>
 
               {% endfor %}
@@ -218,7 +238,7 @@
   {% include 'all_c_pagination.html' %}
   {% endblock %}
 
- 
+
 
 
 

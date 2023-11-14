@@ -91,41 +91,166 @@ def user(request):
     return render(request,'user.html')
 
 
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
 ############  this is only for personal crud operations
+@method_decorator(login_required, name='dispatch')
 class ListCandidate(ListView):
     model = Candidate
-    fields = ['email','phone','first_name','last_name','alt_phone','sex','qualification','skills','experience','designation','expected_ctc','current_ctc','availability','notice_period','current_company','location','resume','remarks','updated_by','updated_on']
+    fields = "__all__"
     template_name = 'mycandidates.html'
     context_object_name = "list"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['list'] = context['list'].filter(user=self.request.user)
-        return context
+
+    def get_queryset(self):
+        # Filter the queryset based on the logged-in user
+        queryset = super().get_queryset().filter(user=self.request.user)
+        return queryset
 
 
+
+@method_decorator(login_required, name='dispatch')
 class Createcandidate(CreateView):
-    model = Candidate
-    success_url= reverse_lazy('list')
+
     template_name = 'add_candidate.html'
-    fields = ['email','phone','first_name','last_name','alt_phone','sex','qualification','skills','experience','designation','expected_ctc','current_ctc','availability','notice_period','current_company','location','resume','remarks','updated_by',]
+    success_url = reverse_lazy('list')
+    
+    def get(self, request):
+        return render(request, self.template_name)      
 
+    def post(self, request):
+        if request.method == "POST":
+            
+        
+            designation = request.POST.get("designation")
+            client_name = request.POST.get("client_name")
+            mode_of_work = request.POST.get("mode_of_work")
+            first_name = request.POST.get("first_name")
+            last_name = request.POST.get("last_name")
+            email = request.POST.get("email")
+            phone = request.POST.get("phone")
+            gender = request.POST.get("gender")
+            location = request.POST.get("location")
+            college = request.POST.get("college")
+            qualification = request.POST.get("qualification")
+            graduation_year = request.POST.get("graduation_year")
+            current_company = request.POST.get("current_company")
+            experience = request.POST.get("experience")
+            relevent_experience = request.POST.get("relevent_experience")
+            skills = request.POST.get("skills")
+            notice_period = request.POST.get("notice_period")
+            current_ctc = request.POST.get("current_ctc")
+            expected_ctc = request.POST.get("expected_ctc")
+            offer_in_hands = request.POST.get("offer_in_hands")
+            offer_details = request.POST.get("offer_details")
+            resume = request.POST.get("resume")
+            remarks = request.POST.get("remarks")
+            recruiter = request.POST.get("recruiter")
+            screening_time = request.POST.get("screening_time")
+            status = request.POST.get("status")
+            rejection_reason = request.POST.get("rejection_reason")
+            additional_status = request.POST.get("additional_status")
+            rejection_reason_for_r1_r4 = request.POST.get("rejection_reason_for_r1-r4")
+            additional_status = request.POST.get("additional_status")
+            offer = request.POST.get("offer")
+            offer_reject_reason = request.POST.get("offer_reject_reason")
+            
+            
+            # Create a new Candidate object with the retrieved data
+            candidate = Candidate(
+                
+                designation=designation,
+                client_name=client_name,
+                mode_of_work=mode_of_work,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                phone=phone,
+                gender=gender,
+                location=location,
+                college=college,
+                qualification=qualification,
+                graduation_year = graduation_year,
+                current_company=current_company,
+                remarks=remarks,
+                experience=experience,
+                relevent_experience=relevent_experience,
+                skills=skills,
+                notice_period=notice_period,
+                current_ctc=current_ctc,
+                expected_ctc=expected_ctc,
+                offer_in_hands=offer_in_hands,
+                offer_details=offer_details,
+                resume=resume,
+                recruiter=recruiter,
+                screening_time=screening_time,
+                status=status,
+                rejection_reason=rejection_reason,
+                additional_status=additional_status,
+                rejection_reason_for_r1_r4=rejection_reason_for_r1_r4,
+                offer = offer,
+                offer_reject_reason=offer_reject_reason,
+                user=request.user
+            )
+
+            try:
+                # Save the new candidate to the database
+                candidate.save()
+                # Redirect to a success page
+                return redirect(self.success_url)
+            except Exception as e:
+                # Log the error for debugging
+                print(f"Error saving candidate: {e}")
+                # Return an error response
+                return render(request, self.template_name, {'error': 'Error: Could not save the candidate.'})
+
+        
+        
     def form_valid(self, form):
+        # Set the user before saving the form
         form.instance.user = self.request.user
-        return super(Createcandidate, self).form_valid(form)
+        return super().form_valid(form)
+
+    
 
 
+
+
+
+  
+
+
+
+# class Updatecandidate(UpdateView):
+#     model = Candidate
+#     success_url= reverse_lazy('list')
+#     template_name = 'add_candidate.html'
+#     fields = "__all__"
+    
+
+@method_decorator(login_required, name='dispatch')
 class Updatecandidate(UpdateView):
     model = Candidate
-    success_url= reverse_lazy('list')
-    template_name = 'add_candidate.html'
-    fields = ['email','phone','first_name','last_name','alt_phone','sex','qualification','skills','experience','designation','expected_ctc','current_ctc','availability','notice_period','current_company','location','resume','remarks','updated_by']
+    template_name = 'update_candidate.html'  # Create this template for the update form
+    fields = ['designation', 'client_name', 'mode_of_work']  # Add other fields as needed
+    success_url = reverse_lazy('list')
+
+    def get_queryset(self):
+        # Filter the queryset based on the logged-in user
+        queryset = super().get_queryset().filter(user=self.request.user)
+        return queryset
+
+
+    
+    
 
 
 class Detailcandidate(DetailView):
     model = Candidate
     context_object_name ='detail'
     template_name = 'detail_candidate.html'
+    
 
 
 

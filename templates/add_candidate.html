@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -26,6 +26,396 @@
   </div>
     
 </body>
+</html> -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Transparent Form Validation</title>
+  <style>
+    /* Your CSS styles here */
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('https://images.wallpaperscraft.com/image/single/deer_art_vector_134088_6827x3840.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #000;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    .transparent-form {
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      overflow-y: auto;
+      /* Add this line to enable vertical scrollbar */
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group select,
+    .form-group textarea {
+      width: calc(100% - 20px);
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 5px;
+    }
+
+    .form-group button[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .form-group button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .error-message {
+      color: #dc3545;
+      margin-top: 5px;
+    }
+
+
+    .time {
+      width: 520px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <br><br>
+  <br><br>
+
+  <div class="container">
+    <div class="transparent-form">
+      <form method="post" action="{% url 'create' %}" id="submission-form" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Designation -->
+        <div class="form-group">
+          <label for="designation">Designation:</label>
+          <input type="text" id="designation" name="designation" required>
+          <div class="error-message" id="designation-error"></div>
+        </div>
+
+        <!-- Client Name -->
+        <div class="form-group">
+          <label for="client-name">Client Name:</label>
+          <input type="text" id="client-name" name="client_name">
+          <div class="error-message" id="client-name-error"></div>
+        </div>
+
+        <!-- Mode Of Work -->
+        <div class="form-group">
+          <label for="mode-of-work">Mode Of Work:</label>
+          <select id="mode-of-work" name="mode_of_work">
+            <option value="">Select</option>
+            <option value="male">WFH/Remote</option>
+            <option value="female">Hybrid</option>
+            <option value="female">Work From Office</option>
+          </select>
+          <div class="error-message" id="gender-error"></div>
+        </div>
+
+        <!-- First Name -->
+        <div class="form-group">
+          <label for="first-name">First Name:</label>
+          <input type="text" id="first-name" name="first_name">
+          <!-- <div class="error-message" id="first-name-error"></div> -->
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group">
+          <label for="last-name">Last Name:</label>
+          <input type="text" id="last-name" name="last_name">
+          <div class="error-message" id="last-name-error"></div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email">
+          <div class="error-message" id="email-error"></div>
+        </div>
+
+        <!-- Phone -->
+        <div class="form-group">
+          <label for="phone">Phone:</label>
+          <input type="text" id="phone" name="phone">
+          <div class="error-message" id="phone-error"></div>
+        </div>
+
+        <!-- Gender -->
+        <div class="form-group">
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender">
+            <option value="">Select</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          <div class="error-message" id="gender-error"></div>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+          <label for="location">Location:</label>
+          <input type="text" id="location" name="location">
+          <div class="error-message" id="location-error"></div>
+        </div>
+
+        <!-- College -->
+        <div class="form-group">
+          <label for="college">College:</label>
+          <input type="text" id="college" name="college">
+          <div class="error-message" id="college-error"></div>
+        </div>
+
+        <!-- Qualification -->
+        <div class="form-group">
+          <label for="qualification">Higher Qualification:</label>
+          <input type="text" id="qualification" name="qualification">
+          <div class="error-message" id="qualification-error"></div>
+        </div>
+
+        <!-- Year of Graduation -->
+        <div class="form-group">
+          <label for="graduation-year">Year of Graduation:</label>
+          <input type="text" id="graduation-year" name="graduation_year">
+          <div class="error-message" id="graduation-year-error"></div>
+        </div>
+
+        <!-- Current Company -->
+        <div class="form-group">
+          <label for="current-company">Current Company:</label>
+          <input type="text" id="current-company" name="current_company">
+          <div class="error-message" id="current-company-error"></div>
+        </div>
+
+        <!-- Reason for change current company -->
+        <div class="form-group">
+          <label for="remarks">Reason For Change:</label>
+          <textarea id="remarks" name="remarks"></textarea>
+          <div class="error-message" id="remarks-error"></div>
+        </div>
+
+        <!-- Total Years of Experience -->
+        <div class="form-group">
+          <label for="experience">Total Years of Experience:</label>
+          <input type="text" id="experience" name="experience">
+          <div class="error-message" id="experience-error"></div>
+        </div>
+
+        <!-- Relevant Experience -->
+        <div class="form-group">
+          <label for="relevant-experience">Relevant Years Of Experience:</label>
+          <input type="text" id="relevant-experience" name="relevent_experience">
+          <div class="error-message" id="relevant-experience-error"></div>
+        </div>
+
+        <!-- Skills Set -->
+        <div class="form-group">
+          <label for="skills">Skills Set:</label>
+          <input type="text" id="skills" name="skills">
+          <div class="error-message" id="skills-error"></div>
+        </div>
+
+        <!-- Notice Period -->
+        <div class="form-group">
+          <label for="notice-period">Notice Period:</label>
+          <input type="text" id="notice-period" name="notice_period">
+          <div class="error-message" id="notice-period-error"></div>
+        </div>
+
+        <!-- Current CTC -->
+        <div class="form-group">
+          <label for="current-ctc">Current CTC:</label>
+          <input type="text" id="current-ctc" name="current_ctc">
+          <div class="error-message" id="current-ctc-error"></div>
+        </div>
+
+        <!-- Expected CTC -->
+        <div class="form-group">
+          <label for="expected-ctc">Expected CTC:</label>
+          <input type="text" id="expected-ctc" name="expected_ctc">
+          <div class="error-message" id="expected-ctc-error"></div>
+        </div>
+
+        <!-- Offer in hands -->
+        <div class="form-group">
+          <label for="offer">Offer In Hands:</label>
+          <select id="offer" name="offer_in_hands">
+            <option value="">Select</option>
+            <option value="yes">No</option>
+            <option value="no">Yes</option>
+          </select>
+          <div class="error-message" id="offer-error"></div>
+        </div>
+
+        <!-- Offer Rejection Reason -->
+        <div id="offer-reject-reason" style="display: none;">
+          <div class="form-group">
+            <label for="offer-reject-reason-text">Details:</label>
+            <textarea id="offer-reject-reason-text" name="offer_details"></textarea>
+            <div class="error-message" id="offer-reject-reason-error"></div>
+          </div>
+        </div>
+
+        <!-- Resume -->
+        <div class="form-group">
+          <label for="resume">Resume:</label>
+          <input type="file" id="resume" name="resume">
+          <div class="error-message" id="resume-error"></div>
+        </div>
+
+        <!-- Remarks -->
+        <div class="form-group">
+          <label for="remarks">Remarks:</label>
+          <textarea id="remarks" name="remarks"></textarea>
+          <div class="error-message" id="remarks-error"></div>
+        </div>
+
+        <!-- Recruiter -->
+        <div class="form-group">
+          <label for="recruiter">Recruiter:</label>
+          <input type="text" id="recruiter" name="recruiter">
+          <div class="error-message" id="recruiter-error"></div>
+        </div>
+
+
+
+        <!-- Time Slot -->
+        <div class="form-group">
+          <label for="appt">Screening Time SLOT:</label>
+          <input type="time" class="time" id="appt" name="screening_time">
+        </div>
+
+        <!-- Select Time -->
+        <div class="form-group">
+
+          <!-- Status -->
+          <label for="status">Status:</label>
+          <select id="status" name="status">
+            <option value="">Select</option>
+            <option value="Screen Select">Screen Select</option>
+            <option value="Screen Reject">Screen Reject</option>
+          </select>
+
+
+          <!-- reason for rejection -->
+          <div id="reason-for-rejection" style="display: none;">
+            <label for="rejection-reason-text">Reason for Rejection:</label>
+            <textarea id="rejection-reason-text" name="rejection_reason"></textarea>
+          </div>
+
+
+          <!-- additional status  -->
+          <div id="additional-options" style="display: none;">
+            <label for="additional-status">Additional Status:</label>
+            <select id="additional-status" name="additional_status">
+              <option value="">Select</option>
+              <option value="R1 Select">R1 Select</option>
+              <option id="r1" value="R1 Reject">R1 Reject</option>
+              <option id="r2select" value="R2 Select">R2 Select</option>
+              <option id="r2" value="R2 Reject">R2 Reject</option>
+              <option value="R3 Select">R3 Select</option>
+              <option id="r3" value="R3 Reject">R3 Reject</option>
+              <option id="r4select" value="R4 Select">R4 Select</option>
+              <option id="r4" value="R4 Reject">R4 Reject</option>
+            </select>
+          </div>
+
+
+
+          <!-- reason for rejection for r1-r4 round -->
+          <div id="reason-for-r1-r2-r3-r4-rejection" style="display: none;">
+            <label for="rejection-reason-text">Reason for Rejection:</label>
+            <textarea id="rejection-reason-text" name="rejection_reason_for_r1-r4"></textarea>
+          </div>
+
+        </div>
+
+
+
+        <!-- Offer -->
+        <div id="additional-options" style="display: none;">
+          <label for="additional-status">Additional Status:</label>
+          <select id="additional-status" name="additional_status">
+            <option value="">Select</option>
+            <option value="R1 Select">R1 Select</option>
+            <option id="r1" value="R1 Reject">R1 Reject</option>
+            <option id="r2select" value="R2 Select">R2 Select</option>
+            <option id="r2" value="R2 Reject">R2 Reject</option>
+          </select>
+        </div>
+
+        <div id="offer-container" style="display: none;">
+          <div class="form-group">
+            <label for="offer-2">Offer:</label>
+            <select id="offer-2" name="offer">
+              <option value="">Select</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+            <div class="error-message" id="offer-error"></div>
+          </div>
+        </div>
+
+        <div id="offer-reject-reason-container" style="display: none;">
+          <div class="form-group">
+            <label for="offer-reject-reason-text">Reason for Rejection:</label>
+            <textarea id="offer-reject-reason-text" name="offer_reject_reason"></textarea>
+            <div class="error-message" id="offer-reject-reason-error"></div>
+          </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      
+        <script src="{% static 'js/add_candidates.js' %}"></script>
+        <br>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit</button>
+      </form>
+
+    </div>
+  </div>
+
+
+
+</body>
+
 </html>
-
-
