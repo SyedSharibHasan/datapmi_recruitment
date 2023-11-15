@@ -310,8 +310,38 @@ class ProfileCreate(CreateView):
 
 
 
-
-
+from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 ###### search 
+class Filter(LoginRequiredMixin,ListView):
+    model = Candidate
+    template_name = 'searchuser.html'
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        users = Candidate.objects.filter(Q(email=query))
+        return users
+
+
+
+########### autocomplete recommendation using AJAX
+from django.http import JsonResponse
+
+def autocomplete_username(request):
+    if 'term' in request.GET:
+        term = request.GET.get('term')
+        users = Candidate.objects.filter(email__istartswith=term)
+        suggestions = [{'label': user.email, 'value': user.id} for user in users]
+        return JsonResponse({'suggestions': suggestions}, safe=False)
+    return JsonResponse({'suggestions': []})
+
+
+
+
+
+
+
+
