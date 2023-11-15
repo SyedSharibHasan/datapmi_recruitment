@@ -9,7 +9,7 @@ class Candidate(models.Model):
     first_name = models.CharField(max_length=150, null=True)
     last_name = models.CharField(max_length=150)
     mode_of_work = models.CharField(max_length=150, default='full_time')
-    
+
     # alt_phone = models.CharField(max_length=15)
     # dob = models.DateField(null=True)
     gender = models.CharField(max_length=50, default='unknown', null=True,blank=True)
@@ -22,8 +22,8 @@ class Candidate(models.Model):
     designation = models.CharField(max_length=50, null=True,blank=True)
     expected_ctc = models.CharField(max_length=50, null=True,blank=True)
     current_ctc = models.CharField(max_length=50, null=True,blank=True)
-    offer_in_hands = models.BooleanField(default=True, null=True,blank=True)
-    offer_details= models.BooleanField(default=True, null=True,blank=True)     ###  hidden box
+    offer_in_hands = models.CharField(max_length=50,default=None, null=True,blank=True)
+    offer_details= models.CharField(max_length=50,default=None, null=True,blank=True)     ###  hidden box
     notice_period = models.CharField(max_length=50, null=True,blank=True)
     current_company = models.CharField(max_length=100, null=True,blank=True)
     reason_for_change = models.CharField(max_length=2000, null=True,blank=True)          ###  hidden

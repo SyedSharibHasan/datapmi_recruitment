@@ -9,15 +9,8 @@ additionalStatusDropdown.addEventListener("change", function () {
     offerContainer.style.display = additionalStatusDropdown.value.includes("R") ? "block" : "none";
 });
 
-// Get the offer dropdown element
-var offerDropdown = document.getElementById("offer-2");
 
-// Add change event listener to the offer dropdown
-offerDropdown.addEventListener("change", function () {
-    // If "no" is selected, display the offer reject reason container; otherwise, hide it
-    var offerRejectReasonContainer = document.getElementById("offer-reject-reason-container");
-    offerRejectReasonContainer.style.display = offerDropdown.value === "no" ? "block" : "none";
-});
+
 
 // Get the status dropdown element
 var statusDropdown = document.getElementById('status');
@@ -31,8 +24,9 @@ statusDropdown.addEventListener('change', function () {
     rejectionReasonDiv.style.display = statusDropdown.value === 'Screen Reject' ? 'block' : 'none';
 });
 
+// No need to re-declare additionalStatusDropdown, as it's already declared above
+
 // Get the additional status dropdown element
-var additionalStatusDropdown = document.getElementById('additional-status');
 var reasonForRejectionDiv = document.getElementById('reason-for-r1-r2-r3-r4-rejection');
 
 // Add change event listener to the additional status dropdown
@@ -40,6 +34,3 @@ additionalStatusDropdown.addEventListener('change', function () {
     // Display reason for rejection based on additional status
     reasonForRejectionDiv.style.display = additionalStatusDropdown.value.includes('Reject') ? 'block' : 'none';
 });
-
-
-

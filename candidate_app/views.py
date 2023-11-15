@@ -144,7 +144,7 @@ class Createcandidate(CreateView):
             expected_ctc = request.POST.get("expected_ctc")
             offer_in_hands = request.POST.get("offer_in_hands")
             offer_details = request.POST.get("offer_details")
-            resume = request.POST.get("resume")
+            resume = request.FILES.get("resume")
             remarks = request.POST.get("remarks")
             recruiter = request.POST.get("recruiter")
             screening_time = request.POST.get("screening_time")
@@ -216,35 +216,22 @@ class Createcandidate(CreateView):
 
 
 
-
+    
 
   
 
 
-
-# class Updatecandidate(UpdateView):
-#     model = Candidate
-#     success_url= reverse_lazy('list')
-#     template_name = 'add_candidate.html'
-#     fields = "__all__"
-    
-
-@method_decorator(login_required, name='dispatch')
 class Updatecandidate(UpdateView):
     model = Candidate
-    template_name = 'update_candidate.html'  # Create this template for the update form
-    fields = ['designation', 'client_name', 'mode_of_work']  # Add other fields as needed
     success_url = reverse_lazy('list')
+    template_name = 'update_candidate.html'
+    fields = "__all__"
 
-    def get_queryset(self):
-        # Filter the queryset based on the logged-in user
-        queryset = super().get_queryset().filter(user=self.request.user)
-        return queryset
-
+  
 
     
     
-
+    
 
 class Detailcandidate(DetailView):
     model = Candidate

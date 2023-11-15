@@ -78,57 +78,123 @@
 
     {% include 'navbar.html' %}
     <div class="container">
-        <div class="profile-info">
-            <img src="https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png" alt="Profile Image">
-            <p><b>{{detail.first_name}} {{detail.last_name}}</b></p>
-            <p><b>{{detail.email}}</b></p>
-        </div>
-
+        
         <div class="submission-details">
+
+            <div class="field">
+                <span>Name:</span> {{detail.first_name}} {{detail.last_name}}
+            </div>
+
+            <div class="field">
+                <span>Email:</span> {{detail.email}}
+            </div>
+            
             <div class="field">
                 <span>Mobile:</span> {{detail.phone}}
             </div>
+
             <div class="field">
-                <span>Alternate Mobile:</span> {{detail.alt_phone}}
+                <span>Client Name:</span> {{detail.client_name}}
             </div>
+
             <div class="field">
-                <span>Designation:</span> {{detail.designation }}
+                <span>Gender:</span> {{detail.gender }}
             </div>
-            <div class="field">
-                <span>Sex:</span> {{detail.sex}}
-            </div>
-            <div class="field">
-                <span>Qualification:</span> {{detail.qualification }}
-            </div>
-            <div class="field">
-                <span>Skills:</span> {{detail.skills }}
-            </div>
-            <div class="field">
-                <span>Experience:</span> {{detail.experience }}
-            </div>
-            <div class="field">
-                <span>Current CTC:</span> {{detail.current_ctc }}
-            </div>
-            <div class="field">
-                <span>Expected CTC:</span> {{detail.expected_ctc }}
-            </div>
-            <div class="field">
-                <span>Notice period:</span> {{detail.notice_period}}
-            </div>
-            <div class="field">
-                <span>Current Company:</span> {{detail.current_company }}
-            </div>
+            
             <div class="field">
                 <span>Location:</span> {{detail.location }}
             </div>
+
             <div class="field">
-                <span>Updated By:</span> {{detail.updated_by}}
+                <span>College:</span> {{detail.college}}
+            </div>
+
+            <div class="field">
+                <span>Higher Qualification:</span> {{detail.qualification }}
+            </div>
+            
+            <div class="field">
+                <span>Year Of Graduation:</span> {{detail.graduation_year }}
+            </div>
+            
+            <div class="field">
+                <span>Current Company:</span> {{detail.current_company}}
+            </div>
+
+            <div class="field">
+                <span>Reason For Change:</span> {{detail.reason_for_change}}
+            </div>
+
+            <div class="field">
+                <span>Total Years of Experience:</span> {{detail.experience}}
+            </div>
+
+            <div class="field">
+                <span>Relevant Years Of Experience:</span> {{detail.relevant_exeperience}}
+            </div>
+
+            <div class="field">
+                <span>Skills Set:</span> {{detail.skills }}
+            </div>
+
+            <div class="field">
+                <span>Notice Period:</span> {{detail.notice_period }}
+            </div>
+
+            <div class="field">
+                <span>Current CTC:</span> {{detail.current_ctc}}
+            </div>
+
+            <div class="field">
+                <span>Expected CTC:</span> {{detail.expected_ctc}}
+            </div>
+            
+            <div class="field">
+                <span>Offer In Hands:</span> {{detail.offer_in_hands}}
+            </div>
+
+            <div class="field">
+                <span>Offer In Hands Details:</span> {{detail.offer_details}}
+            </div>
+
+            <div class="field">
+                <span>Remarks:</span> {{detail.remarks}}
+            </div>
+
+            <div class="field">
+                <span>Recruiter:</span> {{detail.recruiter}}
+            </div>
+
+            <div class="field">
+                <span>Screening Time SLOT:</span> {{detail.screening_time}}
+            </div>
+
+            <div class="field">
+                <span>Status:</span> {{detail.status}}
+            </div>
+
+            <div class="field">
+                <span>Additional Status:</span> {{detail.additional_status}}
             </div>
             <div class="field">
-                <span>Updated on:</span> {{detail.updated_on}}
+                <span>Offer:</span> {{detail.offer}}
             </div>
+            <div class="field">
+                <span>Reason For Rejection:</span> {{detail.offer_reject_reason}}
+            </div>
+            
+            
+
             <div class="field resume-link">
-                <!-- <span>Download Resume:</span> <a href="{{detail.resume.url}}" target="_blank">Resume.pdf</a> -->
+                <span>
+                    {% if detail.resume %}
+                        Download Resume:
+                        <a href="{{ detail.resume.url }}" target="_blank">Resume.pdf</a>
+                    {% else %}
+                        No resume uploaded.
+                    {% endif %}
+                </span>
+                
             </div>
         </div>
     </div>
