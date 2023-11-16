@@ -4,16 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: url('https://images.wallpaperscraft.com/image/single/palm_trees_coast_ocean_288205_3840x2400.jpg') center/cover no-repeat;
+        }
+
+        .modal {
+            background-color: rgba(255, 255, 255, 0.3); /* Set the alpha value for transparency */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(11, 146, 51, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            border-radius: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #555;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .button {
+            flex: 1;
+            margin: 0 5px;
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 50px;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .cancel-button {
+            background-color: #ccc;
+            color: #333;
+        }
+
+        .cancel-button:hover {
+            background-color: #bbb;
+        }
+    </style>
 </head>
 <body>
+
+   
+<div class="modal">
+    <h1>Delete Account</h1>
+    <p>Are you sure you want to delete your account?</p>
+
+    <div class="button-container">
+        <form method="post" action="">
+            {% csrf_token %}
+        <button class="button delete-button">Delete</button>
+    </form>
+    <a href="/list"> <button class="button cancel-button" >Cancel</button></a>
+    </div>
     
-   <center><form method="post" action="">
-        {% csrf_token %}
-        <h1 style="font-family:gabriola">Are you sure to delete </h1>
-            <input type="submit" value="Delete" class="submit"/>
-          <a href="/list"><input type="button" value="Cancel" class="submitcancel"/></a>
-    
-    </form></center>
+</div>
+
+
 
 </body>
-
+</html>

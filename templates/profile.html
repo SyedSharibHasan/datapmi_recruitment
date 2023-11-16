@@ -30,6 +30,10 @@ html, body {
 body {
   background: #202020;
   font-family: 'Krub', sans-serif;
+  background-image: url('https://images.wallpaperscraft.com/image/single/island_cave_boat_295806_3840x2160.jpg');
+  background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
 }
 
 .card {
@@ -296,11 +300,11 @@ body {
                 alt="Albert Einstein">
         </div>
         <div class="name">
-            <a href="" target="">Amritha P</a>
-            <h6 title="Followers"><i class="fas fa-users"></i> <span class="followers">1234567890</span></h6>
+            <a href="" target="">{{user.first_name}} {{user.last_name}}</a>
+            <h6 title="Followers"><i class="fas fa-users"></i> <span class="followers">{{user.contact}}</span></h6>
         </div>
         <div class="button">
-            <a href="#" class="btn" onclick="">amritha@123.com<i class="fas fa-user-plus"></i></a>
+            <a href="#" class="btn" onclick="">{{user.email}}<i class="fas fa-user-plus"></i></a>
         </div>
         <div class="ds-info">
             <div class="ds pens">

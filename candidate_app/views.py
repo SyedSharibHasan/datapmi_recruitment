@@ -240,8 +240,9 @@ class Detailcandidate(DetailView):
     
 
 
+from django.contrib.messages.views import SuccessMessageMixin
 
-class Deletecandidate(DeleteView):
+class Deletecandidate(SuccessMessageMixin,DeleteView):
     model = Candidate
     # context_object_name = 'task'
     success_url = reverse_lazy('list')

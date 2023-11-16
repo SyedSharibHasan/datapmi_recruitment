@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,Filter,autocomplete_username
-
+from . import views
 
 
 urlpatterns = [
@@ -24,7 +24,9 @@ urlpatterns = [
 
     path('search/', Filter.as_view(), name='search'),
     path('autocomplete-username/', autocomplete_username, name='autocomplete_username'),
-    ]
+    
+    
+]
 
 
 

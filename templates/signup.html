@@ -1,98 +1,188 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Signup</title>
-     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration</title>
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
 
+  
+
+    html,
+    body {
+      width: 100%;
+    
+      display: table;
+
+      font-family: Rubik, sans-serif;
+    }
+
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url('https://images.wallpaperscraft.com/image/single/waterfall_water_landscape_234727_2560x1080.jpg');
+      margin: 0;
+      min-height: 100vh;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .container {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+      border-radius: .7em;
+      padding: 3rem 3rem 3rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      background-color: rgba(255, 255, 255, 0.7); /* Adjust the alpha value (last parameter) for transparency */
+      /* background-image: linear-gradient(90deg, rgb(106, 33, 223), rgb(209, 51, 230)); */
+      margin-top: 50px  ;
+    }
+
+    h1 {
+      font-size: 1.5em;
+    }
+
+    .content {
+      display: inline-block;
+      text-align: left;
+      background-color: whitesmoke;
+      border-radius: .7em;
+      padding: 3rem 3rem 3rem;
+    }
+
+    .fld,
+    .slt {
+      width: 20em;
+      height: 3rem;
+    }
+
+    .slt::placeholder {
+      color: rgb(109, 109, 109);
+    }
+
+    .fld::placeholder {
+      color: rgba(128, 128, 128, 0.568);
+    }
+
+    .fld:focus,
+    .slt:focus,
+    .ta:focus {
+      outline: none;
+      transition: ease 1s;
+      border-bottom-color: black;
+    }
+
+    .msg,
+    .ta {
+      width: 20em;
+      font-family: Rubik, sans-serif;
+      height: 6rem;
+      margin-bottom: 2.5rem;
+      resize: none;
+    }
+
+    .ta::placeholder {
+      color: rgba(128, 128, 128, 0.568);
+    }
+
+    #say-hello {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .name,
+    .email,
+    .contact,
+    .password,
+    .confirm-password,
+    .submit-button {
+      padding-top: 0.8em;
+      padding-bottom: 0.8em;
+    }
+
+    label {
+      font-size: small;
+      color: gray;
+    }
+
+    .fld,
+    .ta,
+    .slt {
+      border: none;
+      background-color: whitesmoke;
+      font-size: large;
+      border-bottom: 2px solid rgba(128, 128, 128, 0.616);
+    }
+
+    .btn {
+      border: none;
+      font-weight: bold;
+      width: 22.5rem;
+      background-image: linear-gradient(90deg, rgb(209, 51, 230), rgb(106, 33, 223), rgb(9, 204, 204));
+      border-radius: 2rem;
+      height: 2.5rem;
+      color: whitesmoke;
+    }
+
+    .btn:hover {
+      transition: ease-in 0.5s;
+      border: 4px solid blueviolet;
+    }
+  </style>
 </head>
-<body>
 
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black" >
-          <div class="card-body p-md-7">
-            <div class="row justify-content-center">
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+<body id="body">
 
-                  <form action="" method="post">
- {% csrf_token %}
-                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
-
-                <form class="mx-1 mx-md-4">
-
-                   <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                         <label class="form-label" for="form3Example3c">Username</label>
-                      <input name="username" type="text" id="form3Example7c" class="form-control" />
-
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label class="form-label" for="form3Example1c">Firstname</label>
-                      <input name="fname" type="text" id="form3Example1c" class="form-control" />
-
-                    </div>
-                      <div class="form-outline flex-fill mb-0">
-                        <label class="form-label" for="form3Example1c">Lastname</label>
-                      <input name="lname" type="text" id="form3Example5c" class="form-control" />
-
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                         <label class="form-label" for="form3Example3c">Your Email</label>
-                      <input name="email" type="email" id="form3Example3c" class="form-control" />
-
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label class="form-label" for="form3Example4c">Password</label>
-                      <input name="pass1" type="password" id="form3Example4c" class="form-control" />
-
-                    </div>
-                  </div>
-
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                         <label class="form-label" for="form3Example4cd">Repeat your password</label>
-                      <input name="pass2" type="password" id="form3Example4cd" class="form-control" />
-                    </div>
-                  </div>
-
-
-
-                    <button type="submit" class="btn btn-primary btn-block mb-3" >Submit</button>
-
-                </form>
-                </form>
-                  <label>Already have an account</label>
-                  <a href="/"><button  class="btn btn-success" >Login</button></a>
-              </div>
-
-
-              </div>
-            </div>
-          </div>
+  <div class="container">
+    <form action="./index.html" method="POST" class="content">
+      <h1 id="say-hello">Welcome To DataPMI</h1>
+      <h4 id="say-hello">Register Here</h4>
+      <div>
+        <div class="name">
+          <label for="name">First Name</label><br />
+          <input class="fld" placeholder="Enter your first name" id="name" />
         </div>
+
+        <div class="name">
+          <label for="last-name">Last Name</label><br />
+          <input class="fld" placeholder="Enter your last name" id="last-name" />
+        </div>
+
+        <div class="email">
+          <label for="email">Email</label><br />
+          <input class="fld" type="email" placeholder="Enter your email address" id="email" />
+        </div>
+
+        <div class="contact">
+          <label for="contact">Contact</label><br />
+          <input class="fld" type="tel" placeholder="Enter your contact number" id="contact" />
+        </div>
+
+        <div class="password">
+          <label for="password">Password</label><br />
+          <input class="fld" type="password" placeholder="Enter your password" id="password" />
+        </div>
+
+        <div class="confirm-password">
+          <label for="confirm-password">Confirm Password</label><br />
+          <input class="fld" type="password" placeholder="Confirm your password" id="confirm-password" />
+        </div>
+
+        <div class="submit-button">
+          <button class="btn" type="submit">Submit</button>
         </div>
       </div>
-
+    </form>
   </div>
-
-
 </body>
+
 </html>
