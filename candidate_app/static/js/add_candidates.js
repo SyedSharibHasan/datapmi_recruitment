@@ -34,3 +34,10 @@ additionalStatusDropdown.addEventListener('change', function () {
     // Display reason for rejection based on additional status
     reasonForRejectionDiv.style.display = additionalStatusDropdown.value.includes('Reject') ? 'block' : 'none';
 });
+
+
+
+
+
+
+

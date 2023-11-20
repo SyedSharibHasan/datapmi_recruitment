@@ -23,26 +23,35 @@ from django.urls import reverse_lazy
     
 
 
+from .forms import CustomUser
+
+
 def signup(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        fname = request.POST.get("fname")
-        lname = request.POST.get("lname")
-        email = request.POST.get("email")
-        pass1 = request.POST.get("pass1")
-        pass2 = request.POST.get("pass2")
-
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        pass1 = request.POST.get('pass1')
+        pass2 = request.POST.get('pass2')
+        
         if pass1 != pass2:
-            return HttpResponse("Your password and confirm password are not same!!")
-        else:
-            myuser = User.objects.create_user(username, email, pass1)
-            myuser.first_name = fname
-            myuser.last_name = lname
-            myuser.save()
-            messages.success(request, "Your account has been successfully created.")
+            # Handle password mismatch error as needed
+            return HttpResponse('Password 1 and 2 are not matched')
+        
+        # Create CustomUser instance
+        user = CustomUser(username=username, first_name=first_name, last_name=last_name,email=email)
+        user.set_password(pass1)
+        user.save()
 
-            return redirect("login")
+        contact = request.POST.get('contact')
+        user.contact = contact
+        user.save()
+
+        return redirect('login')  # Redirect to a success page
+
     return render(request, 'signup.html')
+
 
 
 @csrf_exempt
@@ -150,9 +159,8 @@ class Createcandidate(CreateView):
             screening_time = request.POST.get("screening_time")
             status = request.POST.get("status")
             rejection_reason = request.POST.get("rejection_reason")
-            additional_status = request.POST.get("additional_status")
+            additional_status = request.POST.get("additional_status_1")
             rejection_reason_for_r1_r4 = request.POST.get("rejection_reason_for_r1-r4")
-            additional_status = request.POST.get("additional_status")
             offer = request.POST.get("offer")
             offer_reject_reason = request.POST.get("offer_reject_reason")
             

@@ -1,8 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+
+
+
+class CustomUser(AbstractUser):
+    contact = models.CharField(max_length=15, blank=True, null=True)
+
+
+
 
 class Candidate(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15)
     client_name = models.CharField(max_length=15)
@@ -36,7 +48,7 @@ class Candidate(models.Model):
     recruiter = models.CharField(max_length=50, null=True,blank=True)
     status = models.CharField(max_length=100, null=True,blank=True)
     rejection_reason = models.CharField(max_length=100, null=True,blank=True)         ### hidden 
-    additional_status = models.CharField(max_length=100,default=True, null=True,blank=True)
+    additional_status = models.CharField(max_length=100, null=True,blank=True)
     rejection_reason_for_r1_r4 = models.CharField(max_length=100, null=True,blank=True)        ## hidden 
     # r2_reject_additional_status = models.CharField(max_length=100)           ## hidden 
     # r3_reject_additional_status = models.CharField(max_length=100)           ## hidden 
@@ -56,8 +68,10 @@ class Candidate(models.Model):
 
 
 class Profile(models.Model):
-     user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
-     image = models.ImageField(upload_to='image/',max_length=400,blank=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='image/',max_length=400,blank=True)
+
+
 
 
 
