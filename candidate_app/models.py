@@ -18,7 +18,7 @@ class Skill(models.Model):
     def __str__(self):
         return self.name
 
-
+ 
 
 class Candidate(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
