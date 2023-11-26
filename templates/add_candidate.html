@@ -263,11 +263,70 @@
         </div>
 
         <!-- Skills Set -->
-        <div class="form-group">
-          <label for="skills">Skills Set:</label>
-          <input type="text" id="skills" name="skills">
-          <div class="error-message" id="skills-error"></div>
-        </div>
+ 
+
+        <label>Skills</label>
+        <!-- <input type="checkbox" id="vehicle1" name="skills" value="Python">
+        <label for="vehicle1"> Python</label><br>
+        <input type="checkbox" id="vehicle2" name="skills" value="Java">
+        <label for="vehicle2"> Java</label><br>
+        <input type="checkbox" id="vehicle3" name="skills" value="Javascript">
+        <label for="vehicle3"> Javascript</label><br><br> -->
+
+        
+        <input type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
+
+        <!-- Display recommendations -->
+        <ul id="skillList" class="skill-container"></ul>
+    
+        <!-- Selected Skills Container -->
+        <div id="selectedSkills" class="skill-container"></div>
+    
+        <script>
+            var skillsList = ['Java', 'Python', 'JavaScript', 'HTML', 'CSS', 'React', 'Node.js'];
+    
+            // Function to filter skills and display recommendations
+            function filterSkills() {
+                var input = document.getElementById('skillsInput');
+                var filter = input.value.toUpperCase();
+                var skillList = document.getElementById('skillList');
+                skillList.innerHTML = ''; // Clear previous list items
+    
+                for (var i = 0; i < skillsList.length; i++) {
+                    if (skillsList[i].toUpperCase().includes(filter)) {
+                        var li = document.createElement('li');
+                        li.textContent = skillsList[i];
+                        li.onclick = function() {
+                            addSkill(this.textContent);
+                            input.value = ''; // Clear input after selecting a skill
+                            skillList.innerHTML = ''; // Clear the list after selection
+                        };
+                        skillList.appendChild(li);
+                    }
+                }
+            }
+    
+            // Function to add skill to the input field
+            function addSkill(skillName) {
+                var selectedSkillsContainer = document.getElementById('selectedSkills');
+    
+                // Create a new input field for the selected skill
+                var skillInput = document.createElement('input');
+                skillInput.type = 'text';
+                skillInput.value = skillName;
+                skillInput.name = 'skills';
+                skillInput.readOnly = true;
+    
+                // Append the input field to the container
+                selectedSkillsContainer.appendChild(skillInput);
+            }
+        </script>
+    
+
+
+
+
+
 
         <!-- Notice Period -->
         <div class="form-group">
@@ -388,6 +447,7 @@
           </div>
 
 
+          
 
           <!-- reason for rejection for r1-r4 round -->
           <div id="reason-for-r1-r2-r3-r4-rejection" style="display: none;">

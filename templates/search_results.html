@@ -9,10 +9,21 @@
     <title>Search results</title>
 </head>
 <body>
-    
+    {% include 'sidebar.html' %}
+    {% include 'navbar.html' %}  
+    <br>
+    <br>
+    <br>
+    <br>    
 
+<center>
 
+    {% for user in users %}
+    <!-- Display candidate information as needed -->
+    <a href="{% url 'detail' user.id %}"><p >{{ user.email }}</p></a>
+    <!-- ... other fields ... -->
+  {% endfor %}
 
-
+</center>
 </body>
 </html>

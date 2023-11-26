@@ -101,15 +101,40 @@
 
   <center>
 
-    <!-- <form>
-      <input type="text">
-      <button class="btn btn-success">Search</button>
-      <br>
-    </form>
-    <br><br> -->
+
 
     {% include 'navbar.html' %}  
     {% include 'delete_messages.html' %}  
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    
+    <br>
+    <h4 style="color: rgb(255, 255, 255);">Search Filter By skills </h4>
+    <form method="get" action="{% url 'filter' %}">
+      <input id="search_skill" type="search" name="skills_search" placeholder="Search skillsets" >
+      <button type="submit">GO</button>
+      <script>
+        
+      $(function() {
+    $("#search_skill").autocomplete({
+        source: function(request, response) {
+            $.getJSON("/autocomplete-skills/", { term: request.term }, function(data) {
+                response(data.suggestions);
+            });
+        },
+        minLength: 1,
+        select: function(event, ui) {
+            // Set the value of the selected item to the input field
+            $("#search_skill").val(ui.item.label);
+            return false; // Prevent the default behavior
+        }
+    });
+});
+
+    </script>
+    </form>
+    
 
 
 <br>
@@ -141,6 +166,7 @@
                   <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Designation
                   </th>
                   <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Contact</th>
+       
                   <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Experience
                   </th>
                   <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Status</th>
@@ -186,7 +212,7 @@
 
                   </td>
 
-                  <td>
+                  <td>  
                     <!-- <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle"><i class="fa fa-key"></i> </button> -->
                     <a href="{% url 'detail' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"
                         class="btn btn-outline-success"><i class="bi bi-search"></i></button></a>&nbsp;

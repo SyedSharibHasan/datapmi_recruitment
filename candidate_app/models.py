@@ -11,6 +11,13 @@ class CustomUser(AbstractUser):
     contact = models.CharField(max_length=15, blank=True, null=True)
 
 
+class Skill(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
 
 
 class Candidate(models.Model):
@@ -21,14 +28,13 @@ class Candidate(models.Model):
     first_name = models.CharField(max_length=150, null=True)
     last_name = models.CharField(max_length=150)
     mode_of_work = models.CharField(max_length=150, default='full_time')
-
     # alt_phone = models.CharField(max_length=15)
     # dob = models.DateField(null=True)
     gender = models.CharField(max_length=50, default='unknown', null=True,blank=True)
     college = models.CharField(max_length=50, null=True,blank=True)
     graduation_year= models.CharField(max_length=50, null=True,blank=True)
     qualification = models.TextField(null=True,blank=True)
-    skills = models.TextField(null=True,blank=True)
+    skills = models.ManyToManyField(Skill)  
     experience = models.CharField(max_length=50, null=True,blank=True)
     relevent_experience = models.CharField(max_length=50, null=True,blank=True)
     designation = models.CharField(max_length=50, null=True,blank=True)
@@ -50,9 +56,6 @@ class Candidate(models.Model):
     rejection_reason = models.CharField(max_length=100, null=True,blank=True)         ### hidden 
     additional_status = models.CharField(max_length=100, null=True,blank=True)
     rejection_reason_for_r1_r4 = models.CharField(max_length=100, null=True,blank=True)        ## hidden 
-    # r2_reject_additional_status = models.CharField(max_length=100)           ## hidden 
-    # r3_reject_additional_status = models.CharField(max_length=100)           ## hidden 
-    # r4_reject_additional_status = models.CharField(max_length=100)           ## hidden  
     offer = models.CharField(max_length=100, null=True,blank=True)
     offer_reject_reason = models.CharField(max_length=100, null=True,blank=True)
     
@@ -62,6 +65,9 @@ class Candidate(models.Model):
 
     class Meta:
         ordering = ["-updated_on"]
+
+
+
 
 
 

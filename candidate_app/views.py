@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from functools import wraps
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.views.generic import ListView,CreateView,UpdateView,DetailView,DeleteView
-from .models import Candidate
+from .models import Candidate,Skill
 from django.urls import reverse_lazy
 
 
@@ -131,7 +131,7 @@ class Createcandidate(CreateView):
     def post(self, request):
         if request.method == "POST":
             
-        
+            
             designation = request.POST.get("designation")
             client_name = request.POST.get("client_name")
             mode_of_work = request.POST.get("mode_of_work")
@@ -147,7 +147,7 @@ class Createcandidate(CreateView):
             current_company = request.POST.get("current_company")
             experience = request.POST.get("experience")
             relevent_experience = request.POST.get("relevent_experience")
-            skills = request.POST.get("skills")
+            # skills = request.POST.getlist("skills")
             notice_period = request.POST.get("notice_period")
             current_ctc = request.POST.get("current_ctc")
             expected_ctc = request.POST.get("expected_ctc")
@@ -165,7 +165,8 @@ class Createcandidate(CreateView):
             offer_reject_reason = request.POST.get("offer_reject_reason")
             
             
-            # Create a new Candidate object with the retrieved data
+
+
             candidate = Candidate(
                 
                 designation=designation,
@@ -184,7 +185,7 @@ class Createcandidate(CreateView):
                 remarks=remarks,
                 experience=experience,
                 relevent_experience=relevent_experience,
-                skills=skills,
+                # skills=skills,
                 notice_period=notice_period,
                 current_ctc=current_ctc,
                 expected_ctc=expected_ctc,
@@ -201,10 +202,15 @@ class Createcandidate(CreateView):
                 offer_reject_reason=offer_reject_reason,
                 user=request.user
             )
+            candidate.save()
+
+            
 
             try:
-                # Save the new candidate to the database
-                candidate.save()
+                skill_names = request.POST.getlist("skills")
+                skills = [Skill.objects.get_or_create(name=skill_name, user=request.user)[0] for skill_name in skill_names]
+                candidate.skills.set(skills)
+            
                 # Redirect to a success page
                 return redirect(self.success_url)
             except Exception as e:
@@ -323,16 +329,8 @@ from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-###### search 
-class Filter(LoginRequiredMixin,ListView):
-    model = Candidate
-    template_name = 'searchuser.html'
-    context_object_name = 'users'
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        users = Candidate.objects.filter(Q(email=query))
-        return users
+########### autocomplete recommendation using AJAX
+from django.http import JsonResponse
 
 
 
@@ -348,6 +346,59 @@ def autocomplete_username(request):
     return JsonResponse({'suggestions': []})
 
 
+
+
+
+from .forms import SkillSearchForm
+
+
+from django.db.models import Count
+##### filrer for skills
+from django.db.models import Q
+
+
+class Filter_2(LoginRequiredMixin, ListView):
+    model = Candidate
+    template_name = 'search_results.html'
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        query = self.request.GET.get('skills_search', '')
+
+        if query:
+            # Split the query into individual skills
+            skills = [skill.strip() for skill in query.split(',')]
+
+            # Use Q objects to build a dynamic OR query for each skill
+            q_objects = Q()
+            for skill in skills:
+                q_objects |= Q(skills__name__iexact=skill)
+
+            # Filter candidates who have ANY of the specified skills
+            users = Candidate.objects.filter(q_objects).distinct()
+        else:
+            users = Candidate.objects.all()
+
+        return users
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('skills_search', '')
+        return context
+
+
+
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def autocomplete_skills(request):
+    if 'term' in request.GET:
+        term = request.GET.get('term')
+        skills = Skill.objects.filter(name__istartswith=term, user=request.user)
+        suggestions = [{'label': skill.name, 'value': skill.id} for skill in skills]
+        return JsonResponse({'suggestions': suggestions}, safe=False)
+    return JsonResponse({'suggestions': []})
 
 
 

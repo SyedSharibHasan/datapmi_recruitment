@@ -26,3 +26,8 @@ class CustomUserForm(forms.ModelForm):
         fields = ['username', 'first_name', 'last_name', 'email', 'contact']
 
 
+
+
+####filter
+class SkillSearchForm(forms.Form):
+    skills_search = forms.CharField(label='Search skillsets', max_length=100)

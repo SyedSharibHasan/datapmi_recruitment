@@ -141,8 +141,14 @@
             </div>
 
             <div class="field">
-                <span>Skills Set:</span> {{detail.skills }}
+                <span>Skills Set:</span> 
+                {% for skill in detail.skills.all %}
+                {{ skill.name }}
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
             </div>
+
+           
 
             <div class="field">
                 <span>Notice Period:</span> {{detail.notice_period }}

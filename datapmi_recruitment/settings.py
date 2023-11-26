@@ -82,6 +82,25 @@ DATABASES = {
 }
 
 
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mysql.connector.django',
+#         'NAME': 'Syed',
+#         'USER': 'root',
+#         'PASSWORD': '',  # Enter your MySQL password here if you have set one
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'autocommit': True,
+#         },
+#     }
+# }
+
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
