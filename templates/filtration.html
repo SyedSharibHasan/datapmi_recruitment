@@ -14,7 +14,7 @@
 
 
 
-#search_skill {
+.search_skill {
               padding: 8px; /* Adjust padding as needed */
               font-size: 14px; /* Adjust font size as needed */
               border: 1px solid #ccc; /* Add a border */
@@ -22,7 +22,7 @@
               width: 200px; /* Adjust width as needed */
           }
      
-          #select_skill {
+          .select_skill {
               padding: 8px; /* Adjust padding as needed */
               font-size: 11px; /* Adjust font size as needed */
               border: 1px solid #ccc; /* Add a border */
@@ -50,10 +50,10 @@
     <h6 >Search Filter By skills </h6>
     <form method="get" action="{% url 'filter' %}">
         <!-- Input field for selecting skills -->
-        <input id="select_skill" type="search" placeholder="suggession">
+        <input class="select_skill" id="select_skill" type="search" placeholder="suggession">
     
         <!-- Input field for entering and displaying selected skills -->
-        <input id="search_skill" type="search" name="skills_search" placeholder="Search skillsets" required>
+        <input class="search_skill" id="search_skill" type="search" name="skills_search" placeholder="Search skillsets" >
        
      
     
@@ -93,20 +93,34 @@
     }
 });
 
+
+
+
         </script>
    
 
     <br>
     <h6 >Search Filter By Location</h6>
 
-    <form method="get" action="{% url 'filter' %}">
-    <input id="search_skill" type="search" placeholder="search Location"> 
+    <input class="search_skill" id="search_location" name="location_search" type="search" placeholder="search Location"> 
+    <script>
+         $(function() {
+            $("#search_location").autocomplete({
+              source: function(request, response) {
+                $.getJSON("/autocomplete-locations/", { term: request.term }, function(data) {
+                  response(data.suggestions);
+                });
+              },
+              minLength: 1
+            });
+          });
+    </script>
     <br>
     <br>
     <button type="submit" class="btn btn-primary">Filter</button>
 </form>
 
-</form>
+
 
 </center>
 

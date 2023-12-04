@@ -349,8 +349,13 @@ def autocomplete_username(request):
 
 
 
-##### filrer only for skills
+##### filrer only for skills and locations
 from django.db.models.query import Q
+from django.http import HttpResponse
+from django.views.generic import ListView
+from django.db.models import Q
+from .models import Candidate, Skill
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class Filter(LoginRequiredMixin, ListView):
     model = Candidate
@@ -358,39 +363,40 @@ class Filter(LoginRequiredMixin, ListView):
     context_object_name = 'users'
 
     def get_queryset(self):
-        query = self.request.GET.get('skills_search', '')
-        
+        skills_query = self.request.GET.get('skills_search', '')
+        location_query = self.request.GET.get('location_search', '')
 
-        if query:
-            # Split the query into individual skills
-            skills = [skill.strip() for skill in query.split(',')]
-
-            # Initialize Q objects to filter candidates for each skill
+        # Filter candidates based on skills
+        if skills_query:
+            skills = [skill.strip() for skill in skills_query.split(',')]
             q_objects = [Q(skills__name__iexact=skill) for skill in skills]
-
-            # Filter candidates who have each specified skill
             skill_sets = [set(Candidate.objects.filter(q).values_list('id', flat=True)) for q in q_objects]
-
-            # Find the intersection of the sets
             intersection_set = set.intersection(*skill_sets)
-
-            # Filter candidates based on the intersection set
             users = Candidate.objects.filter(id__in=intersection_set)
 
             # Check if the queryset is empty
             if not users.exists():
-                return HttpResponse("No results found", status=200)
+                return HttpResponse("No results found for skills", status=200)
         else:
             users = Candidate.objects.all()
 
+        # Filter candidates based on location
+        if location_query:
+            users = users.filter(location__icontains=location_query)
+
+            # Check if the queryset is empty
+            if not users.exists():
+                return HttpResponse("No results found for location", status=200)
+
         print(users.query)  # Print the generated SQL query to the console
         return users
-
 
 ## suggession for getting skills 
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET
 
+
+############# autocomplete for skills filter
 @require_GET
 @login_required
 def autocomplete_skills(request):
@@ -402,7 +408,15 @@ def autocomplete_skills(request):
 
 
 
+############## autocomplete for location filter
+def autocomplete_locations(request):
+    if 'term' in request.GET:
+        term = request.GET.get('term')
+        locations = Candidate.objects.filter(location__icontains=term).values('location')
+        suggestions = list(locations.values_list('location', flat=True))
+        return JsonResponse({'suggestions': suggestions}, safe=False)
 
+    return JsonResponse({'suggestions': []})
 
 
 
