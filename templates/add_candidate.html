@@ -207,11 +207,102 @@
         </div>
 
         <!-- Location -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="location">Location:</label>
           <input type="text" id="location" name="location">
           <div class="error-message" id="location-error"></div>
-        </div>
+        </div> -->
+
+        <style>
+          #suggestionsContainer {
+            position: absolute;
+            width: 30%;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-top: none;
+            z-index: 1000;
+          }
+        
+          .suggestion {
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          }
+        
+          .suggestion:hover {
+            background-color: #f0f0f0;
+          }
+        </style>
+        
+        <label for="location">Select a Location:</label>
+        <input name="location" type="text" id="locationInput" placeholder="Type to search for a location">
+        <div id="suggestionsContainer"></div>
+        
+        <script>
+          const placesInIndia = [
+            "Mumbai, Maharashtra", "Delhi, Delhi", "Bangalore, Karnataka", "Hyderabad, Telangana", "Chennai, Tamil Nadu",
+            "Kolkata, West Bengal", "Ahmedabad, Gujarat", "Pune, Maharashtra", "Jaipur, Rajasthan", "Lucknow, Uttar Pradesh",
+            "Patna, Bihar", "Bhopal, Madhya Pradesh", "Indore, Madhya Pradesh", "Chandigarh, Chandigarh", "Surat, Gujarat",
+            "Vadodara, Gujarat", "Agra, Uttar Pradesh", "Varanasi, Uttar Pradesh", "Amritsar, Punjab", "Jodhpur, Rajasthan",
+            "Kochi, Kerala","Trivandrum, Kerala","calicut, Kerala","Muzafarpur, Bihar",
+          
+          ];
+        
+          const locationInput = document.getElementById('locationInput');
+          const suggestionsContainer = document.getElementById('suggestionsContainer');
+        
+          // Initialize event listener for input field
+          locationInput.addEventListener('input', function() {
+            const inputValue = locationInput.value.toLowerCase();
+        
+            // Filter places based on input value
+            const filteredPlaces = placesInIndia.filter(place => place.toLowerCase().includes(inputValue));
+        
+            // Display filtered places
+            displayAutoSuggestions(filteredPlaces);
+          });
+        
+          function displayAutoSuggestions(suggestions) {
+            // Clear previous suggestions
+            clearSuggestions();
+        
+            // Create and append suggestion elements
+            suggestions.forEach(suggestion => {
+              const suggestionElement = document.createElement('div');
+              suggestionElement.classList.add('suggestion');
+              suggestionElement.textContent = suggestion;
+              suggestionElement.addEventListener('click', function() {
+                // Set the selected suggestion as the input value
+                locationInput.value = suggestion;
+                // Clear the suggestions
+                clearSuggestions();
+              });
+        
+              suggestionsContainer.appendChild(suggestionElement);
+            });
+          }
+        
+          function clearSuggestions() {
+            suggestionsContainer.innerHTML = '';
+          }
+        
+          // Close suggestions when clicking outside the input and suggestions
+          document.addEventListener('click', function(event) {
+            if (event.target !== locationInput && event.target.parentNode.id !== 'suggestionsContainer') {
+              clearSuggestions();
+            }
+          });
+        </script>
+        
+
+
+
+
+
+
+
 
         <!-- College -->
         <div class="form-group">
@@ -266,32 +357,25 @@
  
 
         <label>Skills</label>
-        <!-- <input type="checkbox" id="vehicle1" name="skills" value="Python">
-        <label for="vehicle1"> Python</label><br>
-        <input type="checkbox" id="vehicle2" name="skills" value="Java">
-        <label for="vehicle2"> Java</label><br>
-        <input type="checkbox" id="vehicle3" name="skills" value="Javascript">
-        <label for="vehicle3"> Javascript</label><br><br> -->
-
-        
+       
         <input type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
 
         <!-- Display recommendations -->
         <ul id="skillList" class="skill-container"></ul>
-    
+        
         <!-- Selected Skills Container -->
         <div id="selectedSkills" class="skill-container"></div>
-    
+        
         <script>
             var skillsList = ['Java', 'Python', 'JavaScript', 'HTML', 'CSS', 'React', 'Node.js'];
-    
+        
             // Function to filter skills and display recommendations
             function filterSkills() {
                 var input = document.getElementById('skillsInput');
                 var filter = input.value.toUpperCase();
                 var skillList = document.getElementById('skillList');
                 skillList.innerHTML = ''; // Clear previous list items
-    
+        
                 for (var i = 0; i < skillsList.length; i++) {
                     if (skillsList[i].toUpperCase().includes(filter)) {
                         var li = document.createElement('li');
@@ -305,23 +389,51 @@
                     }
                 }
             }
-    
+        
             // Function to add skill to the input field
             function addSkill(skillName) {
                 var selectedSkillsContainer = document.getElementById('selectedSkills');
-    
+        
+                // Create a container for the skill
+                var skillContainer = document.createElement('div');
+                skillContainer.classList.add('skill-item');
+        
                 // Create a new input field for the selected skill
                 var skillInput = document.createElement('input');
                 skillInput.type = 'text';
                 skillInput.value = skillName;
                 skillInput.name = 'skills';
                 skillInput.readOnly = true;
-    
-                // Append the input field to the container
-                selectedSkillsContainer.appendChild(skillInput);
+                skillContainer.appendChild(skillInput);
+        
+                // Create a close button
+                var closeButton = document.createElement('button');
+                closeButton.textContent = '*';
+                closeButton.onclick = function() {
+                    skillContainer.remove(); // Remove the skill container on close button click
+                };
+                skillContainer.appendChild(closeButton);
+        
+                // Append the container to the selected skills container
+                selectedSkillsContainer.appendChild(skillContainer);
             }
         </script>
-    
+        
+        <style>
+            .skill-container {
+                list-style-type: none;
+                padding: 0;
+            }
+        
+            .skill-item {
+                display: inline-block;
+                margin: 5px;
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+        </style>
+        
 
 
 

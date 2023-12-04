@@ -17,12 +17,16 @@
     <br>    
 
 <center>
-
     {% for user in users %}
-    <!-- Display candidate information as needed -->
-    <a href="{% url 'detail' user.id %}"><p >{{ user.email }}</p></a>
-    <!-- ... other fields ... -->
-  {% endfor %}
+    {% if user.id %}
+        <!-- Display candidate information as needed -->
+        <a href="{% url 'detail' user.id %}"><p>{{ user.email }}</p></a>
+        <!-- ... other fields ... -->
+    {% else %}
+        <!-- Handle the case where user.id is empty -->
+        <p>No candidates with these skills are available</p>
+    {% endif %}
+{% endfor %}
 
 </center>
 </body>

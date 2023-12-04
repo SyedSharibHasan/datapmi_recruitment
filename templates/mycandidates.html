@@ -13,6 +13,9 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 
+
+
+
   <style>
     body {
       /* background-image: url('https://images.wallpaperscraft.com/image/single/tree_planet_stars_117068_5760x3240.jpg'); */
@@ -82,7 +85,24 @@
 
     }
 
-    
+ 
+          #search_skill {
+              padding: 8px; /* Adjust padding as needed */
+              font-size: 14px; /* Adjust font size as needed */
+              border: 1px solid #ccc; /* Add a border */
+              border-radius: 4px; /* Add border-radius for rounded corners */
+              width: 200px; /* Adjust width as needed */
+          }
+     
+          #select_skill {
+              padding: 8px; /* Adjust padding as needed */
+              font-size: 11px; /* Adjust font size as needed */
+              border: 1px solid #ccc; /* Add a border */
+              border-radius: 4px; /* Add border-radius for rounded corners */
+              width: 80px; /* Adjust width as needed */
+          }
+     
+
   </style>
 
 </head>
@@ -90,14 +110,7 @@
 <body>
   {% block content %}
 
-
-
-
-
   {% include 'sidebar.html' %}
-
-
-
 
   <center>
 
@@ -106,40 +119,15 @@
     {% include 'navbar.html' %}  
     {% include 'delete_messages.html' %}  
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     
+
     <br>
-    <h4 style="color: rgb(255, 255, 255);">Search Filter By skills </h4>
-    <form method="get" action="{% url 'filter' %}">
-      <input id="search_skill" type="search" name="skills_search" placeholder="Search skillsets" >
-      <button type="submit">GO</button>
-      <script>
-
-      $(function() {
-    $("#search_skill").autocomplete({
-        source: function(request, response) {
-            $.getJSON("/autocomplete-skills/", { term: request.term }, function(data) {
-                response(data.suggestions);
-            });
-        },
-        minLength: 1,
-        select: function(event, ui) {
-            // Set the value of the selected item to the input field
-            $("#search_skill").val(ui.item.label);
-            return false; // Prevent the default behavior
-        }
-    });
-});
-
-
-    </script>
-    </form>
-    
-
-
 <br>
-<br>
+<a href="/all_filter"><button class="btn btn-success">Filter</button></a>
+
+
+
+
 <br>
 <br>
     <a href="/create"><button class="btn btn-primary">Create New &nbsp;<i class="bi bi-plus-square"></i></button></a>
@@ -160,19 +148,6 @@
           <div class="table-responsive">
             <table class="table no-wrap user-table mb-0">
               <thead>
-                <!-- <tr>
-                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium pl-4">SNo
-                  </th>
-                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Name</th>
-                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Designation
-                  </th>
-                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Contact</th>
-       
-                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Experience
-                  </th>
-                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Status</th>
-                  <th style="font-family:garamond;" scope="col" class="border-0 text-uppercase font-medium">Manage</th>
-                </tr> -->
 
 
                 <tr>

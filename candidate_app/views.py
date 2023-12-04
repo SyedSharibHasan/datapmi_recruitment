@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.views.generic import ListView,CreateView,UpdateView,DetailView,DeleteView
 from .models import Candidate,Skill
 from django.urls import reverse_lazy
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -308,18 +308,21 @@ class ProfileList(ListView):
 class ProfileCreate(CreateView):
     model = Profile
     fields = ['image']
-    template_name = 'profile.html'  # Use the same template for rendering the form
+    template_name = 'personal-create.html'  # Use the same template for rendering the form
+    success_url = reverse_lazy('profile')
+
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        response_data = {
-            'success': True,
-            'message': 'Profile created successfully.'
-        }
-        return JsonResponse(response_data)
+        return super(ProfileCreate, self).form_valid(form)
 
 
 
+class ProfileUpdate(LoginRequiredMixin,UpdateView):
+    model = Profile
+    fields = ['image']
+    success_url = reverse_lazy('profile')
+    template_name = 'personal-create.html'
 
 
 
@@ -329,12 +332,8 @@ from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-########### autocomplete recommendation using AJAX
-from django.http import JsonResponse
 
-
-
-########### autocomplete recommendation using AJAX
+########### autocomplete recommendation using AJAX for email id filtration
 from django.http import JsonResponse
 
 def autocomplete_username(request):
@@ -349,59 +348,71 @@ def autocomplete_username(request):
 
 
 
-from .forms import SkillSearchForm
 
+##### filrer only for skills
+from django.db.models.query import Q
 
-from django.db.models import Count
-##### filrer for skills
-from django.db.models import Q
-
-
-class Filter_2(LoginRequiredMixin, ListView):
+class Filter(LoginRequiredMixin, ListView):
     model = Candidate
     template_name = 'search_results.html'
     context_object_name = 'users'
 
     def get_queryset(self):
         query = self.request.GET.get('skills_search', '')
+        
 
         if query:
             # Split the query into individual skills
             skills = [skill.strip() for skill in query.split(',')]
 
-            # Use Q objects to build a dynamic OR query for each skill
-            q_objects = Q()
-            for skill in skills:
-                q_objects |= Q(skills__name__iexact=skill)
+            # Initialize Q objects to filter candidates for each skill
+            q_objects = [Q(skills__name__iexact=skill) for skill in skills]
 
-            # Filter candidates who have ANY of the specified skills
-            users = Candidate.objects.filter(q_objects).distinct()
+            # Filter candidates who have each specified skill
+            skill_sets = [set(Candidate.objects.filter(q).values_list('id', flat=True)) for q in q_objects]
+
+            # Find the intersection of the sets
+            intersection_set = set.intersection(*skill_sets)
+
+            # Filter candidates based on the intersection set
+            users = Candidate.objects.filter(id__in=intersection_set)
+
+            # Check if the queryset is empty
+            if not users.exists():
+                return HttpResponse("No results found", status=200)
         else:
             users = Candidate.objects.all()
 
+        print(users.query)  # Print the generated SQL query to the console
         return users
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['query'] = self.request.GET.get('skills_search', '')
-        return context
 
-
-
-
+## suggession for getting skills 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_GET
 
+@require_GET
 @login_required
 def autocomplete_skills(request):
-    if 'term' in request.GET:
-        term = request.GET.get('term')
-        skills = Skill.objects.filter(name__istartswith=term, user=request.user)
-        suggestions = [{'label': skill.name, 'value': skill.id} for skill in skills]
-        return JsonResponse({'suggestions': suggestions}, safe=False)
-    return JsonResponse({'suggestions': []})
+    term = request.GET.get('term', '')
+    skills = Skill.objects.filter(name__istartswith=term).values('name').distinct()
+    suggestions = [{'label': skill['name'], 'value': skill['name']} for skill in skills]
+    return JsonResponse({'suggestions': suggestions}, safe=False)
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+def all_filter(request):
+    return render(request,'filtration.html')

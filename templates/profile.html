@@ -293,12 +293,20 @@ body {
     </style>
 </head>
 <body>
+  
     <div class="card">
         <div class="ds-top"></div>
         <div class="avatar-holder">
-            <img src="https://www.gulftalent.com/images1/candidates/d5e/cf7/photo_115x115_d5ecf775c95a2095691216aaa85e618f"
-                alt="Albert Einstein">
-        </div>
+          {% for dp in profile %}
+          {% if dp.image %}
+            <img src="{{ dp.image.url }}"
+                alt="">
+               
+               
+            {% endif %}
+             {% endfor %}
+        </div>   
+        
         <div class="name">
             <a href="" target="">{{user.first_name}} {{user.last_name}}</a>
             <h6 title="Followers"><i class="fas fa-users"></i> <span class="followers">{{user.email}}</span></h6>
@@ -321,6 +329,7 @@ body {
             </div>
         </div>
         <div class="ds-skill">
+          <a title="update" style="font-size:20px;color:green" href="{% url 'profile_create' %}">Create</a>  
             <h6>About <i class="fa fa-code" aria-hidden="true"></i></h6>
             <div class="skill html">
                 <h6><i class="fab fa-html5"></i> Attendance </h6>
@@ -334,38 +343,10 @@ body {
                     <p>90%</p>
                 </div>
             </div>
-            <!-- <div class="skill javascript">
-                <h6><i class="fab fa-js"></i> JavaScript </h6>
-                <div class="bar bar-js">
-                    <p>75%</p>
-                </div>
-            </div> -->
+      
         </div>
     </div>
-
-    <script>
-//         const target = {
-//     clicked: 0,
-//     currentFollowers: 90,
-//     btn: document.querySelector(".btn"),
-//     fw: document.querySelector(".followers")
-// };
-
-// const followToggle = () => {
-//     target.clicked += 1;
-//     target.btn.innerHTML = target.clicked % 2 === 0 ? 'Follow <i class="fas fa-user-plus"></i>' : 'Following <i class="fas fa-user-times"></i>';
-
-//     if (target.clicked % 2 === 0) {
-//         target.currentFollowers -= 1;
-//     } else {
-//         target.currentFollowers += 1;
-//     }
-
-//     target.fw.textContent = target.currentFollowers;
-//     target.btn.classList.toggle("following");
-// };
-
-    </script>
-    
+     
 </body>
 </html>
+

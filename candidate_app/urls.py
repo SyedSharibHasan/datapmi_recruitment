@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,autocomplete_username,Filter_2,autocomplete_skills
+from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter
 from . import views
 
 
@@ -21,12 +21,16 @@ urlpatterns = [
     path('dashboard/',dashboard,name='dashboard'),
 
     path('profile/',ProfileList.as_view(),name='profile'), 
+    path('profile_create/',ProfileCreate.as_view(),name='profile_create'), 
+    path('profile_update/<int:pk>/',ProfileUpdate.as_view(),name='profile_update'), 
 
  
-    path('filter/', Filter_2.as_view(), name='filter'),
+    path('filter/', Filter.as_view(), name='filter'),
   
     path('autocomplete-username/', autocomplete_username, name='autocomplete_username'),
     path('autocomplete-skills/', autocomplete_skills, name='autocomplete_skills'),
+
+    path('all_filter/', all_filter, name='all_filter'),
     
     
 ]
