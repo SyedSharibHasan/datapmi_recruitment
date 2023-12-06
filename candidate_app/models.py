@@ -18,7 +18,7 @@ class Skill(models.Model):
     def __str__(self):
         return self.name
 
- 
+
 
 class Candidate(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -35,8 +35,10 @@ class Candidate(models.Model):
     graduation_year= models.CharField(max_length=50, null=True,blank=True)
     qualification = models.TextField(null=True,blank=True)
     skills = models.ManyToManyField(Skill)  
-    experience = models.CharField(max_length=50, null=True,blank=True)
-    relevent_experience = models.CharField(max_length=50, null=True,blank=True)
+    
+    experience = models.FloatField(null=True, blank=True)
+    relevent_experience = models.FloatField(null=True, blank=True)
+
     designation = models.CharField(max_length=50, null=True,blank=True)
     expected_ctc = models.CharField(max_length=50, null=True,blank=True)
     current_ctc = models.CharField(max_length=50, null=True,blank=True)

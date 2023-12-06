@@ -149,7 +149,7 @@ class Createcandidate(CreateView):
             relevent_experience = request.POST.get("relevent_experience")
             # skills = request.POST.getlist("skills")
             notice_period = request.POST.get("notice_period")
-            current_ctc = request.POST.get("current_ctc")
+            current_ctc = request.POST.get("current_ctcs")
             expected_ctc = request.POST.get("expected_ctc")
             offer_in_hands = request.POST.get("offer_in_hands")
             offer_details = request.POST.get("offer_details")
@@ -365,6 +365,8 @@ class Filter(LoginRequiredMixin, ListView):
     def get_queryset(self):
         skills_query = self.request.GET.get('skills_search', '')
         location_query = self.request.GET.get('location_search', '')
+        experience_from = self.request.GET.get('experience_from', '')
+        experience_to = self.request.GET.get('experience_to', '')
 
         # Filter candidates based on skills
         if skills_query:
@@ -387,6 +389,14 @@ class Filter(LoginRequiredMixin, ListView):
             # Check if the queryset is empty
             if not users.exists():
                 return HttpResponse("No results found for location", status=200)
+        
+
+        if experience_from and experience_to:
+            users = users.filter(experience__range=(float(experience_from), float(experience_to)))
+        elif experience_from:
+            users = users.filter(experience__gte=float(experience_from))
+        elif experience_to:
+            users = users.filter(experience__lte=float(experience_to))
 
         print(users.query)  # Print the generated SQL query to the console
         return users
