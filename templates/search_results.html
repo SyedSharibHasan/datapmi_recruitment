@@ -7,6 +7,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search results</title>
+
+    <style>
+.search {
+    width: 30%;
+    border: 1px solid grey;
+    padding: 20px 10px;
+    border-radius: 5px;
+    overflow: hidden;  /* Hide overflowing content */
+    white-space: nowrap;  /* Prevent text from wrapping */
+    text-overflow: ellipsis;  /* Display an ellipsis (...) to indicate text overflow */
+}
+
+/* Optional: If you want the text to wrap on smaller screens */
+@media screen and (max-width: 768px) {
+    .search {
+        width: 100%;  /* Set the width to 100% on smaller screens */
+        white-space: normal;  /* Allow text to wrap */
+    }
+}
+
+    </style>
+
 </head>
 <body>
     {% include 'sidebar.html' %}
@@ -19,15 +41,20 @@
 <center>
     {% for user in users %}
     {% if user.id %}
-        <!-- Display candidate information as needed -->
+      
+    <div class="search">     
+        <img width="25px" src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png">   
         <a href="{% url 'detail' user.id %}"><p>{{ user.email }}</p></a>
-        <!-- ... other fields ... -->
+    </div>
+
+       
     {% else %}
-        <!-- Handle the case where user.id is empty -->
-        <p>No candidates with these skills are available</p>
+     
+        <p>No candidates are currently available</p>
     {% endif %}
 {% endfor %}
 
 </center>
 </body>
 </html>
+

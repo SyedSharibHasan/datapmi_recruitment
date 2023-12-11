@@ -1,32 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add new candidate</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <style>
-      .border {
-        border: 1px solid green;
-            padding: 40px;
-            border-radius: 5px;
-            background-color:aliceblue;
-      }
-    </style>
-</head>
-<body>
-    <center>Add candidate details here</center>
-   <div class="border">
-    <form method="post" action="" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{form.as_p}}
-      <input class="btn btn-primary" type="submit" value="submit">
-    <br><br>
-    </form> 
-  </div>
-    
-</body>
-</html> -->
 
 {% load static %}
 <!DOCTYPE html>
@@ -37,86 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-KpOqU7gZ1R8qROiS1z3Pxm6ofuV3LlBOsPFvG9b0L4ZLTOEzVZ4AMdTEFVzjI5zj" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/candidate.css' %}" />
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <title>Transparent Form Validation</title>
-  <style>
-    /* Your CSS styles here */
-    body {
-      font-family: Arial, sans-serif;
-      background-image: url('https://images.wallpaperscraft.com/image/single/bridge_tower_arch_982086_2560x1600.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      color: #000;
-    }
 
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-    }
-
-    .transparent-form {
-      background-color: rgba(255, 255, 255, 0.8);
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-      width: 100%;
-      max-width: 600px;
-      text-align: left;
-      overflow-y: auto;
-      /* Add this line to enable vertical scrollbar */
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      font-weight: bold;
-    }
-
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group select,
-    .form-group textarea {
-      width: calc(100% - 20px);
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-      margin-top: 5px;
-    }
-
-    .form-group button[type="submit"] {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .form-group button[type="submit"]:hover {
-      background-color: #0056b3;
-    }
-
-    .error-message {
-      color: #dc3545;
-      margin-top: 5px;
-    }
-
-
-    .time {
-      width: 520px;
-      border-radius: 5px;
-    }
-  </style>
 </head>
-
 <body>
 
   <br><br>  
@@ -158,11 +55,11 @@
         <!-- Mode Of Work -->
         <div class="form-group">
           <label for="mode-of-work">Mode Of Work:</label>
-          <select id="mode-of-work" name="mode_of_work">
+          <select id="mode-of-work" name="mode_of_work_1">
             <option value="">Select</option>
-            <option value="male">WFH/Remote</option>
-            <option value="female">Hybrid</option>
-            <option value="female">Work From Office</option>
+            <option value="WFH/Remote">WFH/Remote</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="Work From Office">Work From Office</option>
           </select>
           <div class="error-message" id="gender-error"></div>
         </div>
@@ -206,103 +103,68 @@
           <div class="error-message" id="gender-error"></div>
         </div>
 
-        <!-- Location -->
-        <!-- <div class="form-group">
-          <label for="location">Location:</label>
-          <input type="text" id="location" name="location">
-          <div class="error-message" id="location-error"></div>
-        </div> -->
-
-        <style>
-          #suggestionsContainer {
-            position: absolute;
-            width: 30%;
-            max-height: 200px;
-            overflow-y: auto;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-top: none;
-            z-index: 1000;
-          }
-        
-          .suggestion {
-            padding: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-          }
-        
-          .suggestion:hover {
-            background-color: #f0f0f0;
-          }
-        </style>
         
         <label for="location">Select a Location:</label>
         <input name="location" type="text" id="locationInput" placeholder="Type to search for a location">
         <div id="suggestionsContainer"></div>
-        
+
         <script>
           const placesInIndia = [
-            "Mumbai, Maharashtra", "Delhi, Delhi", "Bangalore, Karnataka", "Hyderabad, Telangana", "Chennai, Tamil Nadu",
-            "Kolkata, West Bengal", "Ahmedabad, Gujarat", "Pune, Maharashtra", "Jaipur, Rajasthan", "Lucknow, Uttar Pradesh",
-            "Patna, Bihar", "Bhopal, Madhya Pradesh", "Indore, Madhya Pradesh", "Chandigarh, Chandigarh", "Surat, Gujarat",
-            "Vadodara, Gujarat", "Agra, Uttar Pradesh", "Varanasi, Uttar Pradesh", "Amritsar, Punjab", "Jodhpur, Rajasthan",
-            "Kochi, Kerala","Trivandrum, Kerala","calicut, Kerala","Muzafarpur, Bihar",
-          
-          ];
-        
-          const locationInput = document.getElementById('locationInput');
-          const suggestionsContainer = document.getElementById('suggestionsContainer');
-        
-          // Initialize event listener for input field
-          locationInput.addEventListener('input', function() {
-            const inputValue = locationInput.value.toLowerCase();
-        
-            // Filter places based on input value
-            const filteredPlaces = placesInIndia.filter(place => place.toLowerCase().includes(inputValue));
-        
-            // Display filtered places
-            displayAutoSuggestions(filteredPlaces);
-          });
-        
-          function displayAutoSuggestions(suggestions) {
-            // Clear previous suggestions
+        "Mumbai, Maharashtra", "Delhi, Delhi", "Bangalore, Karnataka", "Hyderabad, Telangana", "Chennai, Tamil Nadu",
+        "Kolkata, West Bengal", "Ahmedabad, Gujarat", "Pune, Maharashtra", "Jaipur, Rajasthan", "Lucknow, Uttar Pradesh",
+        "Patna, Bihar", "Bhopal, Madhya Pradesh", "Indore, Madhya Pradesh", "Chandigarh, Chandigarh", "Surat, Gujarat",
+        "Vadodara, Gujarat", "Agra, Uttar Pradesh", "Varanasi, Uttar Pradesh", "Amritsar, Punjab", "Jodhpur, Rajasthan",
+        "Kochi, Kerala","Trivandrum, Kerala","calicut, Kerala","Muzafarpur, Bihar",
+      
+      ];
+    
+      const locationInput = document.getElementById('locationInput');
+      const suggestionsContainer = document.getElementById('suggestionsContainer');
+    
+      // Initialize event listener for input field
+      locationInput.addEventListener('input', function() {
+        const inputValue = locationInput.value.toLowerCase();
+    
+        // Filter places based on input value
+        const filteredPlaces = placesInIndia.filter(place => place.toLowerCase().includes(inputValue));
+    
+        // Display filtered places
+        displayAutoSuggestions(filteredPlaces);
+      });
+    
+      function displayAutoSuggestions(suggestions) {
+        // Clear previous suggestions
+        clearSuggestions();
+    
+        // Create and append suggestion elements
+        suggestions.forEach(suggestion => {
+          const suggestionElement = document.createElement('div');
+          suggestionElement.classList.add('suggestion');
+          suggestionElement.textContent = suggestion;
+          suggestionElement.addEventListener('click', function() {
+            // Set the selected suggestion as the input value
+            locationInput.value = suggestion;
+            // Clear the suggestions
             clearSuggestions();
-        
-            // Create and append suggestion elements
-            suggestions.forEach(suggestion => {
-              const suggestionElement = document.createElement('div');
-              suggestionElement.classList.add('suggestion');
-              suggestionElement.textContent = suggestion;
-              suggestionElement.addEventListener('click', function() {
-                // Set the selected suggestion as the input value
-                locationInput.value = suggestion;
-                // Clear the suggestions
-                clearSuggestions();
-              });
-        
-              suggestionsContainer.appendChild(suggestionElement);
-            });
-          }
-        
-          function clearSuggestions() {
-            suggestionsContainer.innerHTML = '';
-          }
-        
-          // Close suggestions when clicking outside the input and suggestions
-          document.addEventListener('click', function(event) {
-            if (event.target !== locationInput && event.target.parentNode.id !== 'suggestionsContainer') {
-              clearSuggestions();
-            }
           });
-        </script>
-        
-
-
-
-
-
-
-
+    
+          suggestionsContainer.appendChild(suggestionElement);
+        });
+      }
+    
+      function clearSuggestions() {
+        suggestionsContainer.innerHTML = '';
+      }
+    
+      // Close suggestions when clicking outside the input and suggestions
+      document.addEventListener('click', function(event) {
+        if (event.target !== locationInput && event.target.parentNode.id !== 'suggestionsContainer') {
+          clearSuggestions();
+        }
+      });
+    
+         </script>
+  
 
         <!-- College -->
         <div class="form-group">
@@ -352,8 +214,6 @@
           <input type="text" id="relevant-experience" name="relevent_experience">
           <div class="error-message" id="relevant-experience-error"></div>
         </div>
-
-        <!-- Skills Set -->
  
 
         <label>Skills</label>
@@ -366,79 +226,58 @@
         <!-- Selected Skills Container -->
         <div id="selectedSkills" class="skill-container"></div>
         
-        <script>
-            var skillsList = ['Java', 'Python', 'JavaScript', 'HTML', 'CSS', 'React', 'Node.js'];
+   <script>
+      var skillsList = ['Java', 'Python', 'JavaScript', 'HTML', 'CSS', 'React', 'Node.js'];
         
-            // Function to filter skills and display recommendations
-            function filterSkills() {
-                var input = document.getElementById('skillsInput');
-                var filter = input.value.toUpperCase();
-                var skillList = document.getElementById('skillList');
-                skillList.innerHTML = ''; // Clear previous list items
-        
-                for (var i = 0; i < skillsList.length; i++) {
-                    if (skillsList[i].toUpperCase().includes(filter)) {
-                        var li = document.createElement('li');
-                        li.textContent = skillsList[i];
-                        li.onclick = function() {
-                            addSkill(this.textContent);
-                            input.value = ''; // Clear input after selecting a skill
-                            skillList.innerHTML = ''; // Clear the list after selection
-                        };
-                        skillList.appendChild(li);
-                    }
+        // Function to filter skills and display recommendations
+        function filterSkills() {
+            var input = document.getElementById('skillsInput');
+            var filter = input.value.toUpperCase();
+            var skillList = document.getElementById('skillList');
+            skillList.innerHTML = ''; // Clear previous list items
+    
+            for (var i = 0; i < skillsList.length; i++) {
+                if (skillsList[i].toUpperCase().includes(filter)) {
+                    var li = document.createElement('li');
+                    li.textContent = skillsList[i];
+                    li.onclick = function() {
+                        addSkill(this.textContent);
+                        input.value = ''; // Clear input after selecting a skill
+                        skillList.innerHTML = ''; // Clear the list after selection
+                    };
+                    skillList.appendChild(li);
                 }
             }
-        
-            // Function to add skill to the input field
-            function addSkill(skillName) {
-                var selectedSkillsContainer = document.getElementById('selectedSkills');
-        
-                // Create a container for the skill
-                var skillContainer = document.createElement('div');
-                skillContainer.classList.add('skill-item');
-        
-                // Create a new input field for the selected skill
-                var skillInput = document.createElement('input');
-                skillInput.type = 'text';
-                skillInput.value = skillName;
-                skillInput.name = 'skills';
-                skillInput.readOnly = true;
-                skillContainer.appendChild(skillInput);
-        
-                // Create a close button
-                var closeButton = document.createElement('button');
-                closeButton.textContent = '*';
-                closeButton.onclick = function() {
-                    skillContainer.remove(); // Remove the skill container on close button click
-                };
-                skillContainer.appendChild(closeButton);
-        
-                // Append the container to the selected skills container
-                selectedSkillsContainer.appendChild(skillContainer);
-            }
-        </script>
-        
-        <style>
-            .skill-container {
-                list-style-type: none;
-                padding: 0;
-            }
-        
-            .skill-item {
-                display: inline-block;
-                margin: 5px;
-                padding: 5px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-        </style>
-        
-
-
-
-
-
+        }
+    
+        // Function to add skill to the input field
+        function addSkill(skillName) {
+            var selectedSkillsContainer = document.getElementById('selectedSkills');
+    
+            // Create a container for the skill
+            var skillContainer = document.createElement('div');
+            skillContainer.classList.add('skill-item');
+    
+            // Create a new input field for the selected skill
+            var skillInput = document.createElement('input');
+            skillInput.type = 'text';
+            skillInput.value = skillName;
+            skillInput.name = 'skills';
+            skillInput.readOnly = true;
+            skillContainer.appendChild(skillInput);
+    
+            // Create a close button
+            var closeButton = document.createElement('button');
+            closeButton.textContent = '*';
+            closeButton.onclick = function() {
+                skillContainer.remove(); // Remove the skill container on close button click
+            };
+            skillContainer.appendChild(closeButton);
+    
+            // Append the container to the selected skills container
+            selectedSkillsContainer.appendChild(skillContainer);
+        }
+   </script>
 
         <!-- Notice Period -->
         <div class="form-group">
@@ -472,6 +311,33 @@
           <div class="error-message" id="offer-error"></div>
         </div>
 
+
+<script>
+    document.getElementById('offer').addEventListener('change', function () {
+                var offerValue = this.value;
+                var offerDetailsDiv = document.getElementById('offer-reject-reason');
+    
+                if (offerValue === 'yes') {
+                  offerDetailsDiv.style.display = 'block';
+                } else {
+                  offerDetailsDiv.style.display = 'none';
+                }
+              });
+
+
+
+              document.getElementById('offer-2').addEventListener('change', function () {
+                var offerValue = this.value;
+                var offerDetailsDiv = document.getElementById('offer-reject-reason-container');
+    
+                if (offerValue === 'no') {
+                  offerDetailsDiv.style.display = 'block';
+                } else {
+                  offerDetailsDiv.style.display = 'none';
+                }
+              });
+</script>
+
         <!-- Offer Rejection Reason -->
         <div id="offer-reject-reason" style="display: none;">
           <div class="form-group">
@@ -481,18 +347,6 @@
           </div>
         </div>
 
-        <script>
-          document.getElementById('offer').addEventListener('change', function () {
-            var offerValue = this.value;
-            var offerDetailsDiv = document.getElementById('offer-reject-reason');
-
-            if (offerValue === 'yes') {
-              offerDetailsDiv.style.display = 'block';
-            } else {
-              offerDetailsDiv.style.display = 'none';
-            }
-          });
-        </script>
 
         <!-- Resume -->
         <div class="form-group">
@@ -604,32 +458,7 @@
           </div>
         </div>
 
-        <!-- Date Of Joining -->
-        <div class="form-group">
-          <label for="current-ctc">Date Of Joining:</label>
-          <input type="text" id="current-ctc" name="current_ctc">
-          <div class="error-message" id="current-ctc-error"></div>
-        </div>
-
-        <!-- Joined OR Not -->
-        <div class="form-group">
-          <label for="current-ctc">On Boarding:</label>
-          <input type="text" id="current-ctc" name="current_ctc">
-          <div class="error-message" id="current-ctc-error"></div>
-        </div>
-
-        <script>
-          document.getElementById('offer-2').addEventListener('change', function () {
-            var offerValue = this.value;
-            var offerDetailsDiv = document.getElementById('offer-reject-reason-container');
-
-            if (offerValue === 'no') {
-              offerDetailsDiv.style.display = 'block';
-            } else {
-              offerDetailsDiv.style.display = 'none';
-            }
-          });
-        </script>
+  
 
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

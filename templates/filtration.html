@@ -10,11 +10,21 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
       <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+
+
+      <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
+
+
     <style>
-
-
-
-
 .search_skill {
               padding: 8px; /* Adjust padding as needed */
               font-size: 14px; /* Adjust font size as needed */
@@ -71,12 +81,12 @@
 
     <form method="get" action="{% url 'filter' %}">
 
-      <i style="font-size: larger;" class="bi bi-person-workspace"></i>
+     Skills
         <!-- Input field for selecting skills -->
         <input class="select_skill" id="select_skill" type="search" placeholder="suggession">
     
         <!-- Input field for entering and displaying selected skills -->
-        <input class="search_skill" id="search_skill" type="search" name="skills_search" placeholder=" skillsets" >
+        <input class="search_skill" id="search_skill" type="search" name="skills_search" placeholder="Java,Python" >
        
      </div>
     
@@ -119,7 +129,7 @@
    
 
     <br>
-    <div class="col">    <i style="font-size: larger;" class="bi bi-geo-alt"></i> <input class="search_skill" id="search_location" name="location_search" type="search" placeholder="Location"> 
+    <div class="col">    Location <input class="search_skill" id="search_location" name="location_search" type="search" placeholder="Kochi,Kerala"> 
     <script>
          $(function() {
             $("#search_location").autocomplete({
@@ -136,18 +146,19 @@
   </div>
 
   </div>
-  <center><i style="font-size: larger;" class="bi bi-briefcase-fill"></i>
-   <input  name="experience_from" class="experience" placeholder="From" type="number">&nbsp;&nbsp;&nbsp;&nbsp;   <input name="experience_to"   placeholder="To" class="experience" type="number">
+  <br>
+  
+  <center>Experience
+   <input  name="experience_from" class="experience"  type="number">&nbsp;&nbsp;&nbsp;&nbsp;To&nbsp;&nbsp;&nbsp;&nbsp;    <input name="experience_to"  class="experience" type="number">
+ 
+       <br>
+       <br>
+    <button id="submit" title="Filter" type="submit" class="btn btn-primary"> <i class="fas fa-search fa-pulse"></i></button>
+   
   </center>
-
-
-       <br>
-       <br>
-    <button type="submit" class="btn btn-primary">Filter</button>
 </form>
 
 </div>
-
 
 
 </body>

@@ -1,29 +1,492 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add new candidate</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <style>
-      .border {
-        border: 1px solid green;
-            padding: 40px;
-            border-radius: 5px;
-            background-color:aliceblue;
-      }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update page</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-KpOqU7gZ1R8qROiS1z3Pxm6ofuV3LlBOsPFvG9b0L4ZLTOEzVZ4AMdTEFVzjI5zj" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/candidate.css' %}" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body>
-    <center>Add candidate details here</center>
-   <div class="border">
-    <form method="post" action="" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{form}}
-      <input class="btn btn-primary" type="submit" value="submit">
-    <br><br>
-    </form> 
+
+
+  <br><br>  
+  <div class="container-fluid fixed-top mt-4">
+  <div class="d-flex justify-content-end ">
+    <a href="/user" class="btn btn-primary mx-2"><i class="bi bi-house"></i></a>
+    <a href="/back" class="btn btn-primary" onclick="goBack()"><i class="bi bi-arrow-90deg-left"></i></a>
   </div>
-    
+</div>
+<script>
+  function goBack() {
+      window.history.back();
+  }
+</script>
+
+
+  <br><br>
+  <br><br>
+
+  <div class="container">
+    <div class="transparent-form">
+      <form method="post" action="{% url 'update' candidate.pk %}" id="submission-form" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Designation -->
+        <div class="form-group">
+          <label for="designation">Designation:</label>
+          <input value="{{candidate.designation}}" type="text" id="designation" name="designation" required>
+          <div class="error-message" id="designation-error"></div>
+        </div>
+
+        <!-- Client Name -->
+        <div class="form-group">
+          <label for="client-name">Client Name:</label>
+          <input value="{{candidate.client_name}}"  type="text" id="client-name" name="client_name">
+          <div class="error-message" id="client-name-error"></div>
+        </div>
+
+        <!-- Mode Of Work -->
+        <div class="form-group">
+          <label for="mode-of-work">Mode Of Work:</label>
+          <select id="mode-of-work" name="mode_of_works">
+            <option value="">Select</option>
+            <option value="WFH/Remote" {% if candidate.mode_of_work == 'WFH/Remote' %}selected{% endif %}>WFH/Remote</option>
+            <option value="Hybrid" {% if candidate.mode_of_work == 'Hybrid' %}selected{% endif %}>Hybrid</option>
+            <option value="Work From Office" {% if candidate.mode_of_work == 'Work From Office' %}selected{% endif %}>Work From Office</option>
+        </select>
+        
+        
+          <div class="error-message" id="gender-error"></div>
+        </div>
+
+        <!-- First Name -->
+        <div class="form-group">
+          <label for="first-name">First Name:</label>
+          <input value="{{candidate.first_name}}" type="text" id="first-name" name="first_name">
+          <!-- <div class="error-message" id="first-name-error"></div> -->
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group">
+          <label for="last-name">Last Name:</label>
+          <input value="{{candidate.last_name}}" type="text" id="last-name" name="last_name">
+          <div class="error-message" id="last-name-error"></div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input value="{{candidate.email}}" type="email" id="email" name="email">
+          <div class="error-message" id="email-error"></div>
+        </div>
+
+        <!-- Phone -->
+        <div class="form-group">
+          <label for="phone">Phone:</label>
+          <input value="{{candidate.phone}}" type="text" id="phone" name="phone">
+          <div class="error-message" id="phone-error"></div>
+        </div>
+
+        <!-- Gender -->
+        <div class="form-group">
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender">
+            <option value="">Select</option>
+            <option value="male" {% if candidate.gender == 'male' %}selected{% endif %}>Male</option>
+            <option value="female" {% if candidate.gender == 'female' %}selected{% endif %}>Female</option>
+        </select>
+        
+          <div class="error-message" id="gender-error"></div>
+        </div>
+
+        
+        <label for="location">Select a Location:</label>
+        <input value="{{candidate.location}}" name="location" type="text" id="locationInput" placeholder="Type to search for a location">
+        <div id="suggestionsContainer"></div>
+        
+        <script>
+          const placesInIndia = [
+            "Mumbai, Maharashtra", "Delhi, Delhi", "Bangalore, Karnataka", "Hyderabad, Telangana", "Chennai, Tamil Nadu",
+            "Kolkata, West Bengal", "Ahmedabad, Gujarat", "Pune, Maharashtra", "Jaipur, Rajasthan", "Lucknow, Uttar Pradesh",
+            "Patna, Bihar", "Bhopal, Madhya Pradesh", "Indore, Madhya Pradesh", "Chandigarh, Chandigarh", "Surat, Gujarat",
+            "Vadodara, Gujarat", "Agra, Uttar Pradesh", "Varanasi, Uttar Pradesh", "Amritsar, Punjab", "Jodhpur, Rajasthan",
+            "Kochi, Kerala","Trivandrum, Kerala","calicut, Kerala","Muzafarpur, Bihar",
+          
+          ];
+        
+          const locationInput = document.getElementById('locationInput');
+          const suggestionsContainer = document.getElementById('suggestionsContainer');
+        
+          // Initialize event listener for input field
+          locationInput.addEventListener('input', function() {
+            const inputValue = locationInput.value.toLowerCase();
+        
+            // Filter places based on input value
+            const filteredPlaces = placesInIndia.filter(place => place.toLowerCase().includes(inputValue));
+        
+            // Display filtered places
+            displayAutoSuggestions(filteredPlaces);
+          });
+        
+          function displayAutoSuggestions(suggestions) {
+            // Clear previous suggestions
+            clearSuggestions();
+        
+            // Create and append suggestion elements
+            suggestions.forEach(suggestion => {
+              const suggestionElement = document.createElement('div');
+              suggestionElement.classList.add('suggestion');
+              suggestionElement.textContent = suggestion;
+              suggestionElement.addEventListener('click', function() {
+                // Set the selected suggestion as the input value
+                locationInput.value = suggestion;
+                // Clear the suggestions
+                clearSuggestions();
+              });
+        
+              suggestionsContainer.appendChild(suggestionElement);
+            });
+          }
+        
+          function clearSuggestions() {
+            suggestionsContainer.innerHTML = '';
+          }
+        
+          // Close suggestions when clicking outside the input and suggestions
+          document.addEventListener('click', function(event) {
+            if (event.target !== locationInput && event.target.parentNode.id !== 'suggestionsContainer') {
+              clearSuggestions();
+            }
+          });
+        </script>
+
+
+
+        <!-- College -->
+        <div class="form-group">
+          <label for="college">College:</label>
+          <input value="{{candidate.college}}" type="text" id="college" name="college">
+          <div class="error-message" id="college-error"></div>
+        </div>
+
+        <!-- Qualification -->
+        <div class="form-group">
+          <label for="qualification">Higher Qualification:</label>
+          <input value="{{candidate.qualification}}" type="text" id="qualification" name="qualification">
+          <div class="error-message" id="qualification-error"></div>
+        </div>
+
+        <!-- Year of Graduation -->
+        <div class="form-group">
+          <label for="graduation-year">Year of Graduation:</label>
+          <input value="{{candidate.graduation_year}}" type="text" id="graduation-year" name="graduation_year">
+          <div class="error-message" id="graduation-year-error"></div>
+        </div>
+
+        <!-- Current Company -->
+        <div class="form-group">
+          <label for="current-company">Current Company:</label>
+          <input value="{{candidate.current_company}}" type="text" id="current-company" name="current_company">
+          <div class="error-message" id="current-company-error"></div>
+        </div>
+
+        <!-- Reason for change current company -->
+        <div class="form-group">
+          <label for="remarks">Reason For Change:</label>
+          <textarea id="remarks" name="remarks">{{ candidate.remarks }}</textarea>
+          <div class="error-message" id="remarks-error"></div>
+          
+
+        <!-- Total Years of Experience -->
+        <div class="form-group">
+          <label for="experience">Total Years of Experience:</label>
+          <input value="{{candidate.experience}}" type="text" id="experience" name="experience">
+          <div class="error-message" id="experience-error"></div>
+        </div>
+
+        <!-- Relevant Experience -->
+        <div class="form-group">
+          <label for="relevant-experience">Relevant Years Of Experience:</label>
+          <input value="{{candidate.relevent_experience}}" type="text" id="relevant-experience" name="relevent_experience">
+          <div class="error-message" id="relevant-experience-error"></div>
+        </div>
+ 
+
+        <label>Skills</label>
+       
+        <input value="{% for skill in candidate.skills.all %}{{ skill.name }}{% if not forloop.last %}, {% endif %}{% endfor %}" type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
+
+
+        <!-- Display recommendations -->
+        <ul id="skillList" class="skill-container"></ul>
+        
+        <!-- Selected Skills Container -->
+        <div id="selectedSkills" class="skill-container"></div>
+        
+        <script>
+            var skillsList = ['Java', 'Python', 'JavaScript', 'HTML', 'CSS', 'React', 'Node.js'];
+        
+            // Function to filter skills and display recommendations
+            function filterSkills() {
+                var input = document.getElementById('skillsInput');
+                var filter = input.value.toUpperCase();
+                var skillList = document.getElementById('skillList');
+                skillList.innerHTML = ''; // Clear previous list items
+        
+                for (var i = 0; i < skillsList.length; i++) {
+                    if (skillsList[i].toUpperCase().includes(filter)) {
+                        var li = document.createElement('li');
+                        li.textContent = skillsList[i];
+                        li.onclick = function() {
+                            addSkill(this.textContent);
+                            input.value = ''; // Clear input after selecting a skill
+                            skillList.innerHTML = ''; // Clear the list after selection
+                        };
+                        skillList.appendChild(li);
+                    }
+                }
+            }
+        
+            // Function to add skill to the input field
+            function addSkill(skillName) {
+                var selectedSkillsContainer = document.getElementById('selectedSkills');
+        
+                // Create a container for the skill
+                var skillContainer = document.createElement('div');
+                skillContainer.classList.add('skill-item');
+        
+                // Create a new input field for the selected skill
+                var skillInput = document.createElement('input');
+                skillInput.type = 'text';
+                skillInput.value = skillName;
+                skillInput.name = 'skills';
+                skillInput.readOnly = true;
+                skillContainer.appendChild(skillInput);
+        
+                // Create a close button
+                var closeButton = document.createElement('button');
+                closeButton.textContent = '*';
+                closeButton.onclick = function() {
+                    skillContainer.remove(); // Remove the skill container on close button click
+                };
+                skillContainer.appendChild(closeButton);
+        
+                // Append the container to the selected skills container
+                selectedSkillsContainer.appendChild(skillContainer);
+            }
+
+        </script>
+        
+     
+
+        <!-- Notice Period -->
+        <div class="form-group">
+          <label for="notice-period">Notice Period:</label>
+          <input value="{{candidate.notice_period}}" type="text" id="notice-period" name="notice_period">
+          <div class="error-message" id="notice-period-error"></div>
+        </div>
+
+        <!-- Current CTC -->
+        <div class="form-group">
+          <label for="current-ctc">Current CTC:</label>
+          <input value="{{candidate.current_ctc}}" type="text" id="current-ctc" name="current_ctcs">
+          <div class="error-message" id="current-ctc-error"></div>
+        </div>
+
+        <!-- Expected CTC -->
+        <div class="form-group">
+          <label for="expected-ctc">Expected CTC:</label>
+          <input value="{{candidate.expected_ctc}}" type="text" id="expected-ctc" name="expected_ctc">
+          <div class="error-message" id="expected-ctc-error"></div>
+        </div>
+
+        <!-- Offer in hands -->
+        <div class="form-group">
+          <label for="offer">Offer In Hands:</label>
+          <select id="offer" name="offer_in_hands">
+            <option value="" {% if not candidate.offer_in_hands %}selected{% endif %}>Select</option>
+            <option value="yes" {% if candidate.offer_in_hands == 'yes' %}selected{% endif %}>Yes</option>
+            <option value="no" {% if candidate.offer_in_hands == 'no' %}selected{% endif %}>No</option>
+        </select>
+        
+          <div class="error-message" id="offer-error"></div>
+        </div>
+
+        <!-- Offer Rejection Reason -->
+        <div id="offer-reject-reason" style="display: none;">
+          <div class="form-group">
+            <label for="offer-reject-reason-text">Details:</label>
+            <textarea id="offer-reject-reason-text" name="offer_details"></textarea>
+            <div class="error-message" id="offer-reject-reason-error"></div>
+          </div>
+        </div>
+
+        <script>
+          document.getElementById('offer').addEventListener('change', function () {
+            var offerValue = this.value;
+            var offerDetailsDiv = document.getElementById('offer-reject-reason');
+
+            if (offerValue === 'yes') {
+              offerDetailsDiv.style.display = 'block';
+            } else {
+              offerDetailsDiv.style.display = 'none';
+            }
+          });
+        </script>
+
+        <!-- Resume -->
+       <!-- Display current resume and provide an option to change it -->
+<div class="form-group">
+  <label for="resume">Current Resume:</label>
+  {% if candidate.resume %}
+      <a href="{{ candidate.resume.url }}" target="_blank">View Resume</a>
+  {% else %}
+      No resume uploaded.
+  {% endif %}
+</div>
+
+<div class="form-group">
+  <label for="new_resume">New Resume:</label>
+  <input type="file" id="new_resume" name="new_resume">
+  <div class="error-message" id="resume-error"></div>
+</div>
+
+<!-- Option to keep the current resume unchanged -->
+<div class="form-group">
+  <label for="keep_resume">Keep Current Resume:</label>
+  <input type="checkbox" id="keep_resume" name="keep_resume" {% if not candidate.resume %}checked{% endif %}>
+</div>
+
+
+        <!-- Remarks -->
+        <div class="form-group">
+          <label for="remarks">Remarks:</label>
+          <textarea id="remarks" name="remarks">{{candidate.expected_ctc}}</textarea>
+          <div class="error-message" id="remarks-error"></div>
+        </div>
+
+        <!-- Recruiter -->
+        <div class="form-group">
+          <label for="recruiter">Recruiter:</label>
+          <input  value="{{candidate.recruiter}}"  type="text" id="recruiter" name="recruiter">
+          <div class="error-message" id="recruiter-error"></div>
+        </div>
+
+
+
+        <!-- Time Slot -->
+        <div class="form-group">
+          <label for="appt">Screening Time SLOT:</label>
+          <input  value="{{candidate.screening_time}}"  type="time" class="time" id="appt" name="screening_time">
+        </div>
+
+        <!-- Select Time -->
+        <div class="form-group">
+
+          <!-- Status -->
+          <label for="status">Status:</label>
+          <select id="status" name="status">
+            <option value="" {% if not candidate.status %}selected{% endif %}>Select</option>
+            <option value="Screen Select" {% if candidate.status == 'Screen Select' %}selected{% endif %}>Screen Select</option>
+            <option value="Screen Reject" {% if candidate.status == 'Screen Reject' %}selected{% endif %}>Screen Reject</option>
+        </select>
+        
+
+
+          <!-- reason for rejection -->
+          <div id="reason-for-rejection" style="display: none;">
+            <label for="rejection-reason-text">Reason for Rejection:</label>
+            <textarea id="rejection-reason-text" name="rejection_reason"></textarea>
+          </div>
+
+      
+       <!-- Additional status -->
+<div id="additional-options" style="display: none;">
+  <label for="additional-status">Additional Status:</label>
+  <select id="additional-status" name="additional_status_1">
+    <option value="" {% if not candidate.additional_status_1 %}selected{% endif %}>Select</option>
+    <option value="R1 Select" {% if candidate.additional_status_1 == 'R1 Select' %}selected{% endif %}>R1 Select</option>
+    <option value="R1 Reject" {% if candidate.additional_status_1 == 'R1 Reject' %}selected{% endif %}>R1 Reject</option>
+    <option value="R2 Select" {% if candidate.additional_status_1 == 'R2 Select' %}selected{% endif %}>R2 Select</option>
+    <option value="R2 Reject" {% if candidate.additional_status_1 == 'R2 Reject' %}selected{% endif %}>R2 Reject</option>
+    <option value="R3 Select" {% if candidate.additional_status_1 == 'R3 Select' %}selected{% endif %}>R3 Select</option>
+    <option value="R3 Reject" {% if candidate.additional_status_1 == 'R3 Reject' %}selected{% endif %}>R3 Reject</option>
+    <option value="R4 Select" {% if candidate.additional_status_1 == 'R4 Select' %}selected{% endif %}>R4 Select</option>
+    <option value="R4 Reject" {% if candidate.additional_status_1 == 'R4 Reject' %}selected{% endif %}>R4 Reject</option>
+  </select>
+</div>
+
+
+
+
+          <!-- reason for rejection for r1-r4 round -->
+          <div id="reason-for-r1-r2-r3-r4-rejection" style="display: none;">
+            <label for="rejection-reason-text">Reason for Rejection:</label>
+            <textarea id="rejection-reason-text" name="rejection_reason_for_r1-r4"></textarea>
+          </div>
+
+        </div>
+
+
+        
+        <div id="offer-container" style="display: none;">
+          <div class="form-group">
+            <label for="offer-2">Offer:</label>
+            <select id="offer-2" name="offer">
+              <option value="" {% if not candidate.offer %}selected{% endif %}>Select</option>
+              <option value="yes" {% if candidate.offer == 'yes' %}selected{% endif %}>Yes</option>
+              <option value="no" {% if candidate.offer == 'no' %}selected{% endif %}>No</option>
+          </select>
+          
+            <div class="error-message" id="offer-error"></div>
+          </div>
+        </div>
+
+        <div id="offer-reject-reason-container" style="display: none;">
+          <div class="form-group">
+            <label for="offer-reject-reason-text">Reason for Rejection:</label>
+            <textarea id="offer-reject-reason-text" name="offer_reject_reason">{{candidate.offer_reject_reason}}</textarea>
+            <div class="error-message" id="offer-reject-reason-error"></div>
+          </div>
+        </div>
+
+
+        <script>
+          document.getElementById('offer-2').addEventListener('change', function () {
+            var offerValue = this.value;
+            var offerDetailsDiv = document.getElementById('offer-reject-reason-container');
+
+            if (offerValue === 'no') {
+              offerDetailsDiv.style.display = 'block';
+            } else {
+              offerDetailsDiv.style.display = 'none';
+            }
+          });
+        </script>
+
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script src="{% static 'js/add_candidates.js' %}"></script>
+        <br>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit</button>
+      </form>
+
+    </div>
+  </div>
+
+
+
+
 </body>
 </html>

@@ -121,7 +121,6 @@ class ListCandidate(ListView):
 
 @method_decorator(login_required, name='dispatch')
 class Createcandidate(CreateView):
-
     template_name = 'add_candidate.html'
     success_url = reverse_lazy('list')
     
@@ -131,10 +130,9 @@ class Createcandidate(CreateView):
     def post(self, request):
         if request.method == "POST":
             
-            
             designation = request.POST.get("designation")
             client_name = request.POST.get("client_name")
-            mode_of_work = request.POST.get("mode_of_work")
+            mode_of_work = request.POST.get("mode_of_work_1")
             first_name = request.POST.get("first_name")
             last_name = request.POST.get("last_name")
             email = request.POST.get("email")
@@ -206,7 +204,7 @@ class Createcandidate(CreateView):
 
             
 
-            try:
+            try:    
                 skill_names = request.POST.getlist("skills")
                 skills = [Skill.objects.get_or_create(name=skill_name, user=request.user)[0] for skill_name in skill_names]
                 candidate.skills.set(skills)
@@ -229,23 +227,97 @@ class Createcandidate(CreateView):
     
 
 
+from .forms import CandidateUpdateForm
+from django.shortcuts import get_object_or_404
 
-    
 
-  
 
 
 class Updatecandidate(UpdateView):
     model = Candidate
     success_url = reverse_lazy('list')
     template_name = 'update_candidate.html'
-    fields = "__all__"
 
-  
+
+    def get(self, request, pk):
+        candidate = Candidate.objects.get(pk=pk)
+        return render(request, self.template_name, {'candidate': candidate})    
+
+    def post(self, request, pk):
+        if pk is None:
+            # Creating a new candidate
+                candidate = Candidate(user=request.user)
+        else:
+            # Updating an existing candidate
+            candidate = get_object_or_404(Candidate, pk=pk, user=request.user)
+        
+        candidate.designation = request.POST.get("designation")
+        candidate.client_name = request.POST.get("client_name")
+        candidate.mode_of_work = request.POST.get("mode_of_works")
+        candidate.first_name = request.POST.get("first_name")
+        candidate.last_name = request.POST.get("last_name")
+        candidate.email = request.POST.get("email")
+        candidate.phone = request.POST.get("phone")
+        candidate.gender = request.POST.get("gender")
+        candidate.location = request.POST.get("location")
+        candidate.college = request.POST.get("college")
+        candidate.qualification = request.POST.get("qualification")
+        candidate.graduation_year = request.POST.get("graduation_year")
+        candidate.current_company = request.POST.get("current_company")
+        candidate.experience = request.POST.get("experience")
+        candidate.relevent_experience = request.POST.get("relevent_experience")
+        candidate.notice_period = request.POST.get("notice_period")
+        candidate.current_ctc = request.POST.get("current_ctcs")
+        candidate.expected_ctc = request.POST.get("expected_ctc")
+        candidate.offer_in_hands = request.POST.get("offer_in_hands")
+        candidate.offer_details = request.POST.get("offer_details")
+        # candidate.resume = request.FILES.get("resume")
+        candidate.remarks = request.POST.get("remarks")
+        candidate.recruiter = request.POST.get("recruiter")
+        candidate.screening_time = request.POST.get("screening_time")
+        candidate.status = request.POST.get("status")
+        candidate.rejection_reason = request.POST.get("rejection_reason")
+        candidate.additional_status = request.POST.get("additional_status_1")
+        candidate.rejection_reason_for_r1_r4 = request.POST.get("rejection_reason_for_r1-r4")
+        candidate.offer = request.POST.get("offer")
+        candidate.offer_reject_reason = request.POST.get("offer_reject_reason")
+        
+        new_resume = request.FILES.get('new_resume')
+        keep_resume = request.POST.get('keep_resume')
+
+        if not keep_resume and new_resume:
+            candidate.resume = new_resume
+
+        candidate.save()
+
+        try:
+            skill_names = request.POST.getlist("skills")
+            skills = [Skill.objects.get_or_create(name=skill_name, user=request.user)[0] for skill_name in skill_names]
+            candidate.skills.set(skills)
+
+            # Handle resume update
+            new_resume = request.FILES.get('new_resume')
+            keep_resume = request.POST.get('keep_resume')
+            if not keep_resume and new_resume:
+                candidate.resume = new_resume
+
+            # Save the candidate
+            candidate.save()
+
+            return redirect(self.success_url)
+
+        except Exception as e:
+            # Log the error for debugging
+            print(f"Error saving candidate: {e}")
+            # Return an error response
+            return render(request, self.template_name, {'error': 'Error: Could not save the candidate.'})
+
+            
+
+
 
     
-    
-    
+
 
 class Detailcandidate(DetailView):
     model = Candidate
@@ -430,13 +502,21 @@ def autocomplete_locations(request):
 
 
 
-
-
-
-
-
-
-
-
 def all_filter(request):
     return render(request,'filtration.html')
+
+
+
+
+################# total count of my candidates
+def mycandidates_count(request):
+    if request.user.is_authenticated:
+        count = Candidate.objects.filter(user=request.user).count()
+        return JsonResponse({'count': count})
+    else:
+        return JsonResponse({'count': 0})
+
+
+
+############# selected candidates
+

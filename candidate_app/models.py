@@ -27,9 +27,8 @@ class Candidate(models.Model):
     client_name = models.CharField(max_length=15)
     first_name = models.CharField(max_length=150, null=True)
     last_name = models.CharField(max_length=150)
-    mode_of_work = models.CharField(max_length=150, default='full_time')
-    # alt_phone = models.CharField(max_length=15)
-    # dob = models.DateField(null=True)
+    mode_of_work = models.CharField(max_length=150, default='full_time',null=True)
+
     gender = models.CharField(max_length=50, default='unknown', null=True,blank=True)
     college = models.CharField(max_length=50, null=True,blank=True)
     graduation_year= models.CharField(max_length=50, null=True,blank=True)

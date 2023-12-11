@@ -31,3 +31,10 @@ class CustomUserForm(forms.ModelForm):
 ####filter
 class SkillSearchForm(forms.Form):
     skills_search = forms.CharField(label='Search skillsets', max_length=100)
+
+
+
+class CandidateUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Candidate
+        fields = '__all__'    

@@ -12,20 +12,35 @@ additionalStatusDropdown.addEventListener("change", function () {
 
 
 
-// Get the status dropdown element
-var statusDropdown = document.getElementById('status');
-var additionalOptionsDiv = document.getElementById('additional-options');
-var rejectionReasonDiv = document.getElementById('reason-for-rejection');
 
-// Add change event listener to the status dropdown
-statusDropdown.addEventListener('change', function () {
-    // Display additional options or rejection reason based on status
-    additionalOptionsDiv.style.display = statusDropdown.value === 'Screen Select' ? 'block' : 'none';
-    rejectionReasonDiv.style.display = statusDropdown.value === 'Screen Reject' ? 'block' : 'none';
-});
+document.addEventListener('DOMContentLoaded', function () {
+    var statusDropdown = document.getElementById('status');
+    var additionalOptionsDiv = document.getElementById('additional-options');
+    var additionalStatusDropdown = document.getElementById('additional-status');
+    
+    // Function to update display based on status
+    function updateDisplay() {
+      additionalOptionsDiv.style.display = statusDropdown.value === 'Screen Select' ? 'block' : 'none';
+    }
+  
+    // Add change event listener to the status dropdown
+    statusDropdown.addEventListener('change', function () {
+      updateDisplay();
+      
+      // If 'Screen Select' is chosen, reset the additional status dropdown
+      if (statusDropdown.value !== 'Screen Select') {
+        additionalStatusDropdown.value = '';
+      }
+    });
+  
+    // Trigger the 'change' event when the page loads
+    updateDisplay();
+  });
 
-// No need to re-declare additionalStatusDropdown, as it's already declared above
 
+
+
+  
 // Get the additional status dropdown element
 var reasonForRejectionDiv = document.getElementById('reason-for-r1-r2-r3-r4-rejection');
 
@@ -36,6 +51,9 @@ additionalStatusDropdown.addEventListener('change', function () {
 });
 
 
+
+
+          
 
 
 

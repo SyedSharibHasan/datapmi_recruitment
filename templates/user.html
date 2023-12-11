@@ -842,105 +842,12 @@
 </head>
 
 <body>
-  <!-- <script src="{% static 'js/main.js' %}" defer></script> -->
+
+  {% include 'sidebar.html' %}
 
 
 
 
-   <nav class="sidebar close">
-        <header>
-            <div class="image-text">
-                <span class="image">
-                    <img src="https://media.licdn.com/dms/image/C4D0BAQFu_R1oMevPkg/company-logo_200_200/0/1605071690914?e=2147483647&v=beta&t=j78rG7jAcupvGwxXD8DZJxhF4IElEeqPhxNgbMoXBZs" alt="logo_img">
-                </span>
-
-                <div class="text logo-text">
-                    <span class="name">{{user}}</span>
-                    <span class="profession">{{user.email}}</span>
-                </div>
-            </div>
-
-            <i class='bx bx-chevron-right toggle'></i>
-        </header>
-
-        <div class="menu-bar">
-            <div class="menu">
-
-                <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search...">
-                </li>
-
-                <ul class="menu-links">
-                    <li class="nav-link">
-                        <a href="/user">
-                            <i class='bx bx-home-alt icon' ></i>
-                            <span class="text nav-text">Dashboard</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link">
-                        <a href="/list">
-                            <i class='bx bx-bar-chart-alt-2 icon' ></i>
-                            <span class="text nav-text">My candidates</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link">
-                        <a href="/all">
-                            <i class='bx bx-bell icon'></i>
-                            <span class="text nav-text">All candidates</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-pie-chart-alt icon' ></i>
-                            <span class="text nav-text">Analytics</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link">
-                        <a href="#">
-                            <i class='bx bx-heart icon' ></i>
-                            <span class="text nav-text">Likes</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-link">
-                        <a href="/profile">
-                          <i class='bx bx-user icon' ></i>
-                            <span class="text nav-text">Profile</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-
-            <div class="bottom-content">
-                <li class="">
-                  <a href="{% url 'signout' %}"> 
-                        <i class='bx bx-log-out icon' ></i>
-                      <span class="text nav-text">Logout</span>
-                    </a>
-                </li>
-
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class='bx bx-moon icon moon'></i>
-                        <i class='bx bx-sun icon sun'></i>
-                    </div>
-                    <span class="mode-text text">Dark mode</span>
-
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
-                
-            </div>
-        </div>
-
-    </nav>
 
 
 
@@ -989,27 +896,42 @@
       
       <div class="projects-section">
         <div class="projects-section-header">
-          <p>Projects</p>
+          <p>Candidates </p>
           <p class="date"></p>
         
         
+          <script>
+            // make an AJAX request to your Django view that returns the count of items in the cart
+            fetch('/mycandidates_count')
+              .then(response => response.json())
+              .then(data => {
+                // update the count in the HTML
+                document.getElementById('mycandidates_count').textContent = data.count;
+              })
+              .catch(error => {
+                console.error('Error fetching candidate count:', error);
+              });
+          </script>
 
-
-        </script>
         </div>
         <div class="projects-section-line">
           <div class="projects-status">
+            <a href="/list">
             <div class="item-status">
-              <span class="status-number">45</span>
-              <span class="status-type">In Progress</span>
-            </div>
+              <span id="mycandidates_count" class="status-number"></span>
+              <span class="status-type">My candidates</span>
+            </div></a>
             <div class="item-status">
               <span class="status-number">24</span>
-              <span class="status-type">Upcoming</span>
+              <span class="status-type">Interview in progress</span>
             </div>
             <div class="item-status">
               <span class="status-number">62</span>
-              <span class="status-type">Total Projects</span>
+              <span class="status-type">Selected</span>
+            </div>
+            <div class="item-status">
+              <span class="status-number">62</span>
+              <span class="status-type">Rejected</span>
             </div>
           </div>
           <div class="view-actions">
@@ -1165,6 +1087,7 @@
               </button>
             </div>
           </div>
+
           <div class="project-box-content-header">
             <p class="box-content-header">Follow-Ups</p>
             <p class="box-content-subheader">Prototyping</p>
@@ -1272,139 +1195,8 @@
           </div>
         </div>
       </div>
-      <div class="project-box-wrapper">
-        <div class="project-box" style="background-color: #d5deff;">
-          <div class="project-box-header">
-            <span class="date">December 10, 2020</span>
-            <div class="more-wrapper">
-              <button class="project-btn-more">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
-                  <circle cx="12" cy="12" r="1" />
-                  <circle cx="12" cy="5" r="1" />
-                  <circle cx="12" cy="19" r="1" /></svg>
-              </button>
-            </div>
-          </div>
-          <div class="project-box-content-header">
-            <p class="box-content-header">Attendance</p>
-            <p class="box-content-subheader">Prototyping</p>
-          </div>
-          <div class="box-progress-wrapper">
-            <p class="box-progress-header">Progress</p>
-            <div class="box-progress-bar">
-              <span class="box-progress" style="width: 40%; background-color: #4067f9"></span>
-            </div>
-            <p class="box-progress-percentage">40%</p>
-          </div>
-          <div class="project-box-footer">
-            <div class="participants">
-              <img src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80" alt="participant">
-              <img src="https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2555&q=80" alt="participant">
-              <button class="add-participant" style="color: #4067f9;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </button>
-            </div>
-            <div class="days-left" style="color: #4067f9;">
-              2 Days Left
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="project-box-wrapper">
-        <div class="project-box" style="background-color: #d5deff;">
-          <div class="project-box-header">
-            <span class="date">December 10, 2020</span>
-            <div class="more-wrapper">
-              <button class="project-btn-more">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
-                  <circle cx="12" cy="12" r="1" />
-                  <circle cx="12" cy="5" r="1" />
-                  <circle cx="12" cy="19" r="1" /></svg>
-              </button>
-            </div>
-          </div>
-          <div class="project-box-content-header">
-            <p class="box-content-header">WF Office</p>
-            <p class="box-content-subheader">Prototyping</p>
-          </div>
-          <div class="box-progress-wrapper">
-            <p class="box-progress-header">Progress</p>
-            <div class="box-progress-bar">
-              <span class="box-progress" style="width: 40%; background-color: #4067f9"></span>
-            </div>
-            <p class="box-progress-percentage">40%</p>
-          </div>
-          <div class="project-box-footer">
-            <div class="participants">
-              <img src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80" alt="participant">
-              <img src="https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2555&q=80" alt="participant">
-              <button class="add-participant" style="color: #4067f9;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </button>
-            </div>
-            <div class="days-left" style="color: #4067f9;">
-              2 Days Left
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="project-box-wrapper">
-        <div class="project-box" style="background-color: #d5deff;">
-          <div class="project-box-header">
-            <span class="date">December 10, 2020</span>
-            <div class="more-wrapper">
-              <button class="project-btn-more">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
-                  <circle cx="12" cy="12" r="1" />
-                  <circle cx="12" cy="5" r="1" />
-                  <circle cx="12" cy="19" r="1" /></svg>
-              </button>
-            </div>
-          </div>
-          <div class="project-box-content-header">
-            <p class="box-content-header">WF Home</p>
-            <p class="box-content-subheader">Prototyping</p>
-          </div>
-          <div class="box-progress-wrapper">
-            <p class="box-progress-header">Progress</p>
-            <div class="box-progress-bar">
-              <span class="box-progress" style="width: 40%; background-color: #4067f9"></span>
-            </div>
-            <p class="box-progress-percentage">40%</p>
-          </div>
-          <div class="project-box-footer">
-            <div class="participants">
-              <img src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80" alt="participant">
-              <img src="https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2555&q=80" alt="participant">
-              <button class="add-participant" style="color: #4067f9;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </button>
-            </div>
-            <div class="days-left" style="color: #4067f9;">
-              2 Days Left
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
-      </div>
-          <!-- <div class="text">DataPMI</div>
-
-  <center><nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </nav> -->
-
+    
+        
 
 <marquee>
   <p style="color:green">This page is only displayed for HR recruiters</p>
@@ -1433,65 +1225,6 @@ updateDate();
 
 </script>
 
-
-<!-- Dashboard -->
-<!-- <div class="flex-wrapper">
-<div class="single-chart">
-  Applications
-<svg viewBox="0 0 36 36" class="circular-chart orange">
-  <path class="circle-bg"
-    d="M18 2.0845
-      a 15.9155 15.9155 0 0 1 0 31.831
-      a 15.9155 15.9155 0 0 1 0 -31.831"
-  />
-  <path class="circle"
-    stroke-dasharray="30, 100"
-    d="M18 2.0845
-      a 15.9155 15.9155 0 0 1 0 31.831
-      a 15.9155 15.9155 0 0 1 0 -31.831"
-  />
-  <text x="18" y="20.35" class="percentage">30%</text>
-</svg>
-</div>
-
-<div class="single-chart">
-<svg viewBox="0 0 36 36" class="circular-chart green">
-  <path class="circle-bg"
-    d="M18 2.0845
-      a 15.9155 15.9155 0 0 1 0 31.831
-      a 15.9155 15.9155 0 0 1 0 -31.831"
-  />
-  <path class="circle"
-    stroke-dasharray="60, 100"
-    d="M18 2.0845
-      a 15.9155 15.9155 0 0 1 0 31.831
-      a 15.9155 15.9155 0 0 1 0 -31.831"
-  />
-  <text x="18" y="20.35" class="percentage">60%</text>
-</svg>
-</div>
-
-<div class="single-chart">
-<svg viewBox="0 0 36 36" class="circular-chart blue">
-  <path class="circle-bg"
-    d="M18 2.0845
-      a 15.9155 15.9155 0 0 1 0 31.831
-      a 15.9155 15.9155 0 0 1 0 -31.831"
-  />
-  <path class="circle"
-    stroke-dasharray="90, 100"
-    d="M18 2.0845
-      a 15.9155 15.9155 0 0 1 0 31.831
-      a 15.9155 15.9155 0 0 1 0 -31.831"
-  />
-  <text x="18" y="20.35" class="percentage">90%</text>
-</svg>
-</div>
-</div>
-
-</center> -->
-
-<!-- NEW CODE -->
 
 
 

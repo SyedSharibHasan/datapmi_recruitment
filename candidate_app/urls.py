@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations
+from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count
 from . import views
 
 
@@ -33,6 +33,7 @@ urlpatterns = [
 
     path('all_filter/', all_filter, name='all_filter'),
     
+    path('mycandidates_count', mycandidates_count, name='mycandidates_count'),
     
 ]
 
