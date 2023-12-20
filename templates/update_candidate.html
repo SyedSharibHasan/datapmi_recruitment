@@ -255,6 +255,10 @@
         
             // Function to add skill to the input field
             function addSkill(skillName) {
+
+
+
+
                 var selectedSkillsContainer = document.getElementById('selectedSkills');
         
                 // Create a container for the skill
@@ -279,6 +283,7 @@
         
                 // Append the container to the selected skills container
                 selectedSkillsContainer.appendChild(skillContainer);
+                
             }
 
         </script>
@@ -379,54 +384,46 @@
         </div>
 
 
-
-        <!-- Time Slot -->
-        <div class="form-group">
-          <label for="appt">Screening Time SLOT:</label>
-          <input  value="{{candidate.screening_time}}"  type="time" class="time" id="appt" name="screening_time">
-        </div>
-
         <!-- Select Time -->
         <div class="form-group">
 
           <!-- Status -->
           <label for="status">Status:</label>
-          <select id="status" name="status">
+          <select id="status" name="status" onchange="showHideClientDetails()">
             <option value="" {% if not candidate.status %}selected{% endif %}>Select</option>
-            <option value="Screen Select" {% if candidate.status == 'Screen Select' %}selected{% endif %}>Screen Select</option>
-            <option value="Screen Reject" {% if candidate.status == 'Screen Reject' %}selected{% endif %}>Screen Reject</option>
-        </select>
-        
-
-
-          <!-- reason for rejection -->
-          <div id="reason-for-rejection" style="display: none;">
-            <label for="rejection-reason-text">Reason for Rejection:</label>
-            <textarea id="rejection-reason-text" name="rejection_reason"></textarea>
+            <option value="Client Select" {% if candidate.status == 'Client Select' %}selected{% endif %}>Client Select</option>
+            <option value="Client Reject" {% if candidate.status == 'Client Reject' %}selected{% endif %}>Client Reject</option>
+          </select>
+          
+          <div id="client-selection" style="display: none;">
+            <label for="additional-status">Client Selection & offer Details:</label>
+            <textarea id="client-details" name="client-details">{{candidate.additional_status}}</textarea>
           </div>
-
-      
-       <!-- Additional status -->
-<div id="additional-options" style="display: none;">
-  <label for="additional-status">Additional Status:</label>
-  <select id="additional-status" name="additional_status_1">
-    <option value="" {% if not candidate.additional_status_1 %}selected{% endif %}>Select</option>
-    <option value="R1 Select" {% if candidate.additional_status_1 == 'R1 Select' %}selected{% endif %}>R1 Select</option>
-    <option value="R1 Reject" {% if candidate.additional_status_1 == 'R1 Reject' %}selected{% endif %}>R1 Reject</option>
-    <option value="R2 Select" {% if candidate.additional_status_1 == 'R2 Select' %}selected{% endif %}>R2 Select</option>
-    <option value="R2 Reject" {% if candidate.additional_status_1 == 'R2 Reject' %}selected{% endif %}>R2 Reject</option>
-    <option value="R3 Select" {% if candidate.additional_status_1 == 'R3 Select' %}selected{% endif %}>R3 Select</option>
-    <option value="R3 Reject" {% if candidate.additional_status_1 == 'R3 Reject' %}selected{% endif %}>R3 Reject</option>
-    <option value="R4 Select" {% if candidate.additional_status_1 == 'R4 Select' %}selected{% endif %}>R4 Select</option>
-    <option value="R4 Reject" {% if candidate.additional_status_1 == 'R4 Reject' %}selected{% endif %}>R4 Reject</option>
-  </select>
-</div>
-
-
-
+          
+          <script>
+            document.addEventListener("DOMContentLoaded", function() {
+              showHideClientDetails();  // Call the function on page load
+          
+              var statusDropdown = document.getElementById("status");
+              statusDropdown.addEventListener("change", showHideClientDetails);  // Call the function on dropdown change
+            });
+          
+            function showHideClientDetails() {
+              var statusDropdown = document.getElementById("status");
+              var clientSelectionDiv = document.getElementById("client-selection");
+          
+              // Check if the selected option is "Screen Select"
+              if (statusDropdown.value === "Screen Select") {
+                clientSelectionDiv.style.display = "block";
+              } else {
+                clientSelectionDiv.style.display = "none";
+              }
+            }
+          </script>
+          
 
           <!-- reason for rejection for r1-r4 round -->
-          <div id="reason-for-r1-r2-r3-r4-rejection" style="display: none;">
+          <!-- <div id="reason-for-r1-r2-r3-r4-rejection" style="display: none;">
             <label for="rejection-reason-text">Reason for Rejection:</label>
             <textarea id="rejection-reason-text" name="rejection_reason_for_r1-r4"></textarea>
           </div>
@@ -468,7 +465,7 @@
               offerDetailsDiv.style.display = 'none';
             }
           });
-        </script>
+        </script> -->
 
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -477,7 +474,7 @@
 
         <script src="{% static 'js/add_candidates.js' %}"></script>
         <br>
-
+<br>
         <!-- Submit Button -->
         <button type="submit">Submit</button>
       </form>

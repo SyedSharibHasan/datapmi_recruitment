@@ -899,7 +899,6 @@
           <p>Candidates </p>
           <p class="date"></p>
         
-        
           <script>
             // make an AJAX request to your Django view that returns the count of items in the cart
             fetch('/mycandidates_count')
@@ -913,6 +912,7 @@
               });
           </script>
 
+
         </div>
         <div class="projects-section-line">
           <div class="projects-status">
@@ -922,17 +922,55 @@
               <span class="status-type">My candidates</span>
             </div></a>
             <div class="item-status">
-              <span class="status-number">24</span>
+              <span id="inprogressCandidatesCount" class="status-number"></span>
               <span class="status-type">Interview in progress</span>
+			  <script>
+				fetch('/inprogress_candidates')
+						   .then(response => response.json())
+						   .then(data => {
+							 // update the count in the HTML
+							 document.getElementById('inprogressCandidatesCount').textContent = data.count;
+						   })
+						   .catch(error => {
+							 console.error('Error fetching candidate count:', error);
+						   });
+			 
+			 </script>
             </div>
             <div class="item-status">
-              <span class="status-number">62</span>
-              <span class="status-type">Selected</span>
-            </div>
-            <div class="item-status">
-              <span class="status-number">62</span>
+              <span id="rejectedCandidatesCount" class="status-number"></span>
               <span class="status-type">Rejected</span>
+			  <script>
+				fetch('/rejected_candidates')
+						   .then(response => response.json())
+						   .then(data => {
+							 // update the count in the HTML
+							 document.getElementById('rejectedCandidatesCount').textContent = data.count;
+						   })
+						   .catch(error => {
+							 console.error('Error fetching candidate count:', error);
+						   });
+			 
+			 </script>
             </div>
+			<a href="{% url 'list_of_selected_candidates'%}">
+            <div class="item-status">
+              <span id="selectedCandidatesCount" class="status-number"></span>
+              <span class="status-type">Selected</span>
+			  <!-- Your JavaScript code -->
+<script>
+	fetch('/selected_candidates')
+			   .then(response => response.json())
+			   .then(data => {
+				 // update the count in the HTML
+				 document.getElementById('selectedCandidatesCount').textContent = data.count;
+			   })
+			   .catch(error => {
+				 console.error('Error fetching candidate count:', error);
+			   });
+ 
+ </script>
+            </div></a>
           </div>
           <div class="view-actions">
             <button class="view-btn list-view" title="List View">

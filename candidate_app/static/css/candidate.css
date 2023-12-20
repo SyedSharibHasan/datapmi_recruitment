@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url('https://images.wallpaperscraft.com/image/single/bridge_tower_arch_982086_2560x1600.jpg');
+    background-image: url('https://easy.jobs/wp-content/uploads/2022/04/Top-5-Best-Applicant-Tracking-Systems-ATS-Software-for-2022.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -16,7 +16,7 @@ body {
   }
 
   .transparent-form {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgb(255, 255, 255);
     border-radius: 10px;
     padding: 30px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
@@ -24,7 +24,7 @@ body {
     max-width: 600px;
     text-align: left;
     overflow-y: auto;
-    /* Add this line to enable vertical scrollbar */
+  
   }
 
   .form-group {

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count
+from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_selected_candidates
 from . import views
 
 
@@ -34,7 +34,14 @@ urlpatterns = [
     path('all_filter/', all_filter, name='all_filter'),
     
     path('mycandidates_count', mycandidates_count, name='mycandidates_count'),
+    path('selected_candidates', selected_candidates, name='selected_candidates'),
+    path('rejected_candidates', rejected_candidates, name='rejected_candidates'),
+    path('inprogress_candidates', inprogress_candidates, name='inprogress_candidates'),
+
+
+    path('list_of_selected_candidates', list_of_selected_candidates, name='list_of_selected_candidates'),
     
+
 ]
 
 

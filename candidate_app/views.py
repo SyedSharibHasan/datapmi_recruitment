@@ -154,13 +154,13 @@ class Createcandidate(CreateView):
             resume = request.FILES.get("resume")
             remarks = request.POST.get("remarks")
             recruiter = request.POST.get("recruiter")
-            screening_time = request.POST.get("screening_time")
+    
             status = request.POST.get("status")
-            rejection_reason = request.POST.get("rejection_reason")
-            additional_status = request.POST.get("additional_status_1")
-            rejection_reason_for_r1_r4 = request.POST.get("rejection_reason_for_r1-r4")
-            offer = request.POST.get("offer")
-            offer_reject_reason = request.POST.get("offer_reject_reason")
+            # rejection_reason = request.POST.get("rejection_reason")
+            additional_status = request.POST.get("client-details")
+            # rejection_reason_for_r1_r4 = request.POST.get("rejection_reason_for_r1-r4")
+            # offer = request.POST.get("offer")
+            # offer_reject_reason = request.POST.get("offer_reject_reason")
             
             
 
@@ -191,13 +191,12 @@ class Createcandidate(CreateView):
                 offer_details=offer_details,
                 resume=resume,
                 recruiter=recruiter,
-                screening_time=screening_time,
                 status=status,
-                rejection_reason=rejection_reason,
+                # rejection_reason=rejection_reason,
                 additional_status=additional_status,
-                rejection_reason_for_r1_r4=rejection_reason_for_r1_r4,
-                offer = offer,
-                offer_reject_reason=offer_reject_reason,
+                # rejection_reason_for_r1_r4=rejection_reason_for_r1_r4,
+                # offer = offer,
+                # offer_reject_reason=offer_reject_reason,
                 user=request.user
             )
             candidate.save()
@@ -274,13 +273,13 @@ class Updatecandidate(UpdateView):
         # candidate.resume = request.FILES.get("resume")
         candidate.remarks = request.POST.get("remarks")
         candidate.recruiter = request.POST.get("recruiter")
-        candidate.screening_time = request.POST.get("screening_time")
+    
         candidate.status = request.POST.get("status")
-        candidate.rejection_reason = request.POST.get("rejection_reason")
-        candidate.additional_status = request.POST.get("additional_status_1")
-        candidate.rejection_reason_for_r1_r4 = request.POST.get("rejection_reason_for_r1-r4")
-        candidate.offer = request.POST.get("offer")
-        candidate.offer_reject_reason = request.POST.get("offer_reject_reason")
+        # candidate.rejection_reason = request.POST.get("rejection_reason")
+        candidate.additional_status = request.POST.get("client-details")
+        # candidate.rejection_reason_for_r1_r4 = request.POST.get("rejection_reason_for_r1-r4")
+        # candidate.offer = request.POST.get("offer")
+        # candidate.offer_reject_reason = request.POST.get("offer_reject_reason")
         
         new_resume = request.FILES.get('new_resume')
         keep_resume = request.POST.get('keep_resume')
@@ -292,8 +291,13 @@ class Updatecandidate(UpdateView):
 
         try:
             skill_names = request.POST.getlist("skills")
-            skills = [Skill.objects.get_or_create(name=skill_name, user=request.user)[0] for skill_name in skill_names]
-            candidate.skills.set(skills)
+
+            skill_names = [name.strip() for name in skill_names if name.strip()]
+
+            if skill_names:
+            # Skills provided in the request, update the candidate's skills
+                new_skills = [Skill.objects.get_or_create(name=skill_name, user=request.user)[0] for skill_name in skill_names]
+                candidate.skills.set(new_skills)
 
             # Handle resume update
             new_resume = request.FILES.get('new_resume')
@@ -508,6 +512,8 @@ def all_filter(request):
 
 
 
+############# count details displayed on dashboard 
+
 ################# total count of my candidates
 def mycandidates_count(request):
     if request.user.is_authenticated:
@@ -519,4 +525,51 @@ def mycandidates_count(request):
 
 
 ############# selected candidates
+def selected_candidates(request):
+    if request.user.is_authenticated:
+        count = Candidate.objects.filter(user=request.user, status='Client Select').count()
+        return JsonResponse({'count': count})
+    else:
+        return JsonResponse({'count': 0})
+
+
+
+############# rejected candidates
+def rejected_candidates(request):
+    if request.user.is_authenticated:
+        count = Candidate.objects.filter(user=request.user, status='Client Reject').count()
+        return JsonResponse({'count': count})
+    else:
+        return JsonResponse({'count': 0})
+    
+
+############# Inprogress candidates
+def inprogress_candidates(request):
+    if request.user.is_authenticated:
+        count = Candidate.objects.filter(user=request.user, status='').count()
+        return JsonResponse({'count': count})
+    else:
+        return JsonResponse({'count': 0})
+    
+    
+
+######### listing of counted candidates details
+
+def list_of_selected_candidates(request):
+    if request.user.is_authenticated:
+        selected_candidates = Candidate.objects.filter(user=request.user, status='Client Select').all()
+        return render(request,'selected_list.html',context = {'selected_candidates':selected_candidates})
+
+
+
+
+
+
+
+
+
+
+
+
+
 

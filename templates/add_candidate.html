@@ -135,7 +135,8 @@
       function displayAutoSuggestions(suggestions) {
         // Clear previous suggestions
         clearSuggestions();
-    
+
+
         // Create and append suggestion elements
         suggestions.forEach(suggestion => {
           const suggestionElement = document.createElement('div');
@@ -372,73 +373,57 @@
 
 
         <!-- Time Slot -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="appt">Screening Time SLOT:</label>
           <input type="time" class="time" id="appt" name="screening_time">
-        </div>
+        </div> -->
+
+
 
         <!-- Select Time -->
         <div class="form-group">
 
           <!-- Status -->
           <label for="status">Status:</label>
-          <select id="status" name="status">
+          <select id="status" name="status" onchange="showHideClientDetails()">
             <option value="">Select</option>
-            <option value="Screen Select">Screen Select</option>
-            <option value="Screen Reject">Screen Reject</option>
+            <option value="Client Select">client Select</option>
+            <option value="Client Reject">client Reject</option>
           </select>
 
-
-          <!-- reason for rejection -->
-          <div id="reason-for-rejection" style="display: none;">
-            <label for="rejection-reason-text">Reason for Rejection:</label>
-            <textarea id="rejection-reason-text" name="rejection_reason"></textarea>
-          </div>
-
-
           <!-- additional status  -->
-          <div id="additional-options" style="display: none;">
-            <label for="additional-status">Additional Status:</label>
-            <select id="additional-status" name="additional_status_1">
-              <option value="">Select</option>
-              <option value="R1 Select">R1 Select</option>
-              <option id="r1" value="R1 Reject">R1 Reject</option>
-              <option id="r2select" value="R2 Select">R2 Select</option>
-              <option id="r2" value="R2 Reject">R2 Reject</option>
-              <option value="R3 Select">R3 Select</option>
-              <option id="r3" value="R3 Reject">R3 Reject</option>
-              <option id="r4select" value="R4 Select">R4 Select</option>
-              <option id="r4" value="R4 Reject">R4 Reject</option>
-            </select>
+          <div id="client-selection" style="display: none;">
+            <label for="additional-status">Client Selection & offer Details</label>
+            <textarea id="client-details" name="client-details"></textarea>
           </div>
-
-
+          
+          <script>
+            function showHideClientDetails() {
+              var statusDropdown = document.getElementById("status");
+              var clientSelectionDiv = document.getElementById("client-selection");
+          
+              if (statusDropdown.value === "Screen Select") {
+                clientSelectionDiv.style.display = "block";
+              } else {
+                clientSelectionDiv.style.display = "none";
+              }
+            } 
+          </script>
           
 
           <!-- reason for rejection for r1-r4 round -->
-          <div id="reason-for-r1-r2-r3-r4-rejection" style="display: none;">
+          <!-- <div id="reason-for-r1-r2-r3-r4-rejection" style="display: none;">
             <label for="rejection-reason-text">Reason for Rejection:</label>
             <textarea id="rejection-reason-text" name="rejection_reason_for_r1-r4"></textarea>
           </div>
 
-        </div>
+        </div> -->
 
 
 
-        <!-- Offer -->
-        <div id="additional-options" style="display: none;">
-          <label for="additional-status">Additional Status:</label>
-          <select id="additional-status" name="additional_status">
-            <option value="">Select</option>
-            <option value="R1 Select">R1 Select</option>
-            <option id="r1" value="R1 Reject">R1 Reject</option>
-            <option id="r2select" value="R2 Select">R2 Select</option>
-            <option id="r2" value="R2 Reject">R2 Reject</option>
-          </select>
-        </div>
 
         
-        <div id="offer-container" style="display: none;">
+        <!-- <div id="offer-container" style="display: none;">
           <div class="form-group">
             <label for="offer-2">Offer:</label>
             <select id="offer-2" name="offer">
@@ -448,18 +433,18 @@
             </select>
             <div class="error-message" id="offer-error"></div>
           </div>
-        </div>
+        </div> -->
 
-        <div id="offer-reject-reason-container" style="display: none;">
+        <!-- <div id="offer-reject-reason-container" style="display: none;">
           <div class="form-group">
             <label for="offer-reject-reason-text">Reason for Rejection:</label>
             <textarea id="offer-reject-reason-text" name="offer_reject_reason"></textarea>
             <div class="error-message" id="offer-reject-reason-error"></div>
           </div>
-        </div>
+        </div> -->
 
   
-
+<br>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

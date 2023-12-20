@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-KpOqU7gZ1R8qROiS1z3Pxm6ofuV3LlBOsPFvG9b0L4ZLTOEzVZ4AMdTEFVzjI5zj" crossorigin="anonymous">
     <title>Search results</title>
 
     <style>
@@ -42,19 +43,20 @@
     {% for user in users %}
     {% if user.id %}
       
-    <div class="search">     
-        <img width="25px" src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png">   
-        <a href="{% url 'detail' user.id %}"><p>{{ user.email }}</p></a>
-    </div>
+        <div class="search">     
+            <img width="25px" src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png">   
+            <a href="{% url 'detail' user.id %}"><p>{{ user.email }}</p></a>
+        </div>
 
        
     {% else %}
-     
-        <p>No candidates are currently available</p>
+     <img src="https://cdn.dribbble.com/users/2382015/screenshots/6065978/no_result.gif" width="580px">
+     <a href="/all_filter"><button class="btn btn-primary">search again</button></a>
     {% endif %}
 {% endfor %}
 
 </center>
+
 </body>
 </html>
 
