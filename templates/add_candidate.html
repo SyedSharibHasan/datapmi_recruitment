@@ -219,66 +219,102 @@
 
         <label>Skills</label>
        
-        <input type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
+       
+ <!-- HTML -->
+ <input type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
+ <button type="button" onclick="addManuallyTypedSkill(event)">Add</button>
+ <ul id="skillList" class="skill-container"></ul>
+ <div id="selectedSkills" class="skill-container"></div>
+<!-- JavaScript -->
+<script>
+    var skillsList = [ 'Java', 'Python', 'JavaScript', 'HTML', 'CSS', 'React', 'Node.js',
+    'Database Management', 'SQL', 'NoSQL', 'MongoDB', 'MySQL', 'PostgreSQL',
+    'Network Administration', 'Cisco', 'TCP/IP', 'DNS', 'DHCP', 'Firewalls',
+    'Cybersecurity', 'Ethical Hacking', 'Penetration Testing', 'SIEM', 'Security Policies',
+    'DevOps', 'Docker', 'Kubernetes', 'Jenkins', 'Git', 'CI/CD',
+    'Cloud Computing', 'AWS', 'Azure', 'Google Cloud', 'Serverless',
+    'Frontend Development', 'Angular', 'Vue.js', 'SASS/LESS', 'Webpack', 'Responsive Design',
+    'Backend Development', 'Express.js', 'Django', 'Flask', 'Spring Boot', 'Ruby on Rails',
+    'Mobile App Development', 'React Native', 'Flutter', 'iOS', 'Android', 'Swift', 'Kotlin',
+    'Testing', 'JUnit', 'Selenium', 'Cypress', 'TestNG',
+    'Data Science', 'Machine Learning', 'Deep Learning', 'TensorFlow', 'PyTorch',
+    'Blockchain', 'Smart Contracts', 'Solidity', 'Hyperledger Fabric',
+    'UI/UX Design', 'Wireframing', 'Prototyping', 'Adobe XD', 'Figma',
+    'Project Management', 'Agile', 'Scrum', 'Kanban', 'Jira',
+    'Linux Administration', 'Shell Scripting', 'Bash', 'Ubuntu', 'CentOS',
+    'IT Support', 'Help Desk', 'Troubleshooting', 'Remote Desktop Support',
+    'Technical Writing', 'Documentation', 'User Manuals', 'API Documentation'];
 
-        <!-- Display recommendations -->
-        <ul id="skillList" class="skill-container"></ul>
-        
-        <!-- Selected Skills Container -->
-        <div id="selectedSkills" class="skill-container"></div>
-        
-   <script>
-      var skillsList = ['Java', 'Python', 'JavaScript', 'HTML', 'CSS', 'React', 'Node.js'];
-        
-        // Function to filter skills and display recommendations
-        function filterSkills() {
-            var input = document.getElementById('skillsInput');
-            var filter = input.value.toUpperCase();
-            var skillList = document.getElementById('skillList');
-            skillList.innerHTML = ''; // Clear previous list items
-    
-            for (var i = 0; i < skillsList.length; i++) {
-                if (skillsList[i].toUpperCase().includes(filter)) {
-                    var li = document.createElement('li');
-                    li.textContent = skillsList[i];
-                    li.onclick = function() {
-                        addSkill(this.textContent);
-                        input.value = ''; // Clear input after selecting a skill
-                        skillList.innerHTML = ''; // Clear the list after selection
-                    };
-                    skillList.appendChild(li);
-                }
+   
+    function filterSkills() {
+        var input = document.getElementById('skillsInput');
+        var filter = input.value.trim().toLowerCase();
+        var skillList = document.getElementById('skillList');
+        skillList.innerHTML = '';
+
+        for (var i = 0; i < skillsList.length; i++) {
+            var skill = skillsList[i].toLowerCase();
+            if (skill.includes(filter)) {
+                var li = document.createElement('li');
+                li.textContent = skillsList[i];
+                li.onclick = function () {
+                    addSkill(this.textContent);
+                    input.value = '';
+                    skillList.innerHTML = '';
+                };
+                skillList.appendChild(li);
             }
         }
-    
-        // Function to add skill to the input field
-        function addSkill(skillName) {
-            var selectedSkillsContainer = document.getElementById('selectedSkills');
-    
-            // Create a container for the skill
-            var skillContainer = document.createElement('div');
-            skillContainer.classList.add('skill-item');
-    
-            // Create a new input field for the selected skill
-            var skillInput = document.createElement('input');
-            skillInput.type = 'text';
-            skillInput.value = skillName;
-            skillInput.name = 'skills';
-            skillInput.readOnly = true;
-            skillContainer.appendChild(skillInput);
-    
-            // Create a close button
-            var closeButton = document.createElement('button');
-            closeButton.textContent = '*';
-            closeButton.onclick = function() {
-                skillContainer.remove(); // Remove the skill container on close button click
-            };
-            skillContainer.appendChild(closeButton);
-    
-            // Append the container to the selected skills container
-            selectedSkillsContainer.appendChild(skillContainer);
+    }
+
+    function addSkill(skillName) {
+        var selectedSkillsContainer = document.getElementById('selectedSkills');
+        var skillContainer = document.createElement('div');
+        skillContainer.classList.add('skill-item');
+        var skillInput = document.createElement('input');
+        skillInput.type = 'text';
+        skillInput.value = skillName;
+        skillInput.name = 'skills';
+        skillInput.readOnly = true;
+        skillContainer.appendChild(skillInput);
+        var closeButton = document.createElement('button');
+        closeButton.textContent = '*';
+        closeButton.onclick = function () {
+            skillContainer.remove();
+        };
+        skillContainer.appendChild(closeButton);
+        selectedSkillsContainer.appendChild(skillContainer);
+    }
+
+    function checkEnterKey(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default behavior (moving to the top)
+            var input = document.getElementById('skillsInput');
+            var skillName = input.value.trim();
+
+            if (skillName !== '') {
+                addSkill(skillName);
+                input.value = '';
+            }
         }
-   </script>
+    }
+
+    function addManuallyTypedSkill(event) {
+        event.stopPropagation(); // Prevent the click event from reaching the form
+
+        var input = document.getElementById('skillsInput');
+        var skillName = input.value.trim();
+
+        if (skillName !== '') {
+            addSkill(skillName);
+            input.value = '';
+            setTimeout(function() {
+                input.focus(); // Set focus back to the input field after a short delay
+            }, 0);
+        }
+    }
+</script>
+
 
         <!-- Notice Period -->
         <div class="form-group">
@@ -314,6 +350,7 @@
 
 
 <script>
+
     document.getElementById('offer').addEventListener('change', function () {
                 var offerValue = this.value;
                 var offerDetailsDiv = document.getElementById('offer-reject-reason');
