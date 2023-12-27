@@ -555,11 +555,32 @@ def inprogress_candidates(request):
 
 ######### listing of counted candidates details
 
-def list_of_selected_candidates(request):
-    if request.user.is_authenticated:
-        selected_candidates = Candidate.objects.filter(user=request.user, status='Client Select').all()
-        return render(request,'selected_list.html',context = {'selected_candidates':selected_candidates})
+# def list_of_selected_candidates(request):
+#     if request.user.is_authenticated:
+#         selected_candidates = Candidate.objects.filter(user=request.user, status='Client Select').all()
+#         return render(request,'selected_list.html',context = {'selected_candidates':selected_candidates})
 
+
+
+# def list_of_rejected_candidates(request):
+#     if request.user.is_authenticated:
+#         rejected_candidates = Candidate.objects.filter(user=request.user, status='Client Reject').all()
+#         return render(request,'selected_list.html',context = {'rejected candidates':rejected_candidates})
+
+
+def list_of_candidates(request, status):
+    if request.user.is_authenticated:
+        if status == 'selected':
+            candidates = Candidate.objects.filter(user=request.user, status='Client Select').all()
+        elif status == 'rejected':
+            candidates = Candidate.objects.filter(user=request.user, status='Client Reject').all()
+
+        elif status == 'inprogress':
+            candidates = Candidate.objects.filter(user=request.user, status='').all()
+
+        else:
+            candidates = []
+        return render(request, 'selected_list.html', context={'candidates': candidates, 'status': status})
 
 
 

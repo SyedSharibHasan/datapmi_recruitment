@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <title>Submission Form Details</title>
     <style>
+
+           
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -87,6 +90,7 @@
     <div class="container">
         
         <div class="submission-details">
+           
 
             <div class="field">
                 <span>Name:</span> {{detail.first_name}} {{detail.last_name}}
@@ -209,6 +213,10 @@
                 </span>
                 
             </div>
+<center>
+            <a href="{% url 'update' detail.id %}"><div class="button-edit">
+                <button class="btn btn-info">Edit</button></div></a> </center>
+
         </div>
     </div>
     {% endblock %}
