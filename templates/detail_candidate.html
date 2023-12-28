@@ -214,8 +214,14 @@
                 
             </div>
 <center>
+    {% if request.user == detail.user %}
             <a href="{% url 'update' detail.id %}"><div class="button-edit">
                 <button class="btn btn-info">Edit</button></div></a> </center>
+
+                {% else %}
+                <!-- User is not the creator, display a message or change style -->
+                <p class="not-allowed-message">You do not have permission to edit this candidate.</p>
+                {% endif %}
 
         </div>
     </div>

@@ -239,8 +239,8 @@ class Updatecandidate(UpdateView):
 
 
     def get(self, request, pk):
-        candidate = Candidate.objects.get(pk=pk)
-        return render(request, self.template_name, {'candidate': candidate})    
+        candidate = get_object_or_404(Candidate, pk=pk, user=request.user)
+        return render(request, self.template_name, {'candidate': candidate})   
 
     def post(self, request, pk):
         if pk is None:
@@ -317,8 +317,15 @@ class Updatecandidate(UpdateView):
             return render(request, self.template_name, {'error': 'Error: Could not save the candidate.'})
 
             
-
-
+from django.views import View
+class CheckEmailExistsView(View):
+    def get(self, request, *args, **kwargs):
+        email = request.GET.get('email', None)
+        if email:
+            email_exists = Candidate.objects.filter(email=email).exists()
+            return JsonResponse({'exists': email_exists})
+        else:
+            return JsonResponse({'exists': False})
 
     
 

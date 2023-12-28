@@ -85,6 +85,44 @@
           <div class="error-message" id="email-error"></div>
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<style>
+  .error-input {
+    border-color: #ff0000; /* Set the border color to red or any color you prefer */
+    /* Add any other styling you want for an error state */
+} 
+</style>
+        <script>
+          $(document).ready(function() {
+              $('#email').on('input', function() {
+                  var email = $(this).val();
+                  checkEmailExists(email);
+              });
+          });
+        
+          function checkEmailExists(email) {
+              $.ajax({
+                  url: '/check_email_exists/',
+                  method: 'GET',
+                  data: {'email': email},
+                  success: function(response) {
+                      if (response.exists) {
+                          $('#email-error').text('Caution: Email already exists.');
+                          $('#email').addClass('error-input'); // Optionally add a class to style the input as having an error
+                      } else {
+                          $('#email-error').text('');
+                          $('#email').removeClass('error-input');
+                      }
+                  },
+                  error: function(error) {
+                      console.log(error);
+                  }
+              });
+          }
+        </script>
+      
+
         <!-- Phone -->
         <div class="form-group">
           <label for="phone">Phone:</label>

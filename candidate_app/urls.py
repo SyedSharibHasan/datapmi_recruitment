@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates
+from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,CheckEmailExistsView
 from . import views
 
 
@@ -43,6 +43,8 @@ urlpatterns = [
     # path('list_of_rejected_candidates', list_of_rejected_candidates, name='list_of_rejected_candidates'),
     path('list_of_candidates/<str:status>/', list_of_candidates, name='list_of_candidates'),
 
+    path('check_email_exists/', CheckEmailExistsView.as_view(), name='check_email_exists'),
+    
 ]
 
 
