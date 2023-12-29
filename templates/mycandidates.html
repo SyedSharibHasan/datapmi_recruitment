@@ -1,179 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>My candidate</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://4kwallpapers.com/images/wallpapers/blue-background-2732x2732-10208.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
 
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
+        th {
+            background-color: #0a5bac;
+            color: #ecf0f1;
+        }
 
-
-  <style>
-    body {
-      /* background-image: url('https://images.wallpaperscraft.com/image/single/tree_planet_stars_117068_5760x3240.jpg'); */
-      background-image: url('https://img.freepik.com/free-vector/geometric-gradient-futuristic-background_23-2149116406.jpg?w=1380&t=st=1703061497~exp=1703062097~hmac=aa51c8117024f5fca8bca18b558670f265c0551d42f3a0426c61ce34dc3502ff');
-      background-size: cover;
-      /* background-repeat: no-repeat; */
-      background-attachment: fixed;
-      /* background: #edf1f5; */
-      /* margin-top: 20px; */
-    }
-
-    .card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      word-wrap: break-word;
-      background-color: transparent;
-      background-clip: border-box;
-      border: 0 solid transparent;
-      border-radius: 0;
-    }
-
-    .btn-circle.btn-lg,
-    .btn-group-lg>.btn-circle.btn {
-      width: 50px;
-      height: 50px;
-      padding: 14px 15px;
-      font-size: 16px;
-      line-height: 23px;
-    }
-
-    .text-muted {
-      color: #8898aa !important;
-    }
-
-    [type=button]:not(:disabled),
-    [type=reset]:not(:disabled),
-    [type=submit]:not(:disabled),
-    button:not(:disabled) {
-      cursor: pointer;
-    }
-
-    .btn-circle {
-      border-radius: 100%;
-      width: 40px;
-      height: 40px;
-      padding: 10px;
-    }
-
-    th {
-      background-color: transparent;
-    }
-
-    .even-row {
-      background-color: transparent;
-      ;
-    }
-
-    .odd-row {
-      background-color: transparent;
-    }
-
-    .navbar {
-      margin-left: 50px;
-      /* Moves the logo to the right within the navbar */
-
-    }
-
- 
-          #search_skill {
-              padding: 8px; /* Adjust padding as needed */
-              font-size: 14px; /* Adjust font size as needed */
-              border: 1px solid #ccc; /* Add a border */
-              border-radius: 4px; /* Add border-radius for rounded corners */
-              width: 200px; /* Adjust width as needed */
-          }
-     
-          #select_skill {
-              padding: 8px; /* Adjust padding as needed */
-              font-size: 11px; /* Adjust font size as needed */
-              border: 1px solid #ccc; /* Add a border */
-              border-radius: 4px; /* Add border-radius for rounded corners */
-              width: 80px; /* Adjust width as needed */
-          }
-     
-
-  </style>
-
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+    <title>Stylish Custom Table</title>
 </head>
-
 <body>
-  {% block content %}
+
+    {% block content %}
 
   
-  {% include 'sidebar.html' %}
-
-  <center>
-
+    {% include 'sidebar.html' %}
 
     {% include 'navbar.html' %} 
     {% include 'delete_messages.html' %}  
 
-  
-    
-
-    <br>
-<br>
-
-
-
-
 <br>
 <br>
-    <a href="/create"><button class="btn btn-primary">Create New &nbsp;<i class="bi bi-plus-square"></i></button></a>
-  </center>
-  <br>
+<br>
+<br>
 
+<center><a href="/create"><button class="btn btn-light">Create &nbsp; <i class="bi bi-person-plus"></i></button></a></center>
 
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<div class="container">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>Contact</th>
+                <th>Experience</th>
+                <th>Updated</th>
+                <th>Manage</th>
+            </tr>
+        </thead> {% for i in list %}
+        <tbody>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <h5 style="font-family:garamond;" class="card-title text-uppercase mb-0">Manage Candidates</h5>
-          </div>
-
-          <div class="table-responsive">
-            <table class="table no-wrap user-table mb-0">
-              <thead>
-
-
-                <tr>
-                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium pl-4">SNo</th>
-                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Name</th>
-                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Designation</th>
-                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Contact</th>
-                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Experience</th>
-                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Updated</th>
-                  <th style="font-family: garamond;" scope="col" class="border-0 text-uppercase font-medium">Manage</th>
-                </tr>
-
-              </thead>
-              <tbody>
-                {% for i in list %}
-                <tr class="{% cycle 'odd-row' 'even-row' %}">
-                  <td id="snno" class="pl-4">{{i.id}}</td>
-
-                  <td>
-                    <h5 style="font-family:garamond;" class="font-medium mb-0">{{i.first_name}} {{i.last_name}}</h5>
-                    <span style="font-family:garamond;" class="text-muted">{{i.location}} </span>
-                  </td>
-                  <td>
-
+            <tr>
+                <td id="snno" ></td>
+                <td>{{i.first_name}} {{i.last_name}}</td>
+                <td>
                     <span style="font-family:garamond;" class="text-muted">{{i.designation}} </span><br>
                     <span style="font-family:garamond;" class="text-muted">{{i.client_name }} </span>
                   </td>
-                  <td>
+                <td>
                     <span style="font-family:garamond;" class="text-muted">{{i.email}}</span><br>
                     <span style="font-family:garamond;" class="text-muted">{{i.phone}}</span>
                   </td>
@@ -181,68 +94,52 @@
                     <span style="font-family:garamond;" class="text-muted">{{i.experience}}</span><br>
                     <span style="font-family:garamond;" class="text-muted">{{i.relevent_experience}}</span>
                   </td>
-                  <td>
-                    <span style="font-family:garamond;" class="text-muted">{{i.updated_on}}</span><br>
-
-                  </td>
-
-                  <td>  
+                <td>{{i.updated_on}}</td>
+                <td>  
                     <!-- <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle"><i class="fa fa-key"></i> </button> -->
                     <a href="{% url 'detail' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"
                         class="btn btn-outline-success"><i class="bi bi-search"></i></button></a>&nbsp;
 
                     <a href="{% url 'update' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="Edit"
-                        class="btn btn-outline-info my-1"><i class="bi bi-pencil"></i></button></a>&nbsp; <br>
+                        class="btn btn-outline-info my-1"><i class="bi bi-pencil"></i></button></a>&nbsp; 
                     <a href="{% url 'delete' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="Delete"
                         class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></a>&nbsp;
 
-                    <button style="font-size: 10px;padding: 5px 8px;" type="button" title="Download"
-                      class="btn btn-outline-info"><i class="fa fa-download"></i> </button>
                   </td>
-                </tr>
+            </tr>
+            
+        </tbody>
+        {% endfor %}
+        <script>
+            // Get all elements with class "snno"
+            var snnoElements = document.querySelectorAll('#snno');
+
+            // Loop through the elements and assign incrementing numbers
+            snnoElements.forEach(function (element, index) {
+              element.textContent = index + 1; // Assign the incrementing number (1-based index)
+            });
 
 
-              </tbody>
+            function toggleSidebar() {
+              var sidebar = document.getElementById('sidebar');
+              var content = document.getElementById('content');
 
-              <script>
-                // Get all elements with class "snno"
-                var snnoElements = document.querySelectorAll('#snno');
-
-                // Loop through the elements and assign incrementing numbers
-                snnoElements.forEach(function (element, index) {
-                  element.textContent = index + 1; // Assign the incrementing number (1-based index)
-                });
-
-
-
-                function toggleSidebar() {
-                  var sidebar = document.getElementById('sidebar');
-                  var content = document.getElementById('content');
-
-                  if (sidebar.style.width === '250px') {
-                    sidebar.style.width = '0';
-                    content.style.marginLeft = '0';
-                  } else {
-                    sidebar.style.width = '250px';
-                    content.style.marginLeft = '250px';
-                  }
-                }
-              </script>
-
-              {% endfor %}
-            </table>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <br>
+              if (sidebar.style.width === '250px') {
+                sidebar.style.width = '0';
+                content.style.marginLeft = '0';
+              } else {
+                sidebar.style.width = '250px';
+                content.style.marginLeft = '250px';
+              }
+            }
+          </script>
+    </table>
+ 
+</div>
 
 
-  {% include 'all_c_pagination.html' %}
-  {% endblock %}
+{% include 'all_c_pagination.html' %}
+{% endblock %}
 
 
 </body>
