@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-KpOqU7gZ1R8qROiS1z3Pxm6ofuV3LlBOsPFvG9b0L4ZLTOEzVZ4AMdTEFVzjI5zj" crossorigin="anonymous">
+    <title>Edit Account</title>
+
+    <style>
+        .helptext {
+            display: none;
+        }
+
+        body {
+            background-image: url('https://4kwallpapers.com/images/wallpapers/blue-background-2732x2732-10208.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .forms {
+        border: 1px solid rgb(2, 0, 128);
+        padding: 50px 50px;
+        width: 600px;
+        background-image: url('https://img.freepik.com/premium-photo/abstract-background-design-images-wallpaper-ai-generated_643360-94764.jpg');
+        border-radius: 9px;
+            }
+    </style>
+
+</head>
+<body>
+    {% include 'sidebar.html' %}
+
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<div class="container">
+<div class="row">
+
+<div class="col-2">
+</div>
+
+<div class="col">
+    <div class="forms"> 
+        <p style="color: rgb(4, 0, 255);"><u>Edit your personal profile</u></p>
+           <form method="post" action=""  enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        {{ profile_form.as_p }}
+        <input type="submit" value="submit" class="btn btn-info"/>
+      </form><br>
+      <a href="/profile"> <button class="btn btn-dark">Back</button></a>
+    </div>
+
+    </div></div></div>
+</body>
+</html>

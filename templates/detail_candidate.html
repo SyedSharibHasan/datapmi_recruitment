@@ -195,9 +195,9 @@
                 <span>Status:</span> {{detail.status}}
             </div>
 
-            <div class="field">
+            <!-- <div class="field">
                 <span>Offer Details:</span> {{detail.additional_status}}
-            </div>
+            </div> -->
      
             
             
@@ -213,15 +213,21 @@
                 </span>
                 
             </div>
+
+
+
 <center>
     {% if request.user == detail.user %}
             <a href="{% url 'update' detail.id %}"><div class="button-edit">
-                <button class="btn btn-info">Edit</button></div></a> </center>
+                <button class="btn btn-outline-info">Edit &nbsp;<i class="bi bi-pencil"></i></button></div></a> </center>
 
                 {% else %}
+                
                 <!-- User is not the creator, display a message or change style -->
                 <p class="not-allowed-message">You do not have permission to edit this candidate.</p>
                 {% endif %}
+
+                
 
         </div>
     </div>

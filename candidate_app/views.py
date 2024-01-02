@@ -10,16 +10,6 @@ from django.views.generic import ListView,CreateView,UpdateView,DetailView,Delet
 from .models import Candidate,Skill
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-
-
-# def main(request):
-#     if request.user.is_superuser:
-#         # Redirect superuser to admin.html
-#         return render(request,'admin.html')
-#     else:
-#         # Redirect normal user to user.html
-#         return render(request,'user.html')
     
 
 
@@ -558,21 +548,6 @@ def inprogress_candidates(request):
     else:
         return JsonResponse({'count': 0})
     
-    
-
-######### listing of counted candidates details
-
-# def list_of_selected_candidates(request):
-#     if request.user.is_authenticated:
-#         selected_candidates = Candidate.objects.filter(user=request.user, status='Client Select').all()
-#         return render(request,'selected_list.html',context = {'selected_candidates':selected_candidates})
-
-
-
-# def list_of_rejected_candidates(request):
-#     if request.user.is_authenticated:
-#         rejected_candidates = Candidate.objects.filter(user=request.user, status='Client Reject').all()
-#         return render(request,'selected_list.html',context = {'rejected candidates':rejected_candidates})
 
 
 def list_of_candidates(request, status):
@@ -593,10 +568,32 @@ def list_of_candidates(request, status):
 
 
 
+class Edit_account(UpdateView):
+    model = CustomUser
+    fields = ['username','first_name','last_name','email','contact']
+    success_url = reverse_lazy('profile')
+    template_name = 'edit_account.html'
+    
+    
 
 
 
-
+################ delete user account
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        user = authenticate(username=request.user.username, password=password)
+        if user is not None:
+            # Password is correct, delete the account
+            user.delete()
+            messages.success(request, 'Your account has been deleted.')
+            return JsonResponse({})
+        else:
+            # Password is incorrect, return an error message
+            return JsonResponse({'incorrect_password': True})
+    else:
+        return render(request, 'delete_account.html')
 
 
 

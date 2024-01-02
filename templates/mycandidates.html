@@ -73,10 +73,11 @@
                 <th>Designation</th>
                 <th>Contact</th>
                 <th>Experience</th>
-                <th>Updated</th>
+                <th>Last Updated</th>
                 <th>Manage</th>
             </tr>
         </thead> {% for i in list %}
+    
         <tbody>
 
             <tr>
@@ -102,13 +103,18 @@
 
                     <a href="{% url 'update' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="Edit"
                         class="btn btn-outline-info my-1"><i class="bi bi-pencil"></i></button></a>&nbsp; 
+                        {% if i.resume %}
+                        <a href="{{i.resume.url}}"><button style="font-size: 10px;padding: 5px 8px;" title="Resume"
+                            class="btn btn-outline-dark"><i class="bi bi-download"></i></button></a>&nbsp;
+                            {% endif %}
                     <a href="{% url 'delete' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="Delete"
                         class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></a>&nbsp;
 
                   </td>
             </tr>
-            
         </tbody>
+       
+
         {% endfor %}
         <script>
             // Get all elements with class "snno"
@@ -144,3 +150,7 @@
 
 </body>
 </html>
+
+
+
+

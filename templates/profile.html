@@ -9,8 +9,13 @@
 
 <style>
   body {
-    background-image: url('https://img.freepik.com/free-photo/abstract-digital-grid-black-background_53876-97647.jpg?w=1380&t=st=1703062160~exp=1703062760~hmac=dc20aa914c722be47d3d70fa32256281a6bd387fea0ba08b909d76baaa9560e7');
+    background-image: url('https://4kwallpapers.com/images/wallpapers/blue-background-2732x2732-10208.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
+
+
 </style>
 
 </head>
@@ -23,6 +28,14 @@
 <br>
 <br>
 <br>
+
+{% for user_profile in profile %}
+  <div class="profile-card">
+    <img src="{{ user_profile.image.url }}" alt="Profile Image">
+    <!-- Add other profile information here -->
+  </div>
+{% endfor %}
+
 
 <div class="container">
   <div class="row">
@@ -38,15 +51,23 @@
 
 <div class="col-7">
   <br>
-  <h6 style="color: bisque;">Name : {{user.first_name}} {{user.last_name}}</h6>
-  <p style="color: bisque;">Email : {{user.email}}</p>
-  <p style="color: bisque;">Contact : {{user.contact}}</p>
-  <p style="color: bisque;">Position : Recruiter</p>
+  <h6 style="color:  #fdfefe;">Name : {{user.first_name}} {{user.last_name}}</h6>
+  <p style="color:   #fdfefe;">Email : {{user.email}}</p>
+  <p style="color:  #fdfefe;">Contact : {{user.contact}}</p>
+  <p style="color:  #fdfefe;">Position : Recruiter</p>
+
+ <a href="{% url 'edit_account' user.id %}"> <button class="btn btn-success"><p>Edit profile</p></button></a>
+ 
+ <a href="{% url 'delete_account' %}"><button class="btn btn-danger"><p>Delete Account</p></button></a>
 
 </div>
 
   </div>
 </div>
+
+
+
+
 
 
 </body>

@@ -39,24 +39,47 @@
     <br>
     <br>    
 
-<center>
+      
+
+
+
+
+<div class="container">
+    <div class="row justify-content">
+      
     {% for user in users %}
     {% if user.id %}
+        <div class="col-xl-4 col-lg-6 mb-4">
+          <div class="card text-end">
+            <div class="card-body">
       
-        <div class="search">     
-            <img width="25px" src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png">   
-            <a href="{% url 'detail' user.id %}"><p>{{ user.email }}</p></a>
-        </div>
+              <div class="d-flex align-items-center">
+    
+                <div class="ms-3">
+                    <a href="{% url 'detail' user.id %}">
+                        <img width="25px" src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png">
+                        {{user.first_name}}
+                 <p style="font-family: 'Gabriola', cursive; color: rgb(0, 255, 149);" class="text-muted mb-0">{{user.email}}</p></a>
+                 
+                </div>
+              </div>
+    
+            </div>  
+          </div>
+          </div>
 
-       
-    {% else %}
-     <img src="https://cdn.dribbble.com/users/2382015/screenshots/6065978/no_result.gif" width="580px">
-     <a href="/all_filter"><button class="btn btn-primary">search again</button></a>
-    {% endif %}
-{% endfor %}
-
-</center>
+          {% else %}
+          <img src="https://cdn.dribbble.com/users/2382015/screenshots/6065978/no_result.gif" width="580px">
+          <a href="/all_filter"><button class="btn btn-primary">search again</button></a>
+     
+          {% endif %}
+          {% endfor %}
+      </div>
+    </div>
 
 </body>
 </html>
+
+
+
 

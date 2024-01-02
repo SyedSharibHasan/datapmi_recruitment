@@ -38,3 +38,12 @@ class CandidateUpdateForm(forms.ModelForm):
     class Meta:
         model = Candidate
         fields = '__all__'    
+
+
+
+from .models import Profile
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['image']

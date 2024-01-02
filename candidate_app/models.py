@@ -50,7 +50,7 @@ class Candidate(models.Model):
     resume = models.FileField(upload_to='resume/',max_length=200,blank=True,null=True)
     remarks = models.TextField(null=True,blank=True)
     updated_by = models.CharField(max_length=50, null=True,blank=True)
-    updated_on = models.DateTimeField(auto_now_add=True, null=True)
+    updated_on = models.DateTimeField(auto_now=True, null=True)
     screening_time = models.CharField(max_length=100, null=True,blank=True)
     recruiter = models.CharField(max_length=50, null=True,blank=True)
     status = models.CharField(max_length=100, null=True,blank=True)

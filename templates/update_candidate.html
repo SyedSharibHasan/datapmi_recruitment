@@ -89,9 +89,20 @@
         <!-- Phone -->
         <div class="form-group">
           <label for="phone">Phone:</label>
-          <input value="{{candidate.phone}}" type="text" id="phone" name="phone">
+          <input value="{{candidate.phone}}" type="number" id="phone" name="phone">
           <div class="error-message" id="phone-error"></div>
         </div>
+        <style>
+          input:invalid {
+            animation: shake 300ms;
+            color: red;
+          }
+          @keyframes shake {
+            0%, 100% { transform:  translate(0);}
+            25% { transform:  translate(0.125rem);}
+            75% { transform:  translate(-0.125rem);}
+          }
+        </style>
 
         <!-- Gender -->
         <div class="form-group">
@@ -107,16 +118,44 @@
 
         
         <label for="location">Select a Location:</label>
-        <input value="{{candidate.location}}" name="location" type="text" id="locationInput" placeholder="Type to search for a location">
+        <input value="{{candidate.location}}" name="location" type="text" id="locationInput" placeholder="Kochi,Kerala">
         <div id="suggestionsContainer"></div>
         
         <script>
           const placesInIndia = [
-            "Mumbai, Maharashtra", "Delhi, Delhi", "Bangalore, Karnataka", "Hyderabad, Telangana", "Chennai, Tamil Nadu",
-            "Kolkata, West Bengal", "Ahmedabad, Gujarat", "Pune, Maharashtra", "Jaipur, Rajasthan", "Lucknow, Uttar Pradesh",
-            "Patna, Bihar", "Bhopal, Madhya Pradesh", "Indore, Madhya Pradesh", "Chandigarh, Chandigarh", "Surat, Gujarat",
-            "Vadodara, Gujarat", "Agra, Uttar Pradesh", "Varanasi, Uttar Pradesh", "Amritsar, Punjab", "Jodhpur, Rajasthan",
-            "Kochi, Kerala","Trivandrum, Kerala","calicut, Kerala","Muzafarpur, Bihar",
+          "Mumbai, Maharashtra", "Delhi, Delhi", "Bangalore, Karnataka", "Hyderabad, Telangana", "Chennai, Tamil Nadu",
+    "Kolkata, West Bengal", "Ahmedabad, Gujarat", "Pune, Maharashtra", "Jaipur, Rajasthan", "Lucknow, Uttar Pradesh",
+    "Patna, Bihar", "Bhopal, Madhya Pradesh", "Indore, Madhya Pradesh", "Chandigarh, Chandigarh", "Surat, Gujarat",
+    "Vadodara, Gujarat", "Agra, Uttar Pradesh", "Varanasi, Uttar Pradesh", "Amritsar, Punjab", "Jodhpur, Rajasthan",
+    "Kochi, Kerala", "Thiruvananthapuram, Kerala", "Kozhikode, Kerala", "Muzaffarpur, Bihar",
+    "Bhubaneswar, Odisha", "Guwahati, Assam", "Ranchi, Jharkhand", "Shimla, Himachal Pradesh", "Srinagar, Jammu and Kashmir",
+    "Dehradun, Uttarakhand", "Raipur, Chhattisgarh", "Panaji, Goa", "Itanagar, Arunachal Pradesh", "Dispur, Assam",
+    "Imphal, Manipur", "Shillong, Meghalaya", "Kohima, Nagaland", "Aizawl, Mizoram", "Agartala, Tripura",
+    "Gangtok, Sikkim", "Dharamshala, Himachal Pradesh", "Puducherry, Puducherry", "Chennai, Tamil Nadu", "Thane, Maharashtra",
+    "Visakhapatnam, Andhra Pradesh", "Ghaziabad, Uttar Pradesh", "Ludhiana, Punjab", "Nagpur, Maharashtra", "Vadodara, Gujarat",
+    "Madurai, Tamil Nadu", "Warangal, Telangana", "Nashik, Maharashtra", "Faridabad, Haryana", "Meerut, Uttar Pradesh",
+    "Rajkot, Gujarat", "Kalyan-Dombivali, Maharashtra", "Vasai-Virar, Maharashtra", "Varanasi, Uttar Pradesh", "Srinagar, Jammu and Kashmir",
+    "Dhanbad, Jharkhand", "Amritsar, Punjab", "Navi Mumbai, Maharashtra", "Allahabad, Uttar Pradesh", "Ranchi, Jharkhand",
+    "Haora, West Bengal", "Coimbatore, Tamil Nadu", "Jabalpur, Madhya Pradesh", "Gwalior, Madhya Pradesh", "Vijayawada, Andhra Pradesh",
+    "Jodhpur, Rajasthan", "Raipur, Chhattisgarh", "Kota, Rajasthan", "Guwahati, Assam", "Chandrapur, Maharashtra", "Solapur, Maharashtra",
+    "Hubli-Dharwad, Karnataka", "Bareilly, Uttar Pradesh", "Moradabad, Uttar Pradesh", "Mysore, Karnataka", "Gurgaon, Haryana",
+    "Aligarh, Uttar Pradesh", "Jalandhar, Punjab", "Tiruchirappalli, Tamil Nadu", "Bhubaneswar, Odisha", "Salem, Tamil Nadu",
+    "Mira-Bhayandar, Maharashtra", "Thiruvananthapuram, Kerala", "Bhiwandi, Maharashtra", "Saharanpur, Uttar Pradesh", "Gorakhpur, Uttar Pradesh",
+    "Bikaner, Rajasthan", "Amravati, Maharashtra", "Noida, Uttar Pradesh", "Jamshedpur, Jharkhand", "Bhilai, Chhattisgarh", "Cuttack, Odisha",
+    "Firozabad, Uttar Pradesh", "Kochi, Kerala", "Nellore, Andhra Pradesh", "Bhavnagar, Gujarat", "Durgapur, West Bengal", "Asansol, West Bengal",
+    "Rourkela, Odisha", "Nanded, Maharashtra", "Kolhapur, Maharashtra", "Ajmer, Rajasthan", "Akola, Maharashtra", "Gulbarga, Karnataka",
+    "Jamnagar, Gujarat", "Ujjain, Madhya Pradesh", "Loni, Maharashtra", "Siliguri, West Bengal", "Jhansi, Uttar Pradesh", "Ulhasnagar, Maharashtra",
+    "Nellore, Andhra Pradesh", "Jammu, Jammu and Kashmir", "Sangli, Maharashtra", "Mirzapur, Uttar Pradesh", "Mango, Jharkhand", "Erode, Tamil Nadu",
+    "Belgaum, Karnataka", "Ambattur, Tamil Nadu", "Tirunelveli, Tamil Nadu", "Malegaon, Maharashtra", "Gaya, Bihar", "Jalgaon, Maharashtra", "Udaipur, Rajasthan",
+    "Maheshtala, West Bengal", "Tirupur, Tamil Nadu", "Davanagere, Karnataka", "Kozhikode, Kerala", "Akola, Maharashtra", "Kurnool, Andhra Pradesh",
+    "Bokaro, Jharkhand", "Rajahmundry, Andhra Pradesh", "Ballari, Karnataka", "Agartala, Tripura", "Bhagalpur, Bihar", "Latur, Maharashtra",
+    "Dhule, Maharashtra", "Korba, Chhattisgarh", "Bhilwara, Rajasthan", "Brahmapur, Odisha", "Mysore, Karnataka", "Muzaffarnagar, Uttar Pradesh",
+    "Ahmednagar, Maharashtra", "Kollam, Kerala", "Raghunathganj, West Bengal", "Bilaspur, Chhattisgarh", "Shahjahanpur, Uttar Pradesh",
+    "Thrissur, Kerala", "Alwar, Rajasthan", "Kakinada, Andhra Pradesh", "Nizamabad, Telangana", "Parbhani, Maharashtra", "Tumkur, Karnataka",
+    "Khammam, Telangana", "Ozhukarai, Puducherry", "Bihar Sharif, Bihar", "Panipat, Haryana", "Darbhanga, Bihar", "Bally, West Bengal", "Aizawl, Mizoram",
+    "Ichalkaranji, Maharashtra", "Tirupati, Andhra Pradesh", "Ratlam, Madhya Pradesh", "Rewa, Madhya Pradesh", "Latur, Maharashtra", "Hapur, Uttar Pradesh",
+    "Bidhan Nagar, West Bengal", "Sambhal, Uttar Pradesh", "Barasat, West Bengal", "Kulti, West Bengal", "Ambarnath, Maharashtra", "Baranagar, West Bengal",
+    "Ratlam, Madhya Pradesh", "Nangloi Jat, Delhi", "Madhyamgram, West Bengal", "North Dumdum, West Bengal"
           
           ];
         
@@ -206,23 +245,30 @@
         <!-- Total Years of Experience -->
         <div class="form-group">
           <label for="experience">Total Years of Experience:</label>
-          <input value="{{candidate.experience}}" type="text" id="experience" name="experience">
+          <input value="{{candidate.experience}}" type="number" id="experience" name="experience">
           <div class="error-message" id="experience-error"></div>
         </div>
 
         <!-- Relevant Experience -->
         <div class="form-group">
           <label for="relevant-experience">Relevant Years Of Experience:</label>
-          <input value="{{candidate.relevent_experience}}" type="text" id="relevant-experience" name="relevent_experience">
+          <input value="{{candidate.relevent_experience}}" type="number" id="relevant-experience" name="relevent_experience">
           <div class="error-message" id="relevant-experience-error"></div>
         </div>
  
 
-        <label>Skills</label>
-        <input value="{% for skill in candidate.skills.all %}{{ skill.name }}{% if not forloop.last %}, {% endif %}{% endfor %}" type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
+        <label for="skillsInput">Skills</label>
+        <input type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
         <button type="button" onclick="addManuallyTypedSkill(event)">Add</button>
         <ul id="skillList" class="skill-container"></ul>
-        <div id="selectedSkills" class="skill-container"></div>
+        <div id="selectedSkills" class="skill-container">
+            {% for skill in candidate.skills.all %}
+            <div class="skill-item">
+                <input type="text" value="{{ skill.name }}" name="skills" readonly>
+                <button type="button" onclick="removeSkill(this)">*</button>
+            </div>
+            {% endfor %}
+        </div>
         
         <script>
          var skillsList = [ 'Java', 'Python', 'JavaScript', 'HTML', 'CSS', 'React', 'Node.js',
@@ -241,7 +287,16 @@
     'Project Management', 'Agile', 'Scrum', 'Kanban', 'Jira',
     'Linux Administration', 'Shell Scripting', 'Bash', 'Ubuntu', 'CentOS',
     'IT Support', 'Help Desk', 'Troubleshooting', 'Remote Desktop Support',
-    'Technical Writing', 'Documentation', 'User Manuals', 'API Documentation'];
+    'Technical Writing', 'Documentation', 'User Manuals', 'API Documentation',
+    'C++', 'C#', 'Ruby', 'PHP', 'SwiftUI', 'GraphQL',
+    'Big Data', 'Hadoop', 'Spark', 'Hive', 'Pig', 'MapReduce',
+    'IoT', 'Raspberry Pi', 'Arduino', 'Embedded Systems',
+    'Virtualization', 'VMware', 'VirtualBox', 'Hyper-V',
+    'Web Security', 'OWASP', 'Web Application Security',
+    'Microsoft Office Suite', 'Excel', 'Word', 'PowerPoint',
+    'Business Intelligence', 'Tableau', 'Power BI', 'QlikView',
+    'Network Security', 'Intrusion Detection', 'VPN', 'Wireless Security',
+    'Agile Coaching', 'Team Leadership', 'Mentorship', 'Conflict Resolution'];
 
     function filterSkills() {
         var input = document.getElementById('skillsInput');
@@ -311,6 +366,11 @@
         }
     }
 
+
+    function removeSkill(button) {
+        var skillContainer = button.parentNode;
+        skillContainer.remove();
+    }
         </script>
         
      
@@ -388,10 +448,10 @@
 </div>
 
 <!-- Option to keep the current resume unchanged -->
-<div class="form-group">
+<!-- <div class="form-group">
   <label for="keep_resume">Keep Current Resume:</label>
   <input type="checkbox" id="keep_resume" name="keep_resume" {% if not candidate.resume %}checked{% endif %}>
-</div>
+</div> -->
 
 
         <!-- Remarks -->
@@ -447,51 +507,6 @@
           </script>
           
 
-          <!-- reason for rejection for r1-r4 round -->
-          <!-- <div id="reason-for-r1-r2-r3-r4-rejection" style="display: none;">
-            <label for="rejection-reason-text">Reason for Rejection:</label>
-            <textarea id="rejection-reason-text" name="rejection_reason_for_r1-r4"></textarea>
-          </div>
-
-        </div>
-
-
-        
-        <div id="offer-container" style="display: none;">
-          <div class="form-group">
-            <label for="offer-2">Offer:</label>
-            <select id="offer-2" name="offer">
-              <option value="" {% if not candidate.offer %}selected{% endif %}>Select</option>
-              <option value="yes" {% if candidate.offer == 'yes' %}selected{% endif %}>Yes</option>
-              <option value="no" {% if candidate.offer == 'no' %}selected{% endif %}>No</option>
-          </select>
-          
-            <div class="error-message" id="offer-error"></div>
-          </div>
-        </div>
-
-        <div id="offer-reject-reason-container" style="display: none;">
-          <div class="form-group">
-            <label for="offer-reject-reason-text">Reason for Rejection:</label>
-            <textarea id="offer-reject-reason-text" name="offer_reject_reason">{{candidate.offer_reject_reason}}</textarea>
-            <div class="error-message" id="offer-reject-reason-error"></div>
-          </div>
-        </div>
-
-
-        <script>
-          document.getElementById('offer-2').addEventListener('change', function () {
-            var offerValue = this.value;
-            var offerDetailsDiv = document.getElementById('offer-reject-reason-container');
-
-            if (offerValue === 'no') {
-              offerDetailsDiv.style.display = 'block';
-            } else {
-              offerDetailsDiv.style.display = 'none';
-            }
-          });
-        </script> -->
-
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
@@ -508,7 +523,6 @@
   </div>
 
 
-
-
 </body>
 </html>
+
