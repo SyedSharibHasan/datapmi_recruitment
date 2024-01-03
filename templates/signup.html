@@ -144,7 +144,7 @@
 <body id="body">
 
   <div class="container">
-    <form action="" method="POST" class="content">
+    <form action="" method="POST" class="content" enctype="multipart/form-data">
       {% csrf_token %}
       
       <h1 id="say-hello">Welcome To DataPMI</h1>
@@ -176,6 +176,11 @@
           <input name="contact" class="fld" type="tel" placeholder="Enter your contact number" id="contact" required/>
         </div>
 
+        <div class="image">
+          <label for="image">Profile Image</label><br />
+          <input name="image" class="fld" type="file" accept="image/*" id="image" required/>
+        </div>
+
         <div class="password">
           <label for="password">Password</label><br />
           <input name="pass1" class="fld" type="password" placeholder="Enter your password" id="password" required/>
@@ -195,6 +200,7 @@
 </body>
 
 </html>
+
 
 
 

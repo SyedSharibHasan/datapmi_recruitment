@@ -187,26 +187,31 @@
                 <span>Remarks:</span> {{detail.remarks}}
             </div>
 
+            {% if request.user == detail.user %}
             <div class="field">
-                <span>Recruiter:</span> {{detail.recruiter}}
-            </div>
+            <span>Recruiter:</span> {{request.user}}
+        </div>
+            {% else %}
+            <div class="field">
+                            <span>Recruiter:</span> {{detail.user}}
+                        </div>
+
+            {% endif %}
 
             <div class="field">
+                {% if detail.status %}
                 <span>Status:</span> {{detail.status}}
+                {% else %}
+                <span>Status:</span>  status not updated
+            {% endif %}
             </div>
 
-            <!-- <div class="field">
-                <span>Offer Details:</span> {{detail.additional_status}}
-            </div> -->
-     
-            
-            
-
+          
             <div class="field resume-link">
                 <span>
                     {% if detail.resume %}
-                        Download Resume:
-                        <a href="{{ detail.resume.url }}" target="_blank">Resume.pdf</a>
+                        Resume:
+                        <a href="{{ detail.resume.url }}" target="_blank">Download</a>
                     {% else %}
                         No resume uploaded.
                     {% endif %}

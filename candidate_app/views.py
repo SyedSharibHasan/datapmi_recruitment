@@ -27,7 +27,7 @@ def signup(request):
         
         if pass1 != pass2:
             # Handle password mismatch error as needed
-            return HttpResponse('Password 1 and 2 are not matched')
+            return HttpResponse('Passwords are not matched')
         
         # Create CustomUser instance
         user = CustomUser(username=username, first_name=first_name, last_name=last_name,email=email)
@@ -35,7 +35,9 @@ def signup(request):
         user.save()
 
         contact = request.POST.get('contact')
+        image = request.FILES.get('image') 
         user.contact = contact
+        user.image = image
         user.save()
 
         return redirect('login')  # Redirect to a success page
@@ -143,18 +145,10 @@ class Createcandidate(CreateView):
             offer_details = request.POST.get("offer_details")
             resume = request.FILES.get("resume")
             remarks = request.POST.get("remarks")
-            recruiter = request.POST.get("recruiter")
-    
             status = request.POST.get("status")
-            # rejection_reason = request.POST.get("rejection_reason")
             additional_status = request.POST.get("client-details")
-            # rejection_reason_for_r1_r4 = request.POST.get("rejection_reason_for_r1-r4")
-            # offer = request.POST.get("offer")
-            # offer_reject_reason = request.POST.get("offer_reject_reason")
             
             
-
-
             candidate = Candidate(
                 
                 designation=designation,
@@ -173,20 +167,14 @@ class Createcandidate(CreateView):
                 remarks=remarks,
                 experience=experience,
                 relevent_experience=relevent_experience,
-                # skills=skills,
                 notice_period=notice_period,
                 current_ctc=current_ctc,
                 expected_ctc=expected_ctc,
                 offer_in_hands=offer_in_hands,
                 offer_details=offer_details,
                 resume=resume,
-                recruiter=recruiter,
                 status=status,
-                # rejection_reason=rejection_reason,
                 additional_status=additional_status,
-                # rejection_reason_for_r1_r4=rejection_reason_for_r1_r4,
-                # offer = offer,
-                # offer_reject_reason=offer_reject_reason,
                 user=request.user
             )
             candidate.save()
@@ -260,16 +248,11 @@ class Updatecandidate(UpdateView):
         candidate.expected_ctc = request.POST.get("expected_ctc")
         candidate.offer_in_hands = request.POST.get("offer_in_hands")
         candidate.offer_details = request.POST.get("offer_details")
-        # candidate.resume = request.FILES.get("resume")
         candidate.remarks = request.POST.get("remarks")
-        candidate.recruiter = request.POST.get("recruiter")
     
         candidate.status = request.POST.get("status")
-        # candidate.rejection_reason = request.POST.get("rejection_reason")
         candidate.additional_status = request.POST.get("client-details")
-        # candidate.rejection_reason_for_r1_r4 = request.POST.get("rejection_reason_for_r1-r4")
-        # candidate.offer = request.POST.get("offer")
-        # candidate.offer_reject_reason = request.POST.get("offer_reject_reason")
+      
         
         new_resume = request.FILES.get('new_resume')
         keep_resume = request.POST.get('keep_resume')
@@ -305,6 +288,7 @@ class Updatecandidate(UpdateView):
             print(f"Error saving candidate: {e}")
             # Return an error response
             return render(request, self.template_name, {'error': 'Error: Could not save the candidate.'})
+
 
             
 from django.views import View
@@ -422,7 +406,7 @@ def autocomplete_username(request):
 
 
 
-##### filrer only for skills and locations
+##### filter only for skills and locations
 from django.db.models.query import Q
 from django.http import HttpResponse
 from django.views.generic import ListView
@@ -570,7 +554,7 @@ def list_of_candidates(request, status):
 
 class Edit_account(UpdateView):
     model = CustomUser
-    fields = ['username','first_name','last_name','email','contact']
+    fields = ['username','first_name','last_name','email','contact','image']
     success_url = reverse_lazy('profile')
     template_name = 'edit_account.html'
     

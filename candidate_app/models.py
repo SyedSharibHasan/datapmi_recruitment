@@ -9,6 +9,7 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     contact = models.CharField(max_length=15, blank=True, null=True)
+    image = models.ImageField(upload_to='profile_images/', max_length=400, blank=True, null=True)
 
 
 class Skill(models.Model):
