@@ -1,334 +1,97 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %} All candidates {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
-{% block head %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<style>
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
-    }
+    <title>Document</title>
+    <style>
+      
+    </style>
 
-    .table {
-        width: auto;
-        min-width: 1200px;
-        border-collapse: separate;
-        border-spacing: 0.5px;
-        background-color: rgba(255, 255, 255, 0.8);
-        /* Transparent background for the entire table */
-        border: 2px solid #0000AA;
-    }
+</head>
 
-    .table th,
-    .table td {
-        width: 200px;
-        max-width: 400px;
-        height: 5px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        padding: 6px;
-        vertical-align: middle;
-        text-align: center;
-        border: 1px solid #0000AA;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-        background-color: transparent;
-    }
+<body>
+    <nav class="main-menu">
+        <h1>D A T A P M I</h1>
 
-    .scroll-cell {
-        max-height: 100px;
-        overflow-y: auto;
-        width: 100%;
-        border: 2px solid #0000AA;
-        padding: 5px;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-    }
+        <ul>
+            <div class="container wrapper">
+                <table class="table table-bordered table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">Name</th>
+                            <th class="col-md-2">Email</th>
+                            <th class="col-md-2">Mobile</th>
+                            <th class="col-md-2">Client Name</th>
+                            <th class="col-md-2">Mode of work</th>
+                            <th class="col-md-2">Gender</th>
+                            <th class="col-md-2">Skills</th>
+                            <th class="col-md-2">Location</th>
+                            <th class="col-md-2">College</th>
+                            <th class="col-md-2">Qualification</th>
+                            <th class="col-md-2">Tools</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in all %}
+                        <tr>
+                            <td>{{ i.first_name }}</td>
+                            <td>{{ i.email }}</td>
+                            <td>{{ i.phone }}</td>
+                            <td>{{ i.client_name }}</td>
+                            <td>{{ i.mode_of_work }}</td>
+                            <td>{{ i.gender }}</td>
 
-    .table th {
-        background-color: #f7f7fc;
-        border: 1px solid #0000AA;
-    }
+                            <td>
+                                {% for skill in i.skills.all %}
+                                {{ skill.name }}
+                                {% if not forloop.last %}, {% endif %}
+                                {% endfor %}</td>
+                            <td>{{ i.location }}</td>
+                            <td>{{ i.college }}</td>
+                            <td>{{ i.qualification }}</td>
+                            <td><i class="bi bi-search"></i></td>
 
-    body {
-        background-image: url('https://images.wallpaperscraft.com/image/single/castle_rock_lake_975862_2560x1600.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
+                        </tr>
+                        {% endfor %}
 
-    h2.candidate-info {
-        color: #0000AA;
-        font-family: Arial, sans-serif;
-        /* Set the font family */
-        font-size: 40px;
-        /* Set the font size */
-        background-color: #f7f7f7;
-        /* Set the background color */
-        padding: 10px;
-        /* Add padding */
-        border-radius: 100px;
-        /* Add border-radius for rounded corners */
-        text-align: center;
-        /* Center the text */
-        text-shadow: 2px 2px 2px #b11717;
-        /* Add text shadow */
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-    }
+                    </tbody>
+                </table>
+            </div>
 
-    .transparent-table {
-        background-color: rgba(255, 255, 255, 0.8);
-        border: 2px solid #0000AA;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-    }
+            <script>
+                $(document).ready(function () {
+                    $('.table').DataTable({
 
-    th#snno {
-        position: sticky;
-        left: 0;
-        /* background-color: #d5f5e3; */
-        background-color: transparent;
-        z-index: 1;
-        border: 2px solid #0000AA;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-    }
+                        "columnDefs": [
+                            { "orderable": false, "targets": 5 }
+                        ],
+                        language: {
+                            //customize pagination prev and next buttons: use arrows instead of words
+                            'paginate': {
+                                'previous': '<span class="fa fa-chevron-left"></span>',
+                                'next': '<span class="fa fa-chevron-right"></span>'
+                            },
+                            //customize number of elements to be displayed
+                            "lengthMenu": 'Display <select class="form-control input-sm">' +
+                                '<option value="10">10</option>' +
+                                '<option value="20">20</option>' +
+                                '<option value="30">30</option>' +
+                                '<option value="40">40</option>' +
+                                '<option value="50">50</option>' +
+                                '<option value="-1">All</option>' +
+                                '</select> results'
+                        }
+                    })
+                });
+            </script>
 
-    td.snno {
-        position: sticky;
-        left: 0;
-        /* background-color: #fcf3cf; */
-        background-color: transparent;
-        z-index: 1;
-        border: 2px solid #0000AA;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-    }
-</style>
-{% endblock %}
+</body>
 
-
-
-
-{% block content %}
-
-{% include 'navbar.html' %}
-
-<br>
-<div>
-    <h2 class="candidate-info my-2 mx-2">Candidate Information</h2>
-</div>
-
-
-<div class="container-fluid table-container my-2 mx-3">
-    <table class="table table-bordered my-3" style="border: 2px solid #0000AA;">
-        <thead>
-            <tr>
-                <th id="snno" style="font-family: garamond;" scope="col"
-                    class="border-0 text-uppercase font-medium pl-4">S.No</th>
-                <!-- <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Sex</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">College</th>
-                    <th scope="col">Qualification</th>
-                    <th scope="col">Skills</th>
-                    <th scope="col">Total Year Of Experience</th>
-                    <th scope="col">Designation</th>
-                    <th scope="col">Current CTC</th>
-                    <th scope="col">Current Company</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Expected CTC</th>
-                    <th scope="col">Resume</th>
-                    <th scope="col">Remarks</th>
-                    <th scope="col">Updated By</th>
-                    <th scope="col">Updated On</th> -->
-
-                <!-- Designation -->
-                <th scope="col">Designation</th>
-
-                <!-- Client Name -->
-                <th scope="col">Client Name</th>
-
-                <!-- Mode Of Work -->
-                <th scope="col">Mode Of Work</th>
-
-                <!-- First Name -->
-                <th scope="col">First Name</th>
-
-                <!-- Last Name -->
-                <th scope="col">Last Name</th>
-
-                <!-- Email -->
-                <th scope="col">Email</th>
-
-                <!-- Phone -->
-                <th scope="col">Phone</th>
-
-                <!-- Gender -->
-                <th scope="col">Gender</th>
-
-                <!-- Location -->
-                <th scope="col">Location</th>
-
-                <!-- College -->
-                <th scope="col">College</th>
-
-                <!-- Qualification -->
-                <th scope="col">Higher Qualification</th>
-
-                <!-- Year of Graduation -->
-                <th scope="col">Year of Graduation</th>
-
-                <!-- Current Company -->
-                <th scope="col">Current Company</th>
-
-                <!-- Reason for change current company -->
-                <th scope="col">Reason For Change</th>
-
-                <!-- Total Years of Experience -->
-                <th scope="col">Total Years of Experience</th>
-
-                <!-- Relevant Experience -->
-                <th scope="col">Relevant Years Of Experience</th>
-
-                <!-- Skills Set -->
-                <th scope="col">Skills Set</th>
-
-                <!-- Notice Period -->
-                <th scope="col">Notice Period</th>
-
-                <!-- Current CTC -->
-                <th scope="col">Current CTC</th>
-
-                <!-- Expected CTC -->
-                <th scope="col">Expected CTC</th>
-
-                <!-- Offer in hands -->
-                <th scope="col">Offer In Hands</th>
-
-                <!-- Offer Rejection Reason -->
-                <th scope="col">Details</th>
-
-                <!-- Resume -->
-                <th scope="col">Resume</th>
-
-                <!-- Remarks -->
-                <th scope="col">Remarks</th>
-
-                <!-- Recruiter -->
-                <th scope="col">Recruiter</th>
-
-                <!-- Screening Time SLOT -->
-                <th scope="col">Screening Time SLOT</th>
-
-                <!-- Status -->
-                <th scope="col">Status</th>
-
-                <!-- Reason for rejection -->
-                <th scope="col">Reason for Rejection</th>
-
-                <!-- Additional Status -->
-                <th scope="col">Additional Status</th>
-
-                <!-- Reason for rejection for r1-r4 round -->
-                <th scope="col">Reason for Rejection</th>
-
-                <!-- Offer -->
-                <th scope="col">Additional Status</th>
-
-                <!-- Offer -->
-                <th scope="col">Offer</th>
-
-                <!-- Reason for Rejection -->
-                <th scope="col">Reason for Rejection</th>
-
-                <!-- Date Of Joining -->
-                <th scope="col">Date Of Joining</th>
-
-                <!-- Joined OR Not -->
-                <th scope="col">On Boarding</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in all %}
-            <tr>
-                <!-- <td>{{ forloop.counter }}</td> -->
-                <td class="snno">{{ forloop.counter }}</td>
-                <!-- ... other columns ... -->
-
-                <!-- <td>{{ i.first_name }}</td>
-                <td>{{ i.last_name }}</td>
-                <td>{{ i.email }}</td>
-                <td>{{ i.phone }}</td>
-                <td>{{ i.sex }}</td>
-                <td>{{ i.location }}</td>
-                <td>{{ i.College }}</td>
-                <td>
-                    <div class="scroll-cell">{{ i.qualification }}</div>
-                </td>
-                <td>
-                    <div class="scroll-cell">{{ i.skills }}</div>
-                </td>
-                <td>{{ i.experience }}</td>
-                <td>{{ i.designation }}</td>
-                <td>{{ i.current_ctc }}</td>
-                <td>{{ i.current_company }}</td>
-                <td>{{ i.location }}</td>
-                <td>{{ i.expected_ctc }}</td>
-                <td>
-                    <p> <a href="{{i.resume}}" download>Resume.pdf</a></p>
-                </td>
-                <td>
-                    <div class="scroll-cell">{{ i.remarks }}</div>
-                </td>
-                <td>{{ i.recruiter }}</td>
-                <td>{{ i.updated_on }}</td> -->
-
-
-                <td>{{ i.designation }}</td>
-                <td>{{ i.client_name }}</td>
-                <td>{{ i.mode_of_work }}</td>
-                <td>{{ i.first_name }}</td>
-                <td>{{ i.last_name }}</td>
-                <td>{{ i.email }}</td>
-                <td>{{ i.phone }}</td>
-                <td>{{ i.gender }}</td>
-                <td>{{ i.location }}</td>
-                <td>{{ i.college }}</td>
-                <td> <div class="scroll-cell">{{ i.qualification }}</div></td>
-                <td>{{ i.graduation_year }}</td>
-                <td>{{ i.current_company }}</td>
-                <td><div class="scroll-cell">{{ i.remarks }}</div></td>
-                <td>{{ i.experience }}</td>
-                <td>{{ i.relevent_experience }}</td>
-                <td><div class="scroll-cell">{{ i.skills }}</div></td>
-                <td>{{ i.notice_period }}</td>
-                <td>{{ i.current_ctc }}</td>
-                <td>{{ i.expected_ctc }}</td>
-                <td>{{ i.offer_in_hands }}</td>
-                <td><div class="scroll-cell">{{ i.offer_details }}</div></td>
-                <td> <p> <a href="{{i.resume}}" download>Resume.pdf</a> </p> </td>
-                <td><div class="scroll-cell">{{ i.remarks }}</div></td>
-                <td>{{ i.recruiter }}</td>
-                <td>{{ i.screening_time }}</td>
-                <td>{{ i.status }}</td>
-                <td><div class="scroll-cell">{{ i.rejection_reason }}</div></td>
-                <td>{{ i.additional_status }}</td>
-                <td><div class="scroll-cell">{{ i.rejection_reason_for_r1_r4 }}</div></td>
-                <td>{{ i.additional_status }}</td>
-                <td>{{ i.offer }}</td>
-                <td><div class="scroll-cell">{{ i.offer_reject_reason }}</div></td>
-                <td>{{ i.date_of_joining }}</td>
-                <td>{{ i.on_boarding }}</td>
-
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-{% include 'all_c_pagination.html' %}
-
-{% endblock %}
+</html>

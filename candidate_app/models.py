@@ -73,8 +73,6 @@ class Candidate(models.Model):
 
 
 
-
-
 class Profile(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='image/',max_length=400,blank=True)

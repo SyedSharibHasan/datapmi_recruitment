@@ -117,94 +117,95 @@
         </div>
 
         
-        <label for="location">Select a Location:</label>
-        <input value="{{candidate.location}}" name="location" type="text" id="locationInput" placeholder="Kochi,Kerala">
-        <div id="suggestionsContainer"></div>
-        
-        <script>
-          const placesInIndia = [
-          "Mumbai, Maharashtra", "Delhi, Delhi", "Bangalore, Karnataka", "Hyderabad, Telangana", "Chennai, Tamil Nadu",
-    "Kolkata, West Bengal", "Ahmedabad, Gujarat", "Pune, Maharashtra", "Jaipur, Rajasthan", "Lucknow, Uttar Pradesh",
-    "Patna, Bihar", "Bhopal, Madhya Pradesh", "Indore, Madhya Pradesh", "Chandigarh, Chandigarh", "Surat, Gujarat",
-    "Vadodara, Gujarat", "Agra, Uttar Pradesh", "Varanasi, Uttar Pradesh", "Amritsar, Punjab", "Jodhpur, Rajasthan",
-    "Kochi, Kerala", "Thiruvananthapuram, Kerala", "Kozhikode, Kerala", "Muzaffarpur, Bihar",
-    "Bhubaneswar, Odisha", "Guwahati, Assam", "Ranchi, Jharkhand", "Shimla, Himachal Pradesh", "Srinagar, Jammu and Kashmir",
-    "Dehradun, Uttarakhand", "Raipur, Chhattisgarh", "Panaji, Goa", "Itanagar, Arunachal Pradesh", "Dispur, Assam",
-    "Imphal, Manipur", "Shillong, Meghalaya", "Kohima, Nagaland", "Aizawl, Mizoram", "Agartala, Tripura",
-    "Gangtok, Sikkim", "Dharamshala, Himachal Pradesh", "Puducherry, Puducherry", "Chennai, Tamil Nadu", "Thane, Maharashtra",
-    "Visakhapatnam, Andhra Pradesh", "Ghaziabad, Uttar Pradesh", "Ludhiana, Punjab", "Nagpur, Maharashtra", "Vadodara, Gujarat",
-    "Madurai, Tamil Nadu", "Warangal, Telangana", "Nashik, Maharashtra", "Faridabad, Haryana", "Meerut, Uttar Pradesh",
-    "Rajkot, Gujarat", "Kalyan-Dombivali, Maharashtra", "Vasai-Virar, Maharashtra", "Varanasi, Uttar Pradesh", "Srinagar, Jammu and Kashmir",
-    "Dhanbad, Jharkhand", "Amritsar, Punjab", "Navi Mumbai, Maharashtra", "Allahabad, Uttar Pradesh", "Ranchi, Jharkhand",
-    "Haora, West Bengal", "Coimbatore, Tamil Nadu", "Jabalpur, Madhya Pradesh", "Gwalior, Madhya Pradesh", "Vijayawada, Andhra Pradesh",
-    "Jodhpur, Rajasthan", "Raipur, Chhattisgarh", "Kota, Rajasthan", "Guwahati, Assam", "Chandrapur, Maharashtra", "Solapur, Maharashtra",
-    "Hubli-Dharwad, Karnataka", "Bareilly, Uttar Pradesh", "Moradabad, Uttar Pradesh", "Mysore, Karnataka", "Gurgaon, Haryana",
-    "Aligarh, Uttar Pradesh", "Jalandhar, Punjab", "Tiruchirappalli, Tamil Nadu", "Bhubaneswar, Odisha", "Salem, Tamil Nadu",
-    "Mira-Bhayandar, Maharashtra", "Thiruvananthapuram, Kerala", "Bhiwandi, Maharashtra", "Saharanpur, Uttar Pradesh", "Gorakhpur, Uttar Pradesh",
-    "Bikaner, Rajasthan", "Amravati, Maharashtra", "Noida, Uttar Pradesh", "Jamshedpur, Jharkhand", "Bhilai, Chhattisgarh", "Cuttack, Odisha",
-    "Firozabad, Uttar Pradesh", "Kochi, Kerala", "Nellore, Andhra Pradesh", "Bhavnagar, Gujarat", "Durgapur, West Bengal", "Asansol, West Bengal",
-    "Rourkela, Odisha", "Nanded, Maharashtra", "Kolhapur, Maharashtra", "Ajmer, Rajasthan", "Akola, Maharashtra", "Gulbarga, Karnataka",
-    "Jamnagar, Gujarat", "Ujjain, Madhya Pradesh", "Loni, Maharashtra", "Siliguri, West Bengal", "Jhansi, Uttar Pradesh", "Ulhasnagar, Maharashtra",
-    "Nellore, Andhra Pradesh", "Jammu, Jammu and Kashmir", "Sangli, Maharashtra", "Mirzapur, Uttar Pradesh", "Mango, Jharkhand", "Erode, Tamil Nadu",
-    "Belgaum, Karnataka", "Ambattur, Tamil Nadu", "Tirunelveli, Tamil Nadu", "Malegaon, Maharashtra", "Gaya, Bihar", "Jalgaon, Maharashtra", "Udaipur, Rajasthan",
-    "Maheshtala, West Bengal", "Tirupur, Tamil Nadu", "Davanagere, Karnataka", "Kozhikode, Kerala", "Akola, Maharashtra", "Kurnool, Andhra Pradesh",
-    "Bokaro, Jharkhand", "Rajahmundry, Andhra Pradesh", "Ballari, Karnataka", "Agartala, Tripura", "Bhagalpur, Bihar", "Latur, Maharashtra",
-    "Dhule, Maharashtra", "Korba, Chhattisgarh", "Bhilwara, Rajasthan", "Brahmapur, Odisha", "Mysore, Karnataka", "Muzaffarnagar, Uttar Pradesh",
-    "Ahmednagar, Maharashtra", "Kollam, Kerala", "Raghunathganj, West Bengal", "Bilaspur, Chhattisgarh", "Shahjahanpur, Uttar Pradesh",
-    "Thrissur, Kerala", "Alwar, Rajasthan", "Kakinada, Andhra Pradesh", "Nizamabad, Telangana", "Parbhani, Maharashtra", "Tumkur, Karnataka",
-    "Khammam, Telangana", "Ozhukarai, Puducherry", "Bihar Sharif, Bihar", "Panipat, Haryana", "Darbhanga, Bihar", "Bally, West Bengal", "Aizawl, Mizoram",
-    "Ichalkaranji, Maharashtra", "Tirupati, Andhra Pradesh", "Ratlam, Madhya Pradesh", "Rewa, Madhya Pradesh", "Latur, Maharashtra", "Hapur, Uttar Pradesh",
-    "Bidhan Nagar, West Bengal", "Sambhal, Uttar Pradesh", "Barasat, West Bengal", "Kulti, West Bengal", "Ambarnath, Maharashtra", "Baranagar, West Bengal",
-    "Ratlam, Madhya Pradesh", "Nangloi Jat, Delhi", "Madhyamgram, West Bengal", "North Dumdum, West Bengal"
-          
-          ];
-        
-          const locationInput = document.getElementById('locationInput');
-          const suggestionsContainer = document.getElementById('suggestionsContainer');
-        
-          // Initialize event listener for input field
-          locationInput.addEventListener('input', function() {
-            const inputValue = locationInput.value.toLowerCase();
-        
-            // Filter places based on input value
-            const filteredPlaces = placesInIndia.filter(place => place.toLowerCase().includes(inputValue));
-        
-            // Display filtered places
-            displayAutoSuggestions(filteredPlaces);
-          });
-        
-          function displayAutoSuggestions(suggestions) {
-            // Clear previous suggestions
-            clearSuggestions();
-        
-            // Create and append suggestion elements
-            suggestions.forEach(suggestion => {
-              const suggestionElement = document.createElement('div');
-              suggestionElement.classList.add('suggestion');
-              suggestionElement.textContent = suggestion;
-              suggestionElement.addEventListener('click', function() {
-                // Set the selected suggestion as the input value
-                locationInput.value = suggestion;
-                // Clear the suggestions
-                clearSuggestions();
-              });
-        
-              suggestionsContainer.appendChild(suggestionElement);
-            });
+        <div class="form-group">
+          <div class="select_option">
+            <label for="gender">Location:</label>
+              <select class="form-select state" aria-label="Default select example" onchange="loadCities()">
+                  <option selected>Select State</option>
+              </select>
+              <select class="form-select city" aria-label="Default select example">
+                  <option selected>Select City</option>
+              </select>
+              <input value="{{candidate.location}}" name="location" placeholder="Kochi,Kerala"  class="form-control autocomplete-input result" readonly>
+          </div>
+      </div>
+      
+      
+      <script>
+        var config = {
+            cUrl: 'https://api.countrystatecity.in/v1/countries',
+            ckey: 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA=='
+        }
+      
+        var stateSelect = document.querySelector('.state'),
+            citySelect = document.querySelector('.city'),
+            resultInput = document.querySelector('.result');
+      
+        function loadStates() {
+            stateSelect.disabled = false;
+            citySelect.disabled = true;
+            stateSelect.style.pointerEvents = 'auto';
+            citySelect.style.pointerEvents = 'none';
+      
+            const selectedCountryCode = 'IN'; // ISO2 code for India
+            stateSelect.innerHTML = '<option value="">Select State</option>'; // for clearing the existing states
+            citySelect.innerHTML = '<option value="">Select City</option>'; // Clear existing city options
+      
+            fetch(`${config.cUrl}/${selectedCountryCode}/states`, {headers: {"X-CSCAPI-KEY": config.ckey}})
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(state => {
+                        const option = document.createElement('option');
+                        option.value = state.iso2;
+                        option.textContent = state.name;
+                        stateSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error loading states:', error));
+        }
+      
+        function loadCities() {
+            citySelect.disabled = false;
+            citySelect.style.pointerEvents = 'auto';
+      
+            const selectedCountryCode = 'IN'; // ISO2 code for India
+            const selectedStateCode = stateSelect.value;
+      
+            citySelect.innerHTML = '<option value="">Select City</option>'; // Clear existing city options
+      
+            fetch(`${config.cUrl}/${selectedCountryCode}/states/${selectedStateCode}/cities`, {headers: {"X-CSCAPI-KEY": config.ckey}})
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city.iso2;
+                        option.textContent = city.name;
+                        citySelect.appendChild(option);
+                    });
+                });
+      
+            // Set the value of the result input
+            updateResultInput();
+        }
+      
+        function updateResultInput() {
+              const selectedStateText = stateSelect.options[stateSelect.selectedIndex].text;
+              const selectedCityText = citySelect.options[citySelect.selectedIndex].text;
+      
+              // Exclude "Select City" from the input
+              if (selectedCityText !== 'Select City') {
+                  resultInput.value = `${selectedCityText}, ${selectedStateText}`;
+              } else {
+                  resultInput.value = selectedStateText;
+              }
           }
-        
-          function clearSuggestions() {
-            suggestionsContainer.innerHTML = '';
-          }
-        
-          // Close suggestions when clicking outside the input and suggestions
-          document.addEventListener('click', function(event) {
-            if (event.target !== locationInput && event.target.parentNode.id !== 'suggestionsContainer') {
-              clearSuggestions();
-            }
-          });
-        </script>
-
+      
+        window.onload = function () {
+            loadStates();
+            // Add onchange event handler to the city dropdown
+            citySelect.onchange = updateResultInput;
+        };
+      </script>
 
 
         <!-- College -->
