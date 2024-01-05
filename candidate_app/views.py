@@ -343,7 +343,7 @@ def dashboard(request):
 
 
 
-#####cpersonal profile
+##### personal profile
 from .models import Profile
 from django.http import JsonResponse
 
@@ -556,7 +556,11 @@ class Edit_account(UpdateView):
     model = CustomUser
     fields = ['username','first_name','last_name','email','contact','image']
     success_url = reverse_lazy('profile')
-    template_name = 'edit_account.html'
+    template_name = 'profile.html'
+
+    def get_object(self, queryset=None):
+        # Get the user object based on the logged-in user
+        return get_object_or_404(CustomUser, pk=self.request.user.pk)
     
     
 

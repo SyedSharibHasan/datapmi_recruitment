@@ -11,16 +11,16 @@
     
     <title>My candidates</title>
     <style>
-        /* body {
+        body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background-image: url('https://4kwallpapers.com/images/wallpapers/blue-background-2732x2732-10208.jpg');
+            background-image: url('https://t3.ftcdn.net/jpg/01/19/67/02/360_F_119670247_HDccziQUuo2kFpaNiM22dIto5I8GPAWW.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-        } */
+        }
 
         .container {
             width: 80%;
@@ -161,26 +161,24 @@
                 { "orderable": false, "targets": 5 }
             ],
             language: {
-                //customize pagination prev and next buttons: use arrows instead of words
                 'paginate': {
                     'previous': '<span class="fa fa-chevron-left"></span>',
                     'next': '<span class="fa fa-chevron-right"></span>'
                 },
                 //customize number of elements to be displayed
-                "lengthMenu": 'Display <select class="form-control input-sm">' +
+                "lengthMenu": 'Display <select >' +
                     '<option value="10">10</option>' +
                     '<option value="20">20</option>' +
                     '<option value="30">30</option>' +
                     '<option value="40">40</option>' +
                     '<option value="50">50</option>' +
                     '<option value="-1">All</option>' +
-                    '</select> results'
+                    '</select> '
             }
         })
     });
 </script>
 
-{% include 'all_c_pagination.html' %}
 {% endblock %}
 
 

@@ -8,89 +8,158 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <title>Document</title>
     <style>
-      
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://t3.ftcdn.net/jpg/01/19/67/02/360_F_119670247_HDccziQUuo2kFpaNiM22dIto5I8GPAWW.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(172, 29, 29, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #0a5bac;
+            color: #ecf0f1;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
     </style>
 
 </head>
 
 <body>
-    <nav class="main-menu">
-        <h1>D A T A P M I</h1>
+    {% include 'sidebar.html' %}
+    <br>
+    <br>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Designation</th>
+                <th>Contact</th>
+                <th>Skills</th>
+                <th>Last Updated</th>
+                <th>View</th>
+            </tr>
+        </thead>
+      
+        <tbody>
+            {% for i in all %}
+            <tr>
+                <td id="snno" ></td>
+                <td>{{i.first_name}} {{i.last_name}}</td>
+                <td>
+                    <span>{{i.designation}} </span><br>
+                    <span>{{i.client_name }} </span>
+                  </td>
+                <td>
+                    <span >{{i.email}}</span><br>
+                    <span >{{i.phone}}</span>
+                  </td>
+               
+                    <td>
+                        {% for skill in i.skills.all %}
+                        {{ skill.name }}
+                        {% if not forloop.last %}, {% endif %}
+                        {% endfor %}</td>
+                  
+                <td>{{i.updated_on}}</td>
+                <td>  
+                  
+                    <a href="{% url 'detail' i.id %}"><button style="font-size: 15px;padding: 5px 8px;" title="View"
+                        class="btn btn-outline-primary"><i class="bi bi-search"></i></button></a>&nbsp;
 
-        <ul>
-            <div class="container wrapper">
-                <table class="table table-bordered table-hover" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th class="col-md-2">Name</th>
-                            <th class="col-md-2">Email</th>
-                            <th class="col-md-2">Mobile</th>
-                            <th class="col-md-2">Client Name</th>
-                            <th class="col-md-2">Mode of work</th>
-                            <th class="col-md-2">Gender</th>
-                            <th class="col-md-2">Skills</th>
-                            <th class="col-md-2">Location</th>
-                            <th class="col-md-2">College</th>
-                            <th class="col-md-2">Qualification</th>
-                            <th class="col-md-2">Tools</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in all %}
-                        <tr>
-                            <td>{{ i.first_name }}</td>
-                            <td>{{ i.email }}</td>
-                            <td>{{ i.phone }}</td>
-                            <td>{{ i.client_name }}</td>
-                            <td>{{ i.mode_of_work }}</td>
-                            <td>{{ i.gender }}</td>
+                  </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+       
 
-                            <td>
-                                {% for skill in i.skills.all %}
-                                {{ skill.name }}
-                                {% if not forloop.last %}, {% endif %}
-                                {% endfor %}</td>
-                            <td>{{ i.location }}</td>
-                            <td>{{ i.college }}</td>
-                            <td>{{ i.qualification }}</td>
-                            <td><i class="bi bi-search"></i></td>
+        <script>
+            // Get all elements with class "snno"
+            var snnoElements = document.querySelectorAll('#snno');
 
-                        </tr>
-                        {% endfor %}
+            // Loop through the elements and assign incrementing numbers
+            snnoElements.forEach(function (element, index) {
+              element.textContent = index + 1; // Assign the incrementing number (1-based index)
+            });
 
-                    </tbody>
-                </table>
-            </div>
 
-            <script>
-                $(document).ready(function () {
-                    $('.table').DataTable({
+            function toggleSidebar() {
+              var sidebar = document.getElementById('sidebar');
+              var content = document.getElementById('content');
 
-                        "columnDefs": [
-                            { "orderable": false, "targets": 5 }
-                        ],
-                        language: {
-                            //customize pagination prev and next buttons: use arrows instead of words
-                            'paginate': {
-                                'previous': '<span class="fa fa-chevron-left"></span>',
-                                'next': '<span class="fa fa-chevron-right"></span>'
-                            },
-                            //customize number of elements to be displayed
-                            "lengthMenu": 'Display <select class="form-control input-sm">' +
-                                '<option value="10">10</option>' +
-                                '<option value="20">20</option>' +
-                                '<option value="30">30</option>' +
-                                '<option value="40">40</option>' +
-                                '<option value="50">50</option>' +
-                                '<option value="-1">All</option>' +
-                                '</select> results'
-                        }
-                    })
-                });
-            </script>
+              if (sidebar.style.width === '250px') {
+                sidebar.style.width = '0';
+                content.style.marginLeft = '0';
+              } else {
+                sidebar.style.width = '250px';
+                content.style.marginLeft = '250px';
+              }
+            }
+          </script>
+    </table>
+ 
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.table').DataTable({
+
+            "columnDefs": [
+                { "orderable": false, "targets": 5 }
+            ],
+            language: {
+                'paginate': {
+                    'previous': '<span class="fa fa-chevron-left"></span>',
+                    'next': '<span class="fa fa-chevron-right"></span>'
+                },
+                //customize number of elements to be displayed
+                "lengthMenu": 'Display <select >' +
+                    '<option value="10">10</option>' +
+                    '<option value="20">20</option>' +
+                    '<option value="30">30</option>' +
+                    '<option value="40">40</option>' +
+                    '<option value="50">50</option>' +
+                    '<option value="-1">All</option>' +
+                    '</select> '
+            }
+        })
+    });
+</script>
 
 </body>
 
