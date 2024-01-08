@@ -46,10 +46,48 @@
 
         <!-- Client Name -->
         <div class="form-group">
-          <label for="client-name">Client Name:</label>
-          <input value="{{candidate.client_name}}"  type="text" id="client-name" name="client_name">
-          <div class="error-message" id="client-name-error"></div>
+          <label for="client-info">Client Information:</label>
+        
+          <!-- Combined Text Input and Dropdown -->
+          <select  id="client-input" name="client_input">
+            <option value="" disabled selected hidden>Choose or Type</option>
+            <option value="manual">Type Manual</option>
+            <option value="option1">Deloitte</option>
+            <option value="option2">Raksul</option>
+            <option value="option3">Math Co</option>
+            <option value="option4">Kyndryl</option>
+            <option value="option5">IBM</option>
+          </select>
+        
+          <!-- Error message -->
+          <div class="error-message" id="client-info-error"></div>
         </div>
+        
+        <script>
+          document.getElementById('client-input').addEventListener('change', function () {
+            var inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.id = 'dynamic-client-input';
+            inputField.name = 'client_name';
+            inputField.placeholder = 'Client Name';
+        
+            var selectedOption = this.value;
+        
+            if (selectedOption === 'manual') {
+              inputField.style.display = 'block';
+            } else {
+              inputField.style.display = 'none';
+            }
+        
+            var existingInputField = document.getElementById('dynamic-client-input');
+            if (existingInputField) {
+              existingInputField.replaceWith(inputField);
+            } else {
+              this.parentNode.appendChild(inputField);
+            }
+          });
+        </script>
+        
 
         <!-- Mode Of Work -->
         <div class="form-group">

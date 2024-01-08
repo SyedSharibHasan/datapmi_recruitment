@@ -47,6 +47,8 @@ urlpatterns = [
     path('edit_account/<int:pk>/', Edit_account.as_view(), name='edit_account'),
 
     path('delete_account/', views.delete_account, name='delete_account'),
+    
+    # path('admin_dashboard/', Admin_Dashboard.as_view, name='admin_dashboard'),
         
 ]
 

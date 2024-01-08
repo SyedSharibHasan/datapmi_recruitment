@@ -83,7 +83,10 @@ def superuser_login_required(view_func):
 
 @superuser_login_required
 def admin(request):
-    return render(request,'admin.html')
+    users = CustomUser.objects.exclude(username=request.user.username)
+    print(users)  
+    return render(request,'admin.html',context={'users':users})
+
 
 
 @login_required
@@ -550,20 +553,20 @@ def list_of_candidates(request, status):
 
 
 
-
+from .forms import CustomUserUpdateForm
 
 class Edit_account(UpdateView):
     model = CustomUser
-    fields = ['username','first_name','last_name','email','contact','image']
+    form_class = CustomUserUpdateForm
+    template_name = 'edit_account.html'
     success_url = reverse_lazy('profile')
-    template_name = 'profile.html'
 
     def get_object(self, queryset=None):
-        # Get the user object based on the logged-in user
         return get_object_or_404(CustomUser, pk=self.request.user.pk)
-    
-    
 
+
+    
+    
 
 
 ################ delete user account
@@ -582,6 +585,25 @@ def delete_account(request):
             return JsonResponse({'incorrect_password': True})
     else:
         return render(request, 'delete_account.html')
+
+
+
+
+############ for admin dashboard page details
+# def admin_dashboard(request):
+#     users = CustomUser.objects.all()
+#     print(users)  
+#     return render(request,'admin.html',context={'users':users})
+
+
+
+
+
+
+
+
+
+
 
 
 
