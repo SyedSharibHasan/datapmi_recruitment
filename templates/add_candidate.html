@@ -47,49 +47,71 @@
 
         <!-- Client Name -->
         <div class="form-group">
-          <label for="client-info">Client Information:</label>
+          <label for="client_name">Client Name:</label>
+          <input type="text" id="client_name" name="client_name" required>
+          <div class="error-message" id="client-error"></div>
+      
+          <!-- Suggestions container -->
+          <div class="suggestions" id="suggestions-container">
+              <ul id="suggestions-list"></ul>
+          </div>
+      </div>
         
-          <!-- Combined Text Input and Dropdown -->
-          <select id="client-input" name="client_input" name="client_name">
-            <option value="" disabled selected hidden>Choose or Type</option>
-            <option value="manual">Type Manual</option>
-            <option value="option1">Deloitte</option>
-            <option value="option2">Raksul</option>
-            <option value="option3">Math Co</option>
-            <option value="option4">Kyndryl</option>
-            <option value="option5">IBM</option>
-          </select>
 
-          <!-- Error message -->
-          <div class="error-message" id="client-info-error"></div>
-        </div>
-        
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
         <script>
-          document.getElementById('client-input').addEventListener('change', function () {
-            var inputField = document.createElement('input');
-            inputField.type = 'text';
-            inputField.id = 'dynamic-client-input';
-            inputField.name = 'client_name';
-            inputField.placeholder = 'Client Name';
-        
-            var selectedOption = this.value;
-        
-            if (selectedOption === 'manual') {
-              inputField.style.display = 'block';
-            } else {
-              inputField.style.display = 'none';
-            }
-        
-            var existingInputField = document.getElementById('dynamic-client-input');
-            if (existingInputField) {
-              existingInputField.replaceWith(inputField);
-            } else {
-              this.parentNode.appendChild(inputField);
-            }
+          // List of companies
+          var companies = ['Raksul', 'Kyndrel', 'Deloitte', 'Mathco'];
+      
+          // Function to show suggestions
+          function showSuggestions(inputValue) {
+              var matchingCompanies = companies.filter(function (company) {
+                  return company.toLowerCase().includes(inputValue.toLowerCase());
+              });
+      
+              var suggestionsList = $('#suggestions-list');
+              suggestionsList.empty();
+      
+              matchingCompanies.forEach(function (company) {
+                  var listItem = $('<li>').text(company);
+                  suggestionsList.append(listItem);
+              });
+      
+              // Show suggestions container
+              $('.suggestions').show();
+          }
+      
+          // Handle input changes
+          $('#client_name').on('input', function () {
+              var inputValue = $(this).val();
+      
+              // Hide suggestions if input is empty
+              if (inputValue.trim() === '') {
+                  $('.suggestions').hide();
+                  return;
+              }
+      
+              // Show suggestions based on input
+              showSuggestions(inputValue);
           });
-        </script>
-        
-        
+      
+          // Handle suggestion click
+          $('#suggestions-list').on('click', 'li', function () {
+              // Set selected suggestion as the input value
+              $('#client_name').val($(this).text());
+      
+              // Hide suggestions
+              $('.suggestions').hide();
+          });
+      
+          // Hide suggestions when clicking outside the input and suggestions container
+          $(document).on('click', function (event) {
+              if (!$(event.target).closest('.form-group').length) {
+                  $('.suggestions').hide();
+              }
+          });
+      </script>
 
         <!-- Mode Of Work -->
         <div class="form-group">

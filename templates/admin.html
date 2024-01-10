@@ -851,8 +851,9 @@
             </div>
             <div class="tabs">
                 <div class="tab_name">
-                    <p>Recruiters</p>
-                    <p>Companies</p>
+                   
+            <a href="#" onclick="showRecruiters()">Recruiters</a>
+            <a href="#" onclick="showCompanies()">Companies</a>
                     <p>Staff</p>
                 </div>
                 <div class="three_dots">
@@ -860,7 +861,9 @@
                 </div>
             </div>
       
-            <div class="table">
+
+
+            <div id="recruitersTable" id="table" class="table">
                 <table>
                     <thead>
                     <tr>
@@ -885,7 +888,64 @@
                     </tbody>
                 </table>
             </div>   
+
+       
+            <div id="companiesTable" id="table" class="table" style="display: none;">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Hired</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="profile_name"><img src="data:image/jpeg;base64,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" alt="img"> Deloitte
+                        </td>
+                        <td>1004</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="profile_name"><img src="https://corp.raksul.com/wp-content/uploads/2017/07/OG_corp.png" alt="img"> Raksul
+                        </td>
+                        <td>987</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="profile_name"><img src="https://newsroom.ibm.com/image/kyndryl_logo_color_rgb_SQUARE.png" alt="img"> Kyndryl
+                        </td>
+                        <td>894</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td class="profile_name"><img src="https://mms.businesswire.com/media/20231105805555/en/1935262/22/MathCo_Symbol_MCRefinedPurple_RGB.jpg" alt="img"> Math Co
+                        </td>
+                        <td>894</td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>   
+
+
         </div>
+
+        <script>
+            function showRecruiters() {
+                document.getElementById('recruitersTable').style.display = 'block';
+                document.getElementById('companiesTable').style.display = 'none';
+            }
+        
+            function showCompanies() {
+                document.getElementById('recruitersTable').style.display = 'none';
+                document.getElementById('companiesTable').style.display = 'block';
+            }
+        </script>
+
+        
         <div class="right_sidebar ">
             <div class="notification_and_name ">
                 <div class="close_btn ">
