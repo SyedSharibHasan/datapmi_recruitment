@@ -13,8 +13,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.cs s"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
   <title>Human resource</title>
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
@@ -838,13 +837,13 @@
 }
   </style>
 
- 
+
+
 </head>
 
 <body>
 
   {% include 'sidebar.html' %}
-
 
 
 
@@ -858,12 +857,33 @@
             <span class="app-icon"></span>
             <p class="app-name">DATAPMI</p>
             <div class="search-wrapper">
-              <input class="search-input" type="text" placeholder="Search">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-search" viewBox="0 0 24 24">
-                <defs></defs>
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="M21 21l-4.35-4.35"></path>
-              </svg>
+
+				<form action="" method="get">
+					{% csrf_token %}
+              <input id="search-input" class="search-input" type="text" placeholder="Search by email or mobile">
+              
+			  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+				<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+				<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+			  <script>
+                $(function () {
+                    $("#search-input").autocomplete({
+                        source: function (request, response) {
+                         $.getJSON("/autocomplete-username/", { term: request.term }, function (data) {
+                                response(data.suggestions);
+                            });
+                        },
+                        minLength: 1,
+                        select: function (event, ui) {
+                            window.location.href = '/detail/' + ui.item.value; 
+                        }
+                    });
+                });
+            </script>
+			
+        </form>
+
             </div>
           </div>
           <div class="app-header-right">
@@ -878,11 +898,11 @@
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" /></svg>
             </button></a>
-            <button class="notification-btn">
+            <!-- <button class="notification-btn">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
                 <path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
-            </button>
+            </button> -->
 			<a href="/profile">
             <button class="profile-btn">
               <img src="{{user.image.url}}"/>
@@ -923,24 +943,29 @@
           </div>
         </div>
         <div class="project-boxes jsGridView">
-          <div class="project-box-wrapper">
-            <div class="project-box" style="background-color: #f7f7f7;">
-              <div class="project-box-header">
-                <span class="date"></span>
-                <div class="more-wrapper">
-                  <button class="project-btn-more">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
-                      <circle cx="12" cy="12" r="1" />
-                      <circle cx="12" cy="5" r="1" />
-                      <circle cx="12" cy="19" r="1" /></svg>
-                  </button>
-            </div>
-          </div>
-          <div>
-            <p class="box-content-header">My Total Candidates</p><br>
-				<div class="row">
-					<a href="/list"><div class="col">
-						<button style="width: 160px;margin-left: 50px;background-color: transparent;">
+
+
+			<div class="project-box-wrapper">
+				<div class="project-box" style="background-color: #e9e7fd;">
+				  <div class="project-box-header">
+			   <span class="date"></span>
+					<div class="more-wrapper">
+					  <button class="project-btn-more">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
+						  <circle cx="12" cy="12" r="1" />
+						  <circle cx="12" cy="5" r="1" />
+						  <circle cx="12" cy="19" r="1" /></svg>
+					  </button>
+					</div>
+				  </div>
+				  <div >
+					<p class="box-content-header">My Total Candidates</p>
+			  
+				  </div>
+				
+				  <div class="row">
+					<a href="{% url 'list'  %}"><div class="col">
+						<button style="width: 160px;margin-left: 50px;background-color: transparent" >
 							<div class="participants">
 								<img src="https://images.unsplash.com/photo-1596815064285-45ed8a9c0463?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1215&q=80" alt="participant">
 								<img src="https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2555&q=80" alt="participant">
@@ -948,22 +973,15 @@
 							  </div>
 							<span id="mycandidates_count" class="status-number"></span></button>
 					</div></a>
+			<div class="col">
+			</div>
 				</div>
-			
+				</div>
+			  </div>
 		
-          </div>
-		  
-          <!-- <div class="box-progress-wrapper">
-            <p class="box-progress-header">Progress</p>
-            <div class="box-progress-bar">
-        	  <span class="box-progress" style="width: 60%; background-color: #ff942e"></span>
-            </div>
-            <p class="box-progress-percentage">60%</p>
-          </div> -->
 
-		  
-        </div>
-      </div>
+
+
       <div class="project-box-wrapper">
         <div class="project-box" style="background-color: #e9e7fd;">
           <div class="project-box-header">
@@ -993,11 +1011,12 @@
 					<span id="selectedCandidatesCount" class="status-number"></span></button>
 			</div></a>
 	<div class="col">
-		
 	</div>
 		</div>
         </div>
       </div>
+
+
       <div class="project-box-wrapper">
         <div class="project-box">
           <div class="project-box-header">
@@ -1069,8 +1088,10 @@
 		</div>
         </div>
       </div>
+     
+
       <div class="project-box-wrapper">
-        <div class="project-box" style="background-color: #c8f7dc;">
+        <div class="project-box" style="background-color: #a5c7c2;">
           <div class="project-box-header">
             <span class="date">December 10, 2020</span>
             <div class="more-wrapper">
@@ -1082,68 +1103,93 @@
               </button>
             </div>
           </div>
-          <div >
-            <p class="box-content-header">Total Calling </p>
-         
-          </div>
-        
-          <div class="project-box-footer">
-            <div class="participants">
-              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80" alt="participant">
-              <img src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTB8fG1hbnxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60" alt="participant">
-              <button class="add-participant" style="color: #34c471;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </button>
-            </div>
-            <div class="days-left" style="color: #34c471;">
-              2 Days Left
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="project-box-wrapper">
-        <div class="project-box" style="background-color: #d5deff;">
-          <div class="project-box-header">
-            <span class="date">December 10, 2020</span>
-            <div class="more-wrapper">
-              <button class="project-btn-more">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
-                  <circle cx="12" cy="12" r="1" />
-                  <circle cx="12" cy="5" r="1" />
-                  <circle cx="12" cy="19" r="1" /></svg>
-              </button>
-            </div>
-          </div>
+
           <div>
-            <p class="box-content-header">Absent Days</p>
-        
+            <p class="box-content-header">Saved Candidates</p>
+          
           </div>
-          <!-- <div class="box-progress-wrapper">
-            <p class="box-progress-header">Progress</p>
-            <div class="box-progress-bar">
-              <span class="box-progress" style="width: 40%; background-color: #4067f9"></span>
-            </div>
-            <p class="box-progress-percentage">40%</p>
-          </div> -->
-          <div class="project-box-footer">
-            <div class="participants">
-              <img src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2550&q=80" alt="participant">
-              <img src="https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2555&q=80" alt="participant">
-              <button class="add-participant" style="color: #4067f9;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </button>
-            </div>
-            <div class="days-left" style="color: #4067f9;">
-              2 Days Left
-            </div>
-          </div>
+         
+		  <div class="row">
+			<a href="{% url 'list_of_candidates' status='saved' %}"><div class="col">
+				<button style="width: 160px;margin-left: 50px;background-color: transparent" >
+					<div class="participants">
+						<img src="https://images.unsplash.com/photo-1596815064285-45ed8a9c0463?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1215&q=80" alt="participant">
+						<img src="https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2555&q=80" alt="participant">
+						
+					  </div>
+					<span id="saved_candidates" class="status-number"></span></button>
+					<script>
+
+						fetch('/savedcandidates_count')
+						.then(response => response.json())
+						.then(data => {
+						  // update the count in the HTML
+						  document.getElementById('saved_candidates').textContent = data.count;
+						})
+						.catch(error => {
+						  console.error('Error fetching candidate count:', error);
+						});
+					 
+										 </script>
+			</div></a>
+	<div class="col">
+		
+	</div>
+		</div>
         </div>
       </div>
-    
+
+
+	  <div class="project-box-wrapper">
+        <div class="project-box" style="background-color: #c7a5b1;">
+          <div class="project-box-header">
+            <span class="date">December 10, 2020</span>
+            <div class="more-wrapper">
+              <button class="project-btn-more">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
+                  <circle cx="12" cy="12" r="1" />
+                  <circle cx="12" cy="5" r="1" />
+                  <circle cx="12" cy="19" r="1" /></svg>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <p class="box-content-header">All Candidates</p>
+          
+          </div>
+         
+		  <div class="row">
+			<a href="{% url 'all' %}"><div class="col">
+				<button style="width: 160px;margin-left: 50px;background-color: transparent" >
+					<div class="participants">
+						<img src="https://images.unsplash.com/photo-1596815064285-45ed8a9c0463?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1215&q=80" alt="participant">
+						<img src="https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2555&q=80" alt="participant">
+						
+					  </div>
+					<span id="allcandidates_count" class="status-number"></span></button>
+					<script>
+
+   fetch('/allcandidates_count')
+   .then(response => response.json())
+   .then(data => {
+     // update the count in the HTML
+     document.getElementById('allcandidates_count').textContent = data.count;
+   })
+   .catch(error => {
+     console.error('Error fetching candidate count:', error);
+   });
+
+					</script>
+			</div></a>
+	<div class="col">
+		
+	</div>
+		</div>
+        </div>
+      </div>
+
+
         
 
 <script>

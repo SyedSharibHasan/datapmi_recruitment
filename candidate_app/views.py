@@ -498,6 +498,15 @@ def all_filter(request):
 
 ############# count details displayed on dashboard 
 
+################# total count of all candidates
+def totalcandidates_count(request):
+    if request.user.is_authenticated:
+        count = Candidate.objects.all().count()
+        return JsonResponse({'count': count})
+    else:
+        return JsonResponse({'count': 0})
+
+
 ################# total count of my candidates
 def mycandidates_count(request):
     if request.user.is_authenticated:
@@ -530,26 +539,40 @@ def rejected_candidates(request):
 ############# Inprogress candidates
 def inprogress_candidates(request):
     if request.user.is_authenticated:
-        count = Candidate.objects.filter(user=request.user, status='').count()
+        count = Candidate.objects.filter(user=request.user, status='Interview Ongoing').count()
         return JsonResponse({'count': count})
     else:
         return JsonResponse({'count': 0})
     
 
+def saved_candidates(request):
+    if request.user.is_authenticated:
+        count = Candidate.objects.filter(user=request.user, status='Store Data').count()
+        return JsonResponse({'count': count})
+    else:
+        return JsonResponse({'count': 0})
+
 
 def list_of_candidates(request, status):
     if request.user.is_authenticated:
         if status == 'selected':
+            heading = 'Selected Candidates'
             candidates = Candidate.objects.filter(user=request.user, status='Client Select').all()
         elif status == 'rejected':
+            heading = 'Rejected Candidates'
             candidates = Candidate.objects.filter(user=request.user, status='Client Reject').all()
 
         elif status == 'inprogress':
-            candidates = Candidate.objects.filter(user=request.user, status='').all()
+            heading = 'Inprogress Candidates'
+            candidates = Candidate.objects.filter(user=request.user, status='Interview Ongoing').all()
+
+        elif status == 'saved':
+            heading = 'Saved Candidates'
+            candidates = Candidate.objects.filter(user=request.user, status='Store Data').all()
 
         else:
             candidates = []
-        return render(request, 'selected_list.html', context={'candidates': candidates, 'status': status})
+        return render(request, 'selected_list.html', context={'candidates': candidates, 'status': status,'heading':heading})
 
 
 
@@ -588,12 +611,6 @@ def delete_account(request):
 
 
 
-
-############ for admin dashboard page details
-# def admin_dashboard(request):
-#     users = CustomUser.objects.all()
-#     print(users)  
-#     return render(request,'admin.html',context={'users':users})
 
 
 

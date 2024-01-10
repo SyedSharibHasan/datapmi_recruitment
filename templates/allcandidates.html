@@ -54,11 +54,28 @@
         tr:hover {
             background-color: #f5f5f5;
         }
+
+
+        input {
+    
+    border: 3px solid #ced4da !important;
+    
+}
+
+label {
+    color: white;
+    
+   
+}
+
     </style>
 
 </head>
 
 <body>
+
+
+
     {% include 'sidebar.html' %}
     <br>
     <br>
@@ -68,6 +85,7 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Location</th>
                 <th>Designation</th>
                 <th>Contact</th>
                 <th>Skills</th>
@@ -81,6 +99,7 @@
             <tr>
                 <td id="snno" ></td>
                 <td>{{i.first_name}} {{i.last_name}}</td>
+                <td>{{i.location}}</td>
                 <td>
                     <span>{{i.designation}} </span><br>
                     <span>{{i.client_name }} </span>

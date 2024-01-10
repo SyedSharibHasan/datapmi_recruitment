@@ -557,10 +557,12 @@
 
           <!-- Status -->
           <label for="status">Status:</label>
-          <select id="status" name="status" onchange="showHideClientDetails()">
+          <select id="status" name="status" onchange="showHideClientDetails()" required>
             <option value="">Select</option>
+            <option value="Interview Ongoing">Interview Ongoing</option>
             <option value="Client Select">client Select</option>
             <option value="Client Reject">client Reject</option>
+            <option value="Store Data">Store Data</option>
           </select>
 
           <!-- additional status  -->

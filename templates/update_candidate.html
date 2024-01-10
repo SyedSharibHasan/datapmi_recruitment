@@ -532,8 +532,10 @@
           <label for="status">Status:</label>
           <select id="status" name="status" onchange="showHideClientDetails()">
             <option value="" {% if not candidate.status %}selected{% endif %}>Select</option>
+            <option value="Interview Ongoing" {% if candidate.status == 'Interview Ongoing' %}selected{% endif %}>Interview Ongoing</option>
             <option value="Client Select" {% if candidate.status == 'Client Select' %}selected{% endif %}>Client Select</option>
             <option value="Client Reject" {% if candidate.status == 'Client Reject' %}selected{% endif %}>Client Reject</option>
+            <option value="Store Data" {% if candidate.status == 'Store Data' %}selected{% endif %}>Store Data</option>
           </select>
           
           <div id="client-selection" style="display: none;">

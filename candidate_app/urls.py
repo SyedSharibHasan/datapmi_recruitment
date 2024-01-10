@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,CheckEmailExistsView,Edit_account,delete_account
+from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,CheckEmailExistsView,Edit_account,delete_account,totalcandidates_count,saved_candidates
 from . import views
+
 
 
 urlpatterns = [
@@ -37,6 +38,8 @@ urlpatterns = [
     path('selected_candidates', selected_candidates, name='selected_candidates'),
     path('rejected_candidates', rejected_candidates, name='rejected_candidates'),
     path('inprogress_candidates', inprogress_candidates, name='inprogress_candidates'),
+    path('allcandidates_count', totalcandidates_count, name='allcandidates_count'),
+    path('savedcandidates_count', saved_candidates, name='savedcandidates_count'),
 
 
     # path('list_of_selected_candidates', list_of_selected_candidates, name='list_of_selected_candidates'),
