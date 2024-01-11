@@ -3,18 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete messege</title>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 </head>
 <body>
 {% if messages %}
   {% for message in messages %}
     <div class="alert alert-dismissible alert-success">
-      <button type="button" class="close" data-dismiss="alert">
+     <button type="button" class="close" data-dismiss="alert"> 
       ×
       </button>
-      <strong>{{message}}</strong>
+     <center> <strong>{{message}}</strong></center>
     </div>
  {% endfor %}
 {% endif %}
+
+<script>
+
+</script>
 </body>
 </html>
 

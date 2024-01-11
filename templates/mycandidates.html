@@ -35,6 +35,7 @@
             box-shadow: 0 0 10px rgba(172, 29, 29, 0.1);
             border-radius: 8px;
             overflow: hidden;
+            background: transparent !;
         }
 
         th, td {
@@ -74,9 +75,12 @@ label {
 
   
     {% include 'sidebar.html' %}
+    {% include 'delete_messages.html' %}
 
-    <!-- {% include 'navbar.html' %}  -->
-    {% include 'delete_messages.html' %}  
+ 
+
+  
+    
 
 <br>
 <br>
@@ -197,6 +201,9 @@ label {
 
 {% endblock %}
 
+
+  
+  
 
 </body>
 </html>

@@ -314,14 +314,22 @@ class Detailcandidate(DetailView):
     
 
 
-from django.contrib.messages.views import SuccessMessageMixin
 
-class Deletecandidate(SuccessMessageMixin,DeleteView):
-    model = Candidate
-    # context_object_name = 'task'
-    success_url = reverse_lazy('list')
-    template_name = 'delete_candidate.html'
-    success_message = 'Deleted succesfully'
+
+def delete_candidate(request, pk):
+    candidate = get_object_or_404(Candidate, pk=pk)
+    messages.success(request, 'Candidate successfully deleted.')
+
+    if request.method == 'POST':
+        candidate.delete()
+        return redirect('list')
+
+    return render(request, 'delete_candidate.html', {'candidate': candidate})
+
+
+
+
+   
 
 
 

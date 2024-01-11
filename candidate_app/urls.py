@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,Deletecandidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,CheckEmailExistsView,Edit_account,delete_account,totalcandidates_count,saved_candidates
+from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,CheckEmailExistsView,Edit_account,delete_account,totalcandidates_count,saved_candidates
 from . import views
 
 
@@ -12,7 +12,7 @@ urlpatterns = [
     path('list/',ListCandidate.as_view(),name='list'),   ## list all cacndidate
     path('create/',Createcandidate.as_view(),name='create'),   ## create each acndidate
     path('detail/<int:pk>/',Detailcandidate.as_view(),name='detail'),   ## details of each candidate
-    path('delete/<int:pk>/',Deletecandidate.as_view(),name='delete') ,  ## delete  a candidate
+    path('delete/<int:pk>/',delete_candidate,name='delete') ,  ## delete  a candidate
     path('update/<int:pk>/',Updatecandidate.as_view(),name='update') ,  ## update a candidate
     
     path("signout/", signout, name='signout'),
