@@ -14,6 +14,8 @@
     background-position: center;
     background-repeat: no-repeat;
   } */
+  
+
   @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap");
 
 * {
@@ -29,6 +31,10 @@ body {
   align-items: center;
   min-height: 100vh;
   background: #a4bdb7;
+  background-image: url('https://t3.ftcdn.net/jpg/01/19/67/02/360_F_119670247_HDccziQUuo2kFpaNiM22dIto5I8GPAWW.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 
@@ -73,11 +79,11 @@ button {
   font-size: 12px;
 }
 
-.button .message {
+/* .button .message {
   background: #ededed;
   border: 2px solid #000;
   border-radius: 10px;
-}
+} */
 
 .button .connect {
   background-color: #cc1010;
@@ -95,6 +101,37 @@ button.message:hover {
   transition: 0.5s;
   background: rgba(88, 164, 151, 0.5);
 }
+
+
+button.view-modal {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.5);
+        }
+
+        button.view-modal:hover {
+            background-color: white;
+            color: #3498db;
+            box-shadow: 0 8px 16px rgba(52, 152, 219, 0.8);
+        }
+
+        .text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
 
 
 /* Responsiveness:Start */

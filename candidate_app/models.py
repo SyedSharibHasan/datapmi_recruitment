@@ -68,6 +68,9 @@ class Candidate(models.Model):
     class Meta:
         ordering = ["-updated_on"]
 
+    def formatted_updated_on(self):
+        return self.updated_on.strftime('%d/%b/%Y %I:%M %p')
+
 
 
 

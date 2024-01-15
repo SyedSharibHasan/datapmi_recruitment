@@ -78,7 +78,6 @@ label {
     {% include 'delete_messages.html' %}
 
  
-
   
     
 
@@ -125,7 +124,7 @@ label {
                         {% if not forloop.last %}, {% endif %}
                         {% endfor %}</td>
                   
-                <td>{{i.updated_on}}</td>
+                        <td>{{i.formatted_updated_on}}</td>
                 <td>  
                     <!-- <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle"><i class="fa fa-key"></i> </button> -->
                     <a href="{% url 'detail' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"

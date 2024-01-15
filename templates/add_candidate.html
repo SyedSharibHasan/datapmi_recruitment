@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-KpOqU7gZ1R8qROiS1z3Pxm6ofuV3LlBOsPFvG9b0L4ZLTOEzVZ4AMdTEFVzjI5zj" crossorigin="anonymous">
   <link rel="stylesheet" href="{% static 'css/candidate.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-LsW3s5DkVe9dzS3q22I/1oRSt3n6DZnZa7mVJrN9VUsbA9a3+Hf/Adsz5Lj5R5uOdax8C7v4Xdt72otR3L9w=="/>
+
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <title>Transparent Form Validation</title>
@@ -427,7 +429,9 @@
         skillInput.readOnly = true;
         skillContainer.appendChild(skillInput);
         var closeButton = document.createElement('button');
-        closeButton.textContent = '*';
+       // Assuming closeButton is your DOM element
+        closeButton.innerHTML = '<i class="fas fa-times"></i>';
+
         closeButton.onclick = function () {
             skillContainer.remove();
         };

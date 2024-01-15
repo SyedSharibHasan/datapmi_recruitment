@@ -318,7 +318,7 @@ class Detailcandidate(DetailView):
 
 def delete_candidate(request, pk):
     candidate = get_object_or_404(Candidate, pk=pk)
-    messages.success(request, 'Candidate successfully deleted.')
+
 
     if request.method == 'POST':
         candidate.delete()
@@ -328,8 +328,6 @@ def delete_candidate(request, pk):
 
 
 
-
-   
 
 
 

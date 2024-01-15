@@ -14,20 +14,11 @@
             height: 100vh;
             background: url('https://media.istockphoto.com/id/1468728963/video/3d-garbage-bin-icon-on-colorful-background.jpg?s=640x640&k=20&c=Ywibn88v_ACxwKAb9f86Zw-gONlkj85az7pZcyIj6wQ=');
             background-repeat: no-repeat;
-            /* background-size: cover; */
-            /* background-size: 100%;
-             */
-             /* background-size: cover; */
-             /* background-size: contain; */
-             background-size: 100%  100%;
-
-            
-        
-            
+            background-size: 100%  100%;
         }
 
         .modal {
-            background-color: rgba(255, 255, 255, 0.3); /* Set the alpha value for transparency */
+            background-color: rgba(255, 255, 255, 0.3);
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(11, 146, 51, 0.1);
             padding: 20px;
@@ -59,6 +50,7 @@
             cursor: pointer;
             border: none;
             border-radius: 50px;
+            position: relative;
         }
 
         .delete-button {
@@ -80,31 +72,36 @@
         }
     </style>
 </head>
-<body>
 
-   
+
+<body>
+    <div onclick="goBack()" class="close-button" onclick="window.location.href='/list'">
+        <span   class="close-icon"></span>
+    </div>
 <div class="modal">
-   
+    
     <h1>Delete Candidate</h1>
     <p>Are you sure to delete this candidate </p>
 
     <div class="button-container">
         <form method="post" action="">
             {% csrf_token %}
-        <button class="button delete-button">Delete</button>
-    </form>
-    <a href="/list"> <button class="button cancel-button" >Cancel</button></a>
+            <button class="button delete-button">Delete</button>
+        </form>
+        <a href="/list"> <button class="button cancel-button">Cancel</button></a>
     </div>
-    
 </div>
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script>
-    document.getElementById('deleteButton').addEventListener('click', function() {
-        // Add your delete functionality here, and then show the alert
-        // For demonstration purposes, I'm just showing an alert
-        alert('Message deleted!');
-    });
-    </script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
 
 </body>
 </html>
