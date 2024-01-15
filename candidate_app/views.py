@@ -25,6 +25,10 @@ def signup(request):
         pass1 = request.POST.get('pass1')
         pass2 = request.POST.get('pass2')
         
+        if email:
+            if not email.endswith('@datapmi.com'):
+                return HttpResponse('Email format is not valid')
+
         if pass1 != pass2:
             # Handle password mismatch error as needed
             return HttpResponse('Passwords are not matched')
@@ -318,7 +322,6 @@ class Detailcandidate(DetailView):
 
 def delete_candidate(request, pk):
     candidate = get_object_or_404(Candidate, pk=pk)
-
 
     if request.method == 'POST':
         candidate.delete()

@@ -52,4 +52,3 @@ class CustomUserUpdateForm(forms.ModelForm):
 
 
 
-
