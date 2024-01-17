@@ -33,6 +33,7 @@ def signup(request):
             # Handle password mismatch error as needed
             return HttpResponse('Passwords are not matched')
         
+        
         # Create CustomUser instance
         user = CustomUser(username=username, first_name=first_name, last_name=last_name,email=email)
         user.set_password(pass1)
@@ -95,7 +96,6 @@ def admin(request):
 
 @login_required
 def user(request):
-    # candidate = Candidate.objects.all()
     return render(request,'user.html')
 
 

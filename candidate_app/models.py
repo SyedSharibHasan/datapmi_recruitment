@@ -31,7 +31,7 @@ class Candidate(models.Model):
     mode_of_work = models.CharField(max_length=150, default='full_time',null=True)
 
     gender = models.CharField(max_length=50, default='unknown', null=True,blank=True)
-    college = models.CharField(max_length=50, null=True,blank=True)
+    college = models.CharField(max_length=50,    null=True,blank=True)
     graduation_year= models.CharField(max_length=50, null=True,blank=True)
     qualification = models.TextField(null=True,blank=True)
     skills = models.ManyToManyField(Skill)  
