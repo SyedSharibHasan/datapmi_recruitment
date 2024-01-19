@@ -26,7 +26,7 @@
    
 
     <style>
-.search_skill {
+          .search_skill {
               padding: 8px; /* Adjust padding as needed */
               font-size: 14px; /* Adjust font size as needed */
               border: 1px solid #ccc; /* Add a border */
@@ -39,23 +39,35 @@
               font-size: 11px; /* Adjust font size as needed */
               border: 1px solid #ccc; /* Add a border */
               border-radius: 4px; /* Add border-radius for rounded corners */
-              width: 80px; /* Adjust width as needed */
+              width: 150px; /* Adjust width as needed */
           }
 
           .experience {
 
             width: 70px;
-           
+
             border-radius: 4px;
           }
-     
-          body {
-            background-image: url('https://cdn.dribbble.com/users/1501052/screenshots/4545496/media/13e279b5c3bd2e8f79067239da3d8633.gif');
-            background-position: center 200px;  
-            background-repeat: no-repeat;
-       
-            
-          }
+    
+          .skill-box {
+            font-size: 10px; 
+            display: inline-block;
+            padding: 8px;
+            margin: 5px;
+            background-color: rgb(49, 165, 58);
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .close-button {
+            cursor: pointer;
+        }
+
+        /* .box {
+          border: 1px solid green;
+          border-radius: 5px;
+          padding: 20px;
+        } */
     </style>
 </head>
 <body>
@@ -63,15 +75,10 @@
 
   {% include 'sidebar.html' %}
 
-
-
-
     {% include 'navbar.html' %}  
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    
-
     
   <br>
   <br>
@@ -79,94 +86,118 @@
 
 
 
-    <div class="container">
-      <div class="row">
+<div class="container">
+  <div class="row">
+      <div class="col-5">
+          <form method="get" action="{% url 'filter' %}">
+         
+              <div> 
+                <i style="color: blue;" class="bi bi-lightbulb-fill"></i> <input class="select_skill" id="select_skill" type="search" placeholder="Type skills here">
+               <div  class="box" name="skills_search" id="selectedSkillsContainer"></div>
+              </div>
 
-<div class="col-3"></div>
+              <script>
+                  $(document).ready(function () {
+                      var selectedSkills = [];
 
-        <div class="col-4">
+                      $("#select_skill").autocomplete({
+                          source: function (request, response) {
+                              $.getJSON("/autocomplete-skills/", { term: request.term }, function (data) {
+                                  response(data.suggestions);
+                              });
+                          },
+                          minLength: 1,
+                          select: function (event, ui) {
+                              var selectedSkill = ui.item.label;
 
-    <form method="get" action="{% url 'filter' %}">
+                              // Add the selected skill to the list and update the UI
+                              if ($.inArray(selectedSkill, selectedSkills) === -1) {
+                                  selectedSkills.push(selectedSkill);
+                                  updateSelectedSkillsUI();
+                                  addHiddenInput(selectedSkill); // Add hidden input field for the selected skill
+                              }
 
-     Skills
-        <!-- Input field for selecting skills -->
-        <input class="select_skill" id="select_skill" type="search" placeholder="suggession">
-    
-        <!-- Input field for entering and displaying selected skills -->
-        <input class="search_skill" id="search_skill" type="search" name="skills_search" placeholder="Java,Python" >
-       
-     </div>
-    
-        <script>
-           $(document).ready(function() {
-    var selectedSkills = [];
+                              // Clear the selection input for the next skill
+                              $("#select_skill").val('');
 
-    // Autocomplete for selecting skills
-    $("#select_skill").autocomplete({
-        source: function(request, response) {
-            // Use the full URL including the domain
-            $.getJSON("/autocomplete-skills/", { term: request.term }, function(data) {
-                response(data.suggestions);
-            });
-        },
-        minLength: 1,
-        select: function(event, ui) {
-            var selectedSkill = ui.item.label;
+                              return false;
+                          }
+                      });
 
-            // Add the selected skill to the list and update the search input
-            if ($.inArray(selectedSkill, selectedSkills) === -1) {
-                selectedSkills.push(selectedSkill);
-                updateSearchInput();
-            }
+                      // Function to update the UI with selected skills
+                      function updateSelectedSkillsUI() {
+                          var selectedSkillsContainer = $("#selectedSkillsContainer");
+                          selectedSkillsContainer.empty();
 
-            // Clear the selection input for the next skill
-            $("#select_skill").val('');
+                          $.each(selectedSkills, function (index, skill) {
+                              var skillBox = $('<div class="skill-box">' + skill + '&nbsp;<i style="color: black;font-weight:200;" id="close-button" class="bi bi-x-lg"></i></div>');
+                              skillBox.find("#close-button").click(function () {
+                                  removeSelectedSkill(index);
+                              });
 
-            return false;
-        }
-    });
+                              selectedSkillsContainer.append(skillBox);
+                          });
+                      }
 
-    // Function to update the search input with selected skills
-    function updateSearchInput() {
-        var searchInput = $("#search_skill");
-        searchInput.val(selectedSkills.join(', '));
-    }
-});
-        </script>
-   
+                      // Function to add hidden input field for the selected skill
+                      function addHiddenInput(skill) {
+                          var hiddenInput = $('<input type="hidden" name="skills_search" value="' + skill + '">');
+                          $("form").append(hiddenInput);
+                      }
 
-    <br>
-    <div class="col">    Location <input class="search_skill" id="search_location" name="location_search" type="search" placeholder="Kochi,Kerala"> 
-    <script>
-         $(function() {
-            $("#search_location").autocomplete({
-              source: function(request, response) {
-                $.getJSON("/autocomplete-locations/", { term: request.term }, function(data) {
-                  response(data.suggestions);
-                });
-              },
-              minLength: 1
-            });
-          });
-    </script>
-    <br>
+                      // Function to remove a selected skill
+                      function removeSelectedSkill(index) {
+                          selectedSkills.splice(index, 1);
+                          updateSelectedSkillsUI();
+                          updateHiddenInputs(); // Update hidden inputs when a skill is removed
+                      }
+
+                      // Function to update hidden inputs when a skill is removed
+                      function updateHiddenInputs() {
+                          $("input[name='skills_search']").remove();
+                          $.each(selectedSkills, function (index, skill) {
+                              addHiddenInput(skill);
+                          });
+                      }
+                  });
+              </script>
+
+              <br>
+              <!-- Location -->
+              <div>
+                <i style="color:red" class="bi bi-geo-alt-fill"></i> <input class="search_skill" id="search_location" name="location_search" type="search" placeholder="Kochi, Kerala">
+                  <script>
+                      $(function () {
+                          $("#search_location").autocomplete({
+                              source: function (request, response) {
+                                  $.getJSON("/autocomplete-locations/", { term: request.term }, function (data) {
+                                      response(data.suggestions);
+                                  });
+                              },
+                              minLength: 1
+                          });
+                      });
+                  </script>
+              </div>
+
+              <br>
+
+              <!-- Experience -->
+              <center>
+                <i class="bi bi-briefcase-fill"></i>
+                  <input name="experience_from" class="experience" min="0" type="number">&nbsp;&nbsp;&nbsp;&nbsp;To&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input min="0" name="experience_to" class="experience" type="number">
+
+                  <br>
+                  <br>
+
+                  <button id="submit" title="Filter" type="submit" class="btn btn-primary">Search </button>
+              </center>
+          </form>
+      </div>
   </div>
-
-  </div>
-  <br>
-  
-  <center>Experience
-   <input  name="experience_from" class="experience"  type="number">&nbsp;&nbsp;&nbsp;&nbsp;To&nbsp;&nbsp;&nbsp;&nbsp;    <input name="experience_to"  class="experience" type="number">
- 
-       <br>
-       <br>
-    <button id="submit" title="Filter" type="submit" class="btn btn-primary">Search </button>
-   
-  </center>
-</form>
-
 </div>
 
-
+</div>
 </body>
 </html>

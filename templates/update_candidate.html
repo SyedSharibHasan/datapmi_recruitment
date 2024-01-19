@@ -7,8 +7,9 @@
   <title>Update page</title>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-LsW3s5DkVe9dzS3q22I/1oRSt3n6DZnZa7mVJrN9VUsbA9a3+Hf/Adsz5Lj5R5uOdax8C7v4Xdt72otR3L9w=="/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-KpOqU7gZ1R8qROiS1z3Pxm6ofuV3LlBOsPFvG9b0L4ZLTOEzVZ4AMdTEFVzjI5zj" crossorigin="anonymous">
-  <link rel="stylesheet" href="{% static 'css/candidate.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/add_candidate.css' %}" />
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
@@ -322,118 +323,104 @@
 
         <label for="skillsInput">Skills</label>
         <input type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
-        <button type="button" onclick="addManuallyTypedSkill(event)">Add</button>
+        <button type="button" id="addButton">Add</button>
         <ul id="skillList" class="skill-container"></ul>
         <div id="selectedSkills" class="skill-container">
             {% for skill in candidate.skills.all %}
             <div class="skill-item">
                 <input type="text" value="{{ skill.name }}" name="skills" readonly>
-                <button type="button" onclick="removeSkill(this)">*</button>
+                <button type="button" onclick="removeSkill(this)"><i class="fas fa-times"></i></button>
             </div>
             {% endfor %}
         </div>
         
         <script>
-         var skillsList = [ 'Java', 'Python', 'JavaScript', 'HTML', 'CSS', 'React', 'Node.js',
-    'Database Management', 'SQL', 'NoSQL', 'MongoDB', 'MySQL', 'PostgreSQL',
-    'Network Administration', 'Cisco', 'TCP/IP', 'DNS', 'DHCP', 'Firewalls',
-    'Cybersecurity', 'Ethical Hacking', 'Penetration Testing', 'SIEM', 'Security Policies',
-    'DevOps', 'Docker', 'Kubernetes', 'Jenkins', 'Git', 'CI/CD',
-    'Cloud Computing', 'AWS', 'Azure', 'Google Cloud', 'Serverless',
-    'Frontend Development', 'Angular', 'Vue.js', 'SASS/LESS', 'Webpack', 'Responsive Design',
-    'Backend Development', 'Express.js', 'Django', 'Flask', 'Spring Boot', 'Ruby on Rails',
-    'Mobile App Development', 'React Native', 'Flutter', 'iOS', 'Android', 'Swift', 'Kotlin',
-    'Testing', 'JUnit', 'Selenium', 'Cypress', 'TestNG',
-    'Data Science', 'Machine Learning', 'Deep Learning', 'TensorFlow', 'PyTorch',
-    'Blockchain', 'Smart Contracts', 'Solidity', 'Hyperledger Fabric',
-    'UI/UX Design', 'Wireframing', 'Prototyping', 'Adobe XD', 'Figma',
-    'Project Management', 'Agile', 'Scrum', 'Kanban', 'Jira',
-    'Linux Administration', 'Shell Scripting', 'Bash', 'Ubuntu', 'CentOS',
-    'IT Support', 'Help Desk', 'Troubleshooting', 'Remote Desktop Support',
-    'Technical Writing', 'Documentation', 'User Manuals', 'API Documentation',
-    'C++', 'C#', 'Ruby', 'PHP', 'SwiftUI', 'GraphQL',
-    'Big Data', 'Hadoop', 'Spark', 'Hive', 'Pig', 'MapReduce',
-    'IoT', 'Raspberry Pi', 'Arduino', 'Embedded Systems',
-    'Virtualization', 'VMware', 'VirtualBox', 'Hyper-V',
-    'Web Security', 'OWASP', 'Web Application Security',
-    'Microsoft Office Suite', 'Excel', 'Word', 'PowerPoint',
-    'Business Intelligence', 'Tableau', 'Power BI', 'QlikView',
-    'Network Security', 'Intrusion Detection', 'VPN', 'Wireless Security',
-    'Agile Coaching', 'Team Leadership', 'Mentorship', 'Conflict Resolution'];
-
-    function filterSkills() {
-        var input = document.getElementById('skillsInput');
-        var filter = input.value.trim().toLowerCase();
-        var skillList = document.getElementById('skillList');
-        skillList.innerHTML = '';
-
-        for (var i = 0; i < skillsList.length; i++) {
-            var skill = skillsList[i].toLowerCase();
-            if (skill.includes(filter)) {
-                var li = document.createElement('li');
-                li.textContent = skillsList[i];
-                li.onclick = function () {
-                    addSkill(this.textContent);
-                    input.value = '';
-                    skillList.innerHTML = '';
-                };
-                skillList.appendChild(li);
-            }
-        }
-    }
-
-    function addSkill(skillName) {
-        var selectedSkillsContainer = document.getElementById('selectedSkills');
-        var skillContainer = document.createElement('div');
-        skillContainer.classList.add('skill-item');
-        var skillInput = document.createElement('input');
-        skillInput.type = 'text';
-        skillInput.value = skillName;
-        skillInput.name = 'skills';
-        skillInput.readOnly = true;
-        skillContainer.appendChild(skillInput);
-        var closeButton = document.createElement('button');
-        closeButton.textContent = '*';
-        closeButton.onclick = function () {
-            skillContainer.remove();
-        };
-        skillContainer.appendChild(closeButton);
-        selectedSkillsContainer.appendChild(skillContainer);
-    }
-
-    function checkEnterKey(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // Prevent the default behavior (moving to the top)
-            var input = document.getElementById('skillsInput');
-            var skillName = input.value.trim();
-
-            if (skillName !== '') {
-                addSkill(skillName);
-                input.value = '';
-            }
-        }
-    }
-
-    function addManuallyTypedSkill(event) {
-        event.stopPropagation(); // Prevent the click event from reaching the form
-
-        var input = document.getElementById('skillsInput');
-        var skillName = input.value.trim();
-
-        if (skillName !== '') {
-            addSkill(skillName);
-            input.value = '';
-            setTimeout(function() {
-                input.focus(); // Set focus back to the input field after a short delay
-            }, 0);
-        }
-    }
-
-
-    function removeSkill(button) {
-        var skillContainer = button.parentNode;
-        skillContainer.remove();
-    }
+          var input; // Declare input in the global scope
+          var selectedSkillsContainer;
+        
+          fetch('{% static "skills.txt" %}')
+              .then(response => response.text())
+              .then(data => {
+                  var skillsList = data.split('\n').map(skill => skill.trim()).filter(Boolean);
+                  initializeSkills(skillsList);
+              })
+              .catch(error => console.error('Error loading skills:', error));
+        
+          function initializeSkills(skills) {
+              input = document.getElementById('skillsInput'); // Assign input in the global scope
+              var skillList = document.getElementById('skillList');
+              selectedSkillsContainer = document.getElementById('selectedSkills');
+        
+              input.addEventListener('input', filterSkills);
+        
+              function filterSkills() {
+                  var filter = input.value.trim().toLowerCase();
+                  skillList.innerHTML = '';
+        
+                  for (var i = 0; i < skills.length; i++) {
+                      var skill = skills[i].toLowerCase();
+                      if (skill.includes(filter)) {
+                          var li = document.createElement('li');
+                          li.textContent = skills[i];
+                          li.onclick = function () {
+                              addSkill(this.textContent);
+                              input.value = '';
+                              skillList.innerHTML = '';
+                          };
+                          skillList.appendChild(li);
+                      }
+                  }
+              }
+        
+              function addSkill(skillName) {
+                  var skillContainer = document.createElement('div');
+                  skillContainer.classList.add('skill-item');
+                  var skillInput = document.createElement('input');
+                  skillInput.type = 'text';
+                  skillInput.value = skillName;
+                  skillInput.name = 'skills';
+                  skillInput.readOnly = true;
+                  skillContainer.appendChild(skillInput);
+                  var closeButton = document.createElement('button');
+                  closeButton.innerHTML = '<i class="fas fa-times"></i>';
+        
+                  closeButton.onclick = function () {
+                      skillContainer.remove();
+                  };
+                  skillContainer.appendChild(closeButton);
+                  selectedSkillsContainer.appendChild(skillContainer);
+              }
+        
+              function addManuallyTypedSkill() {
+                  var skillName = input.value.trim();
+        
+                  if (skillName !== '') {
+                      addSkill(skillName);
+                      input.value = '';
+                      input.focus();
+                  }
+              }
+        
+              document.getElementById('addButton').addEventListener('click', addManuallyTypedSkill);
+        
+              document.getElementById('skillsInput').addEventListener('keydown', function (event) {
+                  if (event.key === 'Enter') {
+                      event.preventDefault();
+                      var skillName = input.value.trim();
+        
+                      if (skillName !== '') {
+                          addSkill(skillName);
+                          input.value = '';
+                      }
+                  }
+              });
+        
+              document.getElementById('selectedSkills').addEventListener('click', function (event) {
+                  if (event.target.tagName === 'BUTTON') {
+                      event.target.parentElement.remove();
+                  }
+              });
+          }
         </script>
         
      

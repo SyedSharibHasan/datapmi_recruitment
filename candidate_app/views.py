@@ -33,7 +33,7 @@ def signup(request):
             # Handle password mismatch error as needed
             return HttpResponse('Passwords are not matched')
         
-        
+
         # Create CustomUser instance
         user = CustomUser(username=username, first_name=first_name, last_name=last_name,email=email)
         user.set_password(pass1)
@@ -426,6 +426,8 @@ from django.db.models import Q
 from .models import Candidate, Skill
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.db.models import Q
+
 class Filter(LoginRequiredMixin, ListView):
     model = Candidate
     template_name = 'search_results.html'
@@ -436,6 +438,9 @@ class Filter(LoginRequiredMixin, ListView):
         location_query = self.request.GET.get('location_search', '')
         experience_from = self.request.GET.get('experience_from', '')
         experience_to = self.request.GET.get('experience_to', '')
+
+        # Start with all candidates
+        users = Candidate.objects.all()
 
         # Filter candidates based on skills
         if skills_query:
@@ -458,8 +463,8 @@ class Filter(LoginRequiredMixin, ListView):
             # Check if the queryset is empty
             if not users.exists():
                 return HttpResponse("No results found for location", status=200)
-        
 
+        # Filter candidates based on experience
         if experience_from and experience_to:
             users = users.filter(experience__range=(float(experience_from), float(experience_to)))
         elif experience_from:
@@ -469,6 +474,7 @@ class Filter(LoginRequiredMixin, ListView):
 
         print(users.query)  # Print the generated SQL query to the console
         return users
+
 
 ## suggession for getting skills 
 from django.contrib.auth.decorators import login_required
