@@ -26,6 +26,12 @@
    
 
     <style>
+
+      body {
+        background-image: url('https://storage.googleapis.com/join-public-pages-static-assets/2023/09/6fa2f8f5-resume-screening.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
           .search_skill {
               padding: 8px; /* Adjust padding as needed */
               font-size: 14px; /* Adjust font size as needed */
@@ -50,7 +56,7 @@
           }
     
           .skill-box {
-            font-size: 10px; 
+            font-size: 12px; 
             display: inline-block;
             padding: 8px;
             margin: 5px;
@@ -59,8 +65,11 @@
             border-radius: 5px;
         }
 
-        .close-button {
+        #close-button {
             cursor: pointer;
+            color: red;
+            font-weight: 500;
+            
         }
 
         /* .box {
@@ -130,7 +139,7 @@
                           selectedSkillsContainer.empty();
 
                           $.each(selectedSkills, function (index, skill) {
-                              var skillBox = $('<div class="skill-box">' + skill + '&nbsp;<i style="color: black;font-weight:200;" id="close-button" class="bi bi-x-lg"></i></div>');
+                              var skillBox = $('<div class="skill-box">' + skill + '&nbsp;<i id="close-button" class="bi bi-x-lg"></i></div>');
                               skillBox.find("#close-button").click(function () {
                                   removeSelectedSkill(index);
                               });

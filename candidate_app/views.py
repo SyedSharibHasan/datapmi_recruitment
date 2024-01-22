@@ -154,6 +154,9 @@ class Createcandidate(CreateView):
             remarks = request.POST.get("remarks")
             status = request.POST.get("status")
             additional_status = request.POST.get("client-details")
+
+            if Candidate.objects.filter(email=email).exists():
+                return HttpResponse({'Email already exists'})
             
             
             candidate = Candidate(
@@ -298,16 +301,8 @@ class Updatecandidate(UpdateView):
 
 
             
-from django.views import View
-class CheckEmailExistsView(View):
-    def get(self, request, *args, **kwargs):
-        email = request.GET.get('email', None)
-        if email:
-            email_exists = Candidate.objects.filter(email=email).exists()
-            return JsonResponse({'exists': email_exists})
-        else:
-            return JsonResponse({'exists': False})
 
+        
     
 
 
