@@ -1,120 +1,369 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        integrity="sha384-KpOqU7gZ1R8qROiS1z3Pxm6ofuV3LlBOsPFvG9b0L4ZLTOEzVZ4AMdTEFVzjI5zj" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <title>Edit Account</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration</title>
+  <link rel="stylesheet" href="./style.css" />
 
-    <style>
-        
-        body {
-        background-image: url('https://4kwallpapers.com/images/wallpapers/baby-groot-cute-art-3840x2160-11964.jpg'); /* Replace 'your-image-url.jpg' with the URL or path to your image */
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        display: flex;
-        align-items: center;
-        justify-content: center;    
-        min-height: 100vh;
-        margin: 0;
+  <link rel='stylesheet' href='https://foliotek.github.io/Croppie/croppie.css'>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
+
+
+
+    html,
+    body {
+      width: 100%;
+
+      display: table;
+
+      font-family: Rubik, sans-serif;
     }
-        #image-clear_id {
-            display: none;
-            
-        }
 
-        label[for="image-clear_id"] {
-            color: red;
-            
-            
-        }
-        label[for="image-clear_id"]:hover {
-            cursor: pointer;
-            background-color: blue;
-           
-        }
 
-        input {
-            border: 2px solid #63b3ed;
-            padding: 8px;
-            width: 100%;
-            margin-bottom: 10px;
-            border-radius: 6px;
-        }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url('https://img.freepik.com/free-vector/geometric-gradient-futuristic-background_23-2149116406.jpg?w=1380&t=st=1703061497~exp=1703062097~hmac=aa51c8117024f5fca8bca18b558670f265c0551d42f3a0426c61ce34dc3502ff');
+      margin: 0;
+      min-height: 100vh;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-        .helptext {
-            display: none;
-        }
+    .container {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+      border-radius: .7em;
+      padding: 3rem 3rem 3rem;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      background-color: rgba(255, 255, 255, 0.7);
+      /* Adjust the alpha value (last parameter) for transparency */
+      /* background-image: linear-gradient(90deg, rgb(106, 33, 223), rgb(209, 51, 230)); */
+      margin-top: 50px;
+    }
 
-        .btn {
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+    h1 {
+      font-size: 1.5em;
+    }
 
-        .btn-primary {
-            background-color: #4caf50;
-            color: white;
-        }
+    .content {
+      display: inline-block;
+      text-align: left;
+      background-color: whitesmoke;
+      border-radius: .7em;
+      padding: 3rem 3rem 3rem;
+    }
 
-        .btn-danger {
-            background-color: #f44336;
-            color: white;
-        }
+    .fld,
+    .slt {
+      width: 20em;
+      height: 3rem;
+    }
 
-        .btn-outline-primary {
-            background-color: transparent;
-            border: 2px solid #4caf50;
-            color: #4caf50;
-        }
+    .slt::placeholder {
+      color: rgb(109, 109, 109);
+    }
 
-        .btn-outline-primary:hover {
-            background-color: #4caf50;
-            color: white;
-        }
+    .fld::placeholder {
+      color: rgba(128, 128, 128, 0.568);
+    }
 
-        .btn-outline-danger {
-            background-color: transparent;
-            border: 2px solid #f44336;
-            color: #f44336;
-        }
+    .fld:focus,
+    .slt:focus,
+    .ta:focus {
+      outline: none;
+      transition: ease 1s;
+      border-bottom-color: black;
+    }
 
-        .btn-outline-danger:hover {
-            background-color: #f44336;
-            color: white;
-        }
-    </style>
+    .msg,
+    .ta {
+      width: 20em;
+      font-family: Rubik, sans-serif;
+      height: 6rem;
+      margin-bottom: 2.5rem;
+      resize: none;
+    }
 
+    .ta::placeholder {
+      color: rgba(128, 128, 128, 0.568);
+    }
+
+    #say-hello {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .name,
+    .email,
+    .contact,
+    .password,
+    .confirm-password,
+    .submit-button {
+      padding-top: 0.8em;
+      padding-bottom: 0.8em;
+    }
+
+    label {
+      font-size: small;
+      color: gray;
+    }
+
+    .fld,
+    .ta,
+    .slt {
+      border: none;
+      background-color: whitesmoke;
+      font-size: large;
+      border-bottom: 2px solid rgba(128, 128, 128, 0.616);
+    }
+
+    .btn {
+      border: none;
+      font-weight: bold;
+      width: 22.5rem;
+      background-image: linear-gradient(90deg, rgb(209, 51, 230), rgb(106, 33, 223), rgb(9, 204, 204));
+      border-radius: 2rem;
+      height: 2.5rem;
+      color: whitesmoke;
+    }
+
+    .btn:hover {
+      transition: ease-in 0.5s;
+      border: 4px solid blueviolet;
+    }
+  </style>
 </head>
 
-<!-- <body class="bg-gradient-to-r to-indigo-500 min-h-screen flex items-center justify-center"> -->
+<body id="body">
 
-    {% include 'sidebar.html' %}
+  <div class="container">
+    <form action="" method="POST" class="content" enctype="multipart/form-data">
+      {% csrf_token %}
 
-    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <header class="text-blue-500 text-2xl mb-4">
-            <span>Edit</span>
-            <div class="close"><i class="uil uil-times"></i></div>
-        </header>
-        <form enctype="multipart/form-data" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="content mt-4 flex justify-between items-center">
-                <div class="field">
-                    <a href="/profile"><button class="btn btn-danger">Back</button></a>
-                </div>
-                
-                <div class="field">
-                    <button class="btn btn-outline-primary" type="submit">Submit</button>
-                </div>
+  
+      <h4 id="say-hello">Edit Your Profile Here</h4>
+      <div>
+
+        <div class="name">
+          <label for="name">Username</label><br />
+          <input value="{{user.username}}" name="username" class="fld" placeholder="Enter your username" id="name" required />
+        </div>
+
+        <div class="name">
+          <label for="name">First Name</label><br />
+          <input value="{{user.first_name}}" name="first_name" class="fld" placeholder="Enter your first name" id="name" required />
+        </div>
+
+        <div class="name">
+          <label for="last-name">Last Name</label><br />
+          <input value="{{user.last_name}}" name="last_name" class="fld" placeholder="Enter your last name" id="last-name" required />
+        </div>
+
+        <div class="email">
+          <label for="email">Email</label><br />
+          <input value="{{user.email}}" name="email" class="fld" type="email" placeholder="Enter your email address" id="email" required />
+        </div>
+
+        <div class="contact">
+          <label for="contact">Contact</label><br />
+          <input value="{{user.contact}}" name="contact" class="fld" type="tel" placeholder="Enter your contact number" id="contact" required />
+        </div>
+
+        <style>
+          label.cabinet {
+            display: block;
+            cursor: pointer;
+          }
+
+          label.cabinet input.file {
+            position: relative;
+            height: 100%;
+            width: auto;
+            opacity: 0;
+            -moz-opacity: 0;
+            filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+            margin-top: -30px;
+          }
+
+          #upload-demo {
+            width: 100%;
+            height: 420px;
+            padding-bottom: 25px;
+          }
+        </style>
+
+        <div class="image">
+          <label for="image">Profile Image</label><br />
+          <div class="col-xs-12">
+            <label class="cabinet center-block">
+              <figure> 
+                <img src="{% if user.image %}{{ user.image.url }}{% endif %}" id="item-img-output" width="100px" height="100px"/>
+
+                <figcaption><i class="fa fa-camera"  id="imageInput" accept="image/*" onchange="initCropper()"></i></figcaption>
+              </figure>
+              <input name="image" type="file"  class="item-img file center-block" />
+            </label>
+          </div>
+        </div>
+<!-- Add this hidden input field to store the cropped image data -->
+<input type="hidden" name="cropped_image_data" id="croppedImageData" value="">
+
+<script>
+    function initCropper() {
+  var input = document.getElementById('imageInput');
+  var preview = document.getElementById('item-img-output');
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+
+      // Initialize Cropper
+      var cropper = new Cropper(preview, {
+        aspectRatio: 1,  // Adjust as needed
+        crop: function (event) {
+          // You can handle crop events if needed
+        }
+      });
+
+      // Save cropped image
+      document.getElementById('saveButton').addEventListener('click', function () {
+        // Get cropped canvas data
+        var croppedCanvas = cropper.getCroppedCanvas();
+        
+        // Convert to Blob with the specified cropping dimensions
+        croppedCanvas.toBlob(function (blob) {
+          // Create FormData
+          var formData = new FormData();
+          formData.append('croppedImage', blob, 'cropped.jpg');
+
+          // Use AJAX to send FormData to the server
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', '/your-upload-endpoint', true);
+          xhr.onload = function () {
+            // Handle the response from the server
+            console.log('Image uploaded successfully');
+          };
+          xhr.send(formData);
+        }, 'image/jpeg', 1.0); // 1.0 represents the image quality
+      });
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+</script>
+
+
+
+        <div style="display: none;" class="modal fade" id="cropImagePop" tabindex="-1" role="dialog"
+          aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+
+              </div>
+              <div class="modal-body">
+                <div id="upload-demo" class="center-block"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
+              </div>
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+        <!-- partial -->
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+        <script src='https://foliotek.github.io/Croppie/croppie.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+        <script>
+          // Start upload preview image
+          $(".gambar").attr("src", "https://user.gadjian.com/static/images/personnel_boy.png");
+          var $uploadCrop,
+            tempFilename,
+            rawImg,
+            imageId;
+          function readFile(input) {
+            if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                $('.upload-demo').addClass('ready');
+                $('#cropImagePop').modal('show');
+                rawImg = e.target.result;
+              }
+              reader.readAsDataURL(input.files[0]);
+            }
+            else {
+              swal("Sorry - you're browser doesn't support the FileReader API");
+            }
+          }
 
+          $uploadCrop = $('#upload-demo').croppie({
+            viewport: {
+              width: 300,
+              height: 300,
+            },
+            enforceBoundary: false,
+            enableExif: true
+          });
+          $('#cropImagePop').on('shown.bs.modal', function () {
+            // alert('Shown pop');
+            $uploadCrop.croppie('bind', {
+              url: rawImg
+            }).then(function () {
+              console.log('jQuery bind complete');
+            });
+          });
+
+          $('.item-img').on('change', function () {
+            imageId = $(this).data('id'); tempFilename = $(this).val();
+            $('#cancelCropBtn').data('id', imageId); readFile(this);
+          });
+      // ... Your existing code
+
+$('#cropImageBtn').on('click', function (ev) {
+    $uploadCrop.croppie('result', {
+        type: 'base64',
+        format: 'jpeg',
+        size: { width: 150, height: 150 }
+    }).then(function (resp) {
+        $('#item-img-output').attr('src', resp);
+
+        // Update the value of the hidden input field with the cropped image data
+        $('input[name="cropped_image_data"]').val(resp);
+
+        $('#cropImagePop').modal('hide');
+    });
+});
+
+// ... Your existing code
+
+
+
+        </script>
+   
+
+        <div class="submit-button">
+          <button  id="saveButton" class="btn" type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </body>
 
 </html>

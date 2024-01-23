@@ -10,16 +10,16 @@
   <link rel="stylesheet" href="./style.css" />
 
   <link rel='stylesheet' href='https://foliotek.github.io/Croppie/croppie.css'>
-<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
 
-  
+
 
     html,
     body {
       width: 100%;
-    
+
       display: table;
 
       font-family: Rubik, sans-serif;
@@ -45,9 +45,10 @@
       border-radius: .7em;
       padding: 3rem 3rem 3rem;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      background-color: rgba(255, 255, 255, 0.7); /* Adjust the alpha value (last parameter) for transparency */
+      background-color: rgba(255, 255, 255, 0.7);
+      /* Adjust the alpha value (last parameter) for transparency */
       /* background-image: linear-gradient(90deg, rgb(106, 33, 223), rgb(209, 51, 230)); */
-      margin-top: 50px  ;
+      margin-top: 50px;
     }
 
     h1 {
@@ -140,7 +141,6 @@
       transition: ease-in 0.5s;
       border: 4px solid blueviolet;
     }
-
   </style>
 </head>
 
@@ -149,156 +149,161 @@
   <div class="container">
     <form action="" method="POST" class="content" enctype="multipart/form-data">
       {% csrf_token %}
-      
+
       <h1 id="say-hello">Welcome To DataPMI</h1>
       <h4 id="say-hello">Register Here</h4>
       <div>
 
         <div class="name">
           <label for="name">Username</label><br />
-          <input name="username" class="fld" placeholder="Enter your username" id="name" required/>
+          <input name="username" class="fld" placeholder="Enter your username" id="name" required />
         </div>
 
         <div class="name">
           <label for="name">First Name</label><br />
-          <input name="first_name" class="fld" placeholder="Enter your first name" id="name" required/>
+          <input name="first_name" class="fld" placeholder="Enter your first name" id="name" required />
         </div>
 
         <div class="name">
           <label for="last-name">Last Name</label><br />
-          <input name="last_name" class="fld" placeholder="Enter your last name" id="last-name" required/>
+          <input name="last_name" class="fld" placeholder="Enter your last name" id="last-name" required />
         </div>
 
         <div class="email">
           <label for="email">Email</label><br />
-          <input name="email" class="fld" type="email" placeholder="Enter your email address" id="email" required/>
+          <input name="email" class="fld" type="email" placeholder="Enter your email address" id="email" required />
         </div>
 
         <div class="contact">
           <label for="contact">Contact</label><br />
-          <input name="contact" class="fld" type="tel" placeholder="Enter your contact number" id="contact" required/>
+          <input name="contact" class="fld" type="tel" placeholder="Enter your contact number" id="contact" required />
         </div>
 
         <style>
-          label.cabinet{
-        display: block;
-        cursor: pointer;
-      }
-      
-      label.cabinet input.file{
-        position: relative;
-        height: 100%;
-        width: auto;
-        opacity: 0;
-        -moz-opacity: 0;
-        filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-        margin-top:-30px;
-      }
-      
-      #upload-demo{
-        width: 100%;
-        height: 420px;
-        padding-bottom:25px;
-      }
-      </style>
+          label.cabinet {
+            display: block;
+            cursor: pointer;
+          }
+
+          label.cabinet input.file {
+            position: relative;
+            height: 100%;
+            width: auto;
+            opacity: 0;
+            -moz-opacity: 0;
+            filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+            margin-top: -30px;
+          }
+
+          #upload-demo {
+            width: 100%;
+            height: 420px;
+            padding-bottom: 25px;
+          }
+        </style>
 
         <div class="image">
           <label for="image">Profile Image</label><br />
           <div class="col-xs-12">
             <label class="cabinet center-block">
-             <figure>
-                <img src=""  id="item-img-output" />
+              <figure>
+                <img src="" id="item-img-output" />
                 <figcaption><i class="fa fa-camera"></i></figcaption>
               </figure>
-              <input type="file" class="item-img file center-block" name="image"/>
+              <input type="file" class="item-img file center-block" name="image" />
             </label>
-          </div >
+          </div>
         </div>
 
 
 
-<div style="display: none;" class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  
-  </div>
-  <div class="modal-body">
-        <div id="upload-demo" class="center-block"></div>
-  </div>
-   <div class="modal-footer">
-<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-<button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
-</div>
-    </div>
-  </div>
-</div>
-<!-- partial -->
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-<script src='https://foliotek.github.io/Croppie/croppie.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script>
-// Start upload preview image
-$(".gambar").attr("src", "https://user.gadjian.com/static/images/personnel_boy.png");
-var $uploadCrop,
-tempFilename,
-rawImg,
-imageId;
-function readFile(input) {
-   if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-      $('.upload-demo').addClass('ready');
-      $('#cropImagePop').modal('show');
-            rawImg = e.target.result;
+        <div style="display: none;" class="modal fade" id="cropImagePop" tabindex="-1" role="dialog"
+          aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+
+              </div>
+              <div class="modal-body">
+                <div id="upload-demo" class="center-block"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- partial -->
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+        <script src='https://foliotek.github.io/Croppie/croppie.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+        <script>
+          // Start upload preview image
+          $(".gambar").attr("src", "https://user.gadjian.com/static/images/personnel_boy.png");
+          var $uploadCrop,
+            tempFilename,
+            rawImg,
+            imageId;
+          function readFile(input) {
+            if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                $('.upload-demo').addClass('ready');
+                $('#cropImagePop').modal('show');
+                rawImg = e.target.result;
+              }
+              reader.readAsDataURL(input.files[0]);
+            }
+            else {
+              swal("Sorry - you're browser doesn't support the FileReader API");
+            }
           }
-          reader.readAsDataURL(input.files[0]);
-      }
-      else {
-        swal("Sorry - you're browser doesn't support the FileReader API");
-    }
-}
 
-$uploadCrop = $('#upload-demo').croppie({
-  viewport: {
-    width: 300,
-    height: 300,
-  },
-  enforceBoundary: false,
-  enableExif: true
-});
-$('#cropImagePop').on('shown.bs.modal', function(){
-  // alert('Shown pop');
-  $uploadCrop.croppie('bind', {
-        url: rawImg
-      }).then(function(){
-        console.log('jQuery bind complete');
-      });
-});
+          $uploadCrop = $('#upload-demo').croppie({
+            viewport: {
+              width: 300,
+              height: 300,
+            },
+            enforceBoundary: false,
+            enableExif: true
+          });
+          $('#cropImagePop').on('shown.bs.modal', function () {
+            // alert('Shown pop');
+            $uploadCrop.croppie('bind', {
+              url: rawImg
+            }).then(function () {
+              console.log('jQuery bind complete');
+            });
+          });
 
-$('.item-img').on('change', function () { imageId = $(this).data('id'); tempFilename = $(this).val();
-                                         $('#cancelCropBtn').data('id', imageId); readFile(this); });
-$('#cropImageBtn').on('click', function (ev) {
-  $uploadCrop.croppie('result', {
-    type: 'base64',
-    format: 'jpeg',
-    size: {width: 150, height: 150}
-  }).then(function (resp) {
-    $('#item-img-output').attr('src', resp);
-    $('#cropImagePop').modal('hide');
-  });
-});
+          $('.item-img').on('change', function () {
+            imageId = $(this).data('id'); tempFilename = $(this).val();
+            $('#cancelCropBtn').data('id', imageId); readFile(this);
+          });
+          $('#cropImageBtn').on('click', function (ev) {
+            $uploadCrop.croppie('result', {
+              type: 'base64',
+              format: 'jpeg',
+              size: { width: 150, height: 150 }
+            }).then(function (resp) {
+              $('#item-img-output').attr('src', resp);
+              $('#cropImagePop').modal('hide');
+            });
+          });
 
-</script>
+        </script>
         <div class="password">
           <label for="password">Password</label><br />
-          <input name="pass1" class="fld" type="password" placeholder="Enter your password" id="password" required/>
+          <input name="pass1" class="fld" type="password" placeholder="Enter your password" id="password" required />
         </div>
 
         <div class="confirm-password">
           <label for="confirm-password">Confirm Password</label><br />
-          <input name="pass2" class="fld" type="password" placeholder="Confirm your password" id="confirm-password" required/>
+          <input name="pass2" class="fld" type="password" placeholder="Confirm your password" id="confirm-password"
+            required />
         </div>
 
         <div class="submit-button">

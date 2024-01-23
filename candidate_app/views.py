@@ -588,18 +588,48 @@ def list_of_candidates(request, status):
 
 from .forms import CustomUserUpdateForm
 
+# class Edit_account(UpdateView):
+#     model = CustomUser
+#     form_class = CustomUserUpdateForm
+#     template_name = 'edit_account.html'
+#     success_url = reverse_lazy('profile')
+
+#     def get_object(self, queryset=None):
+#         return get_object_or_404(CustomUser, pk=self.request.user.pk)
+
+
 class Edit_account(UpdateView):
     model = CustomUser
-    form_class = CustomUserUpdateForm
-    template_name = 'edit_account.html'
     success_url = reverse_lazy('profile')
-
-    def get_object(self, queryset=None):
-        return get_object_or_404(CustomUser, pk=self.request.user.pk)
+    template_name = 'edit_account.html'
 
 
-    
-    
+    def get(self, request, pk):
+        user = get_object_or_404(CustomUser, pk=pk)
+        return render(request, self.template_name, {'user': user})   
+
+    def post(self, request, pk):
+        user = get_object_or_404(CustomUser, pk=pk)
+        
+        user.username = request.POST.get("username")
+        user.first_name = request.POST.get("first_name")
+        user.last_name = request.POST.get("last_name")
+        user.email = request.POST.get("email")
+        user.contact = request.POST.get("contact")
+        user.image = request.FILES.get("image")
+
+        if user.email:
+            if not user.email.endswith('@datapmi.com'):
+                return HttpResponse('Email format is not valid')
+
+        user.save()
+
+        return redirect(self.success_url)
+
+        
+
+
+
 
 
 ################ delete user account

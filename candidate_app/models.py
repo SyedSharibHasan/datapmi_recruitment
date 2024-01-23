@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from django.utils import timezone
 
 
 
@@ -39,6 +39,7 @@ class Candidate(models.Model):
     experience = models.FloatField(null=True, blank=True)
     relevent_experience = models.FloatField(null=True, blank=True)
 
+
     designation = models.CharField(max_length=50, null=True,blank=True)
     expected_ctc = models.CharField(max_length=50, null=True,blank=True)
     current_ctc = models.CharField(max_length=50, null=True,blank=True)
@@ -69,7 +70,10 @@ class Candidate(models.Model):
         ordering = ["-updated_on"]
 
     def formatted_updated_on(self):
-        return self.updated_on.strftime('%d/%b/%Y %I:%M %p')
+        updated_on_timezone = timezone.localtime(self.updated_on, timezone=timezone.get_current_timezone())
+
+        # Format the datetime
+        return updated_on_timezone.strftime('%d/%b/%Y %I:%M %p')
 
 
 
