@@ -202,6 +202,7 @@
           }
         </style>
 
+
         <div class="image">
           <label for="image">Profile Image</label><br />
           <div class="col-xs-12">
@@ -209,63 +210,70 @@
               <figure> 
                 <img src="{% if user.image %}{{ user.image.url }}{% endif %}" id="item-img-output" width="100px" height="100px"/>
 
-                <figcaption><i class="fa fa-camera"  id="imageInput" accept="image/*" onchange="initCropper()"></i></figcaption>
+                <figcaption><i class="fa fa-camera"></i></figcaption>
               </figure>
-              <input name="image" type="file"  class="item-img file center-block" />
+              <input name="image" type="file" class="item-img file center-block"/>
             </label>
+            <button id="upload-button" onclick="uploadImage()">Upload</button>
           </div>
         </div>
-<!-- Add this hidden input field to store the cropped image data -->
-<input type="hidden" name="cropped_image_data" id="croppedImageData" value="">
 
-<script>
-    function initCropper() {
-  var input = document.getElementById('imageInput');
-  var preview = document.getElementById('item-img-output');
+        <script>
+            $(document).ready(function () {
+        var cropper;
 
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
+        // Initialize Cropper.js when an image is selected
+        $('#image-input').change(function (event) {
+            var input = event.target;
+            var reader = new FileReader();
 
-    reader.onload = function (e) {
-      preview.src = e.target.result;
+            reader.onload = function () {
+                if (cropper) {
+                    cropper.destroy();
+                }
 
-      // Initialize Cropper
-      var cropper = new Cropper(preview, {
-        aspectRatio: 1,  // Adjust as needed
-        crop: function (event) {
-          // You can handle crop events if needed
-        }
-      });
+                // Initialize Cropper.js
+                cropper = new Cropper(document.getElementById('item-img-output'), {
+                    aspectRatio: 1,  // Set the aspect ratio as needed
+                    viewMode: 2,     // Set the view mode as needed
+                });
 
-      // Save cropped image
-      document.getElementById('saveButton').addEventListener('click', function () {
-        // Get cropped canvas data
-        var croppedCanvas = cropper.getCroppedCanvas();
-        
-        // Convert to Blob with the specified cropping dimensions
-        croppedCanvas.toBlob(function (blob) {
-          // Create FormData
-          var formData = new FormData();
-          formData.append('croppedImage', blob, 'cropped.jpg');
+                // Set the source of the cropper with the selected image
+                cropper.replace(reader.result);
+            };
 
-          // Use AJAX to send FormData to the server
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', '/your-upload-endpoint', true);
-          xhr.onload = function () {
-            // Handle the response from the server
-            console.log('Image uploaded successfully');
-          };
-          xhr.send(formData);
-        }, 'image/jpeg', 1.0); // 1.0 represents the image quality
-      });
-    };
+            reader.readAsDataURL(input.files[0]);
+        });
+    });
 
-    reader.readAsDataURL(input.files[0]);
-  }
-}
+    function uploadImage() {
+        // Get the cropped canvas data
+        var canvas = cropper.getCroppedCanvas();
+        var croppedImageUrl = canvas.toDataURL('image/jpeg');
 
-</script>
+        // Create a FormData object to send the cropped image data to the backend
+        var formData = new FormData();
+        formData.append('image', croppedImageUrl);
 
+        // Send the FormData to the backend using an XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/your-backend-endpoint', true);
+
+        xhr.onload = function () {
+            // Handle the response from the backend, if needed
+            console.log(xhr.responseText);
+        };
+
+        // Send the FormData
+        xhr.send(formData);
+    }
+        </script>
+        <!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Include Cropper.js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" integrity="sha512-z+G9cXQ0zYvPWs4Zk+S5qaCVOL+g1ZCpvI33E9l72jUWcA8q9zsnxNtxsR2M+/vfSLXX6Ez3UZUqg9tBb5Mfbg==" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-xqA6NkW4aa/3YAPr2WXjy5PTOph0CcsMvNauMe4Cxel1u2VvPM47FPV6p8j3Alcfz1BpyAjLFpW0e7p03z2v+g==" crossorigin="anonymous"></script>
 
 
         <div style="display: none;" class="modal fade" id="cropImagePop" tabindex="-1" role="dialog"
@@ -334,9 +342,7 @@
             imageId = $(this).data('id'); tempFilename = $(this).val();
             $('#cancelCropBtn').data('id', imageId); readFile(this);
           });
-      // ... Your existing code
-
-$('#cropImageBtn').on('click', function (ev) {
+          $('#cropImageBtn').on('click', function (ev) {
     $uploadCrop.croppie('result', {
         type: 'base64',
         format: 'jpeg',
@@ -344,22 +350,33 @@ $('#cropImageBtn').on('click', function (ev) {
     }).then(function (resp) {
         $('#item-img-output').attr('src', resp);
 
-        // Update the value of the hidden input field with the cropped image data
-        $('input[name="cropped_image_data"]').val(resp);
+        // Send the cropped image data to the server
+        $.ajax({
+            type: 'POST',
+            url: '{% url "edit_account" pk=user.pk %}',
+
+            data: {
+                cropped_image_data: resp,
+                csrfmiddlewaretoken: '{{ csrf_token }}',  // Include the CSRF token
+            },
+            success: function (data) {
+                // Handle success if needed
+            },
+            error: function (xhr, status, error) {
+                // Handle error if needed
+            }
+        });
 
         $('#cropImagePop').modal('hide');
     });
 });
-
-// ... Your existing code
-
 
 
         </script>
    
 
         <div class="submit-button">
-          <button  id="saveButton" class="btn" type="submit">Submit</button>
+          <button class="btn" type="submit">Submit</button>
         </div>
       </div>
     </form>

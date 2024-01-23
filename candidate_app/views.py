@@ -616,7 +616,10 @@ class Edit_account(UpdateView):
         user.last_name = request.POST.get("last_name")
         user.email = request.POST.get("email")
         user.contact = request.POST.get("contact")
-        user.image = request.FILES.get("image")
+        image= request.POST.get('image')
+
+        # Save the image URL to the user model or do any other processing
+        request.user.image = image
 
         if user.email:
             if not user.email.endswith('@datapmi.com'):
