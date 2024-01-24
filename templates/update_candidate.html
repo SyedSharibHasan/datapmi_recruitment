@@ -172,8 +172,8 @@
           <label for="gender">Gender:</label>
           <select id="gender" name="gender">
             <option value="">Select</option>
-            <option value="male" {% if candidate.gender == 'male' %}selected{% endif %}>Male</option>
-            <option value="female" {% if candidate.gender == 'female' %}selected{% endif %}>Female</option>
+            <option value="Male" {% if candidate.gender == 'Male' %}selected{% endif %}>Male</option>
+            <option value="Female" {% if candidate.gender == 'Female' %}selected{% endif %}>Female</option>
         </select>
         
           <div class="error-message" id="gender-error"></div>
@@ -195,79 +195,82 @@
       
       
       <script>
-        var config = {
-            cUrl: 'https://api.countrystatecity.in/v1/countries',
-            ckey: 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA=='
-        }
-      
-        var stateSelect = document.querySelector('.state'),
-            citySelect = document.querySelector('.city'),
-            resultInput = document.querySelector('.result');
-      
-        function loadStates() {
-            stateSelect.disabled = false;
-            citySelect.disabled = true;
-            stateSelect.style.pointerEvents = 'auto';
-            citySelect.style.pointerEvents = 'none';
-      
-            const selectedCountryCode = 'IN'; // ISO2 code for India
-            stateSelect.innerHTML = '<option value="">Select State</option>'; // for clearing the existing states
-            citySelect.innerHTML = '<option value="">Select City</option>'; // Clear existing city options
-      
-            fetch(`${config.cUrl}/${selectedCountryCode}/states`, {headers: {"X-CSCAPI-KEY": config.ckey}})
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(state => {
-                        const option = document.createElement('option');
-                        option.value = state.iso2;
-                        option.textContent = state.name;
-                        stateSelect.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Error loading states:', error));
-        }
-      
-        function loadCities() {
-            citySelect.disabled = false;
-            citySelect.style.pointerEvents = 'auto';
-      
-            const selectedCountryCode = 'IN'; // ISO2 code for India
-            const selectedStateCode = stateSelect.value;
-      
-            citySelect.innerHTML = '<option value="">Select City</option>'; // Clear existing city options
-      
-            fetch(`${config.cUrl}/${selectedCountryCode}/states/${selectedStateCode}/cities`, {headers: {"X-CSCAPI-KEY": config.ckey}})
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(city => {
-                        const option = document.createElement('option');
-                        option.value = city.iso2;
-                        option.textContent = city.name;
-                        citySelect.appendChild(option);
-                    });
-                });
-      
-            // Set the value of the result input
-            updateResultInput();
-        }
-      
-        function updateResultInput() {
-              const selectedStateText = stateSelect.options[stateSelect.selectedIndex].text;
-              const selectedCityText = citySelect.options[citySelect.selectedIndex].text;
-      
-              // Exclude "Select City" from the input
-              if (selectedCityText !== 'Select City') {
-                  resultInput.value = `${selectedCityText}, ${selectedStateText}`;
-              } else {
-                  resultInput.value = selectedStateText;
-              }
-          }
-      
-        window.onload = function () {
-            loadStates();
-            // Add onchange event handler to the city dropdown
-            citySelect.onchange = updateResultInput;
-        };
+          var config = {
+    cUrl: 'https://api.countrystatecity.in/v1/countries',
+    ckey: 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA=='
+  }
+
+  var stateSelect = document.querySelector('.state'),
+    citySelect = document.querySelector('.city'),
+    resultInput = document.querySelector('.result');
+
+  function loadStates() {
+    stateSelect.disabled = false;
+    citySelect.disabled = true;
+    stateSelect.style.pointerEvents = 'auto';
+    citySelect.style.pointerEvents = 'none';
+
+    const selectedCountryCode = 'IN'; // ISO2 code for India
+    stateSelect.innerHTML = '<option value="">Select State</option>'; // for clearing the existing states
+    citySelect.innerHTML = '<option value="">Select City</option>'; // Clear existing city options
+
+    fetch(`${config.cUrl}/${selectedCountryCode}/states`, { headers: { "X-CSCAPI-KEY": config.ckey } })
+      .then(response => response.json())
+      .then(data => {
+        // Sort states alphabetically by name
+        data.sort((a, b) => a.name.localeCompare(b.name));
+
+        data.forEach(state => {
+          const option = document.createElement('option');
+          option.value = state.iso2;
+          option.textContent = state.name;
+          stateSelect.appendChild(option);
+        });
+      })
+      .catch(error => console.error('Error loading states:', error));
+  }
+
+  function loadCities() {
+    citySelect.disabled = false;
+    citySelect.style.pointerEvents = 'auto';
+
+    const selectedCountryCode = 'IN'; // ISO2 code for India
+    const selectedStateCode = stateSelect.value;
+
+    citySelect.innerHTML = '<option value="">Select City</option>'; // Clear existing city options
+
+    fetch(`${config.cUrl}/${selectedCountryCode}/states/${selectedStateCode}/cities`, { headers: { "X-CSCAPI-KEY": config.ckey } })
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(city => {
+          const option = document.createElement('option');
+          option.value = city.iso2;
+          option.textContent = city.name;
+          citySelect.appendChild(option);
+        });
+      });
+
+    // Set the value of the result input
+    updateResultInput();
+  }
+
+  function updateResultInput() {
+    const selectedStateText = stateSelect.options[stateSelect.selectedIndex].text;
+    const selectedCityText = citySelect.options[citySelect.selectedIndex].text;
+
+    // Exclude "Select City" from the input
+    if (selectedCityText !== 'Select City') {
+      resultInput.value = `${selectedCityText}, ${selectedStateText}`;
+    } else {
+      resultInput.value = selectedStateText;
+    }
+  }
+
+  window.onload = function () {
+    loadStates();
+    // Add onchange event handler to the city dropdown
+    citySelect.onchange = updateResultInput;
+  };
       </script>
 
 

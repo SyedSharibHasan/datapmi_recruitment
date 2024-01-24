@@ -195,8 +195,8 @@
           <label for="gender">Gender:</label>
           <select id="gender" name="gender">
             <option value="">Select</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
           </select>
           <div class="error-message" id="gender-error"></div>
         </div>
@@ -291,162 +291,89 @@
       // Add onchange event handler to the city dropdown
       citySelect.onchange = updateResultInput;
   };
+  
 </script>
 
 
-
-<!-- college --> 
-        <div class="form-group">
-          <label for="college">College:</label>
-          <input type="text" id="college" name="college">
-          <div class="error-message" id="college-error"></div>
-        </div>
-
-        <!-- Qualification -->
-        <div class="form-group">
-          <label for="qualification">Higher Qualification:</label>
-          <input type="text" id="qualification" name="qualification">
-          <div class="error-message" id="qualification-error"></div>
-        </div>
-
-        <!-- Year of Graduation -->
-        <div class="form-group">
-          <label for="graduation-year">Year of Graduation:</label>
-          <input type="text" id="graduation-year" name="graduation_year">
-          <div class="error-message" id="graduation-year-error"></div>
-        </div>
-
-        <!-- Current Company -->
-        <div class="form-group">
-          <label for="current-company">Current Company:</label>
-          <input type="text" id="current-company" name="current_company">
-          <div class="error-message" id="current-company-error"></div>
-        </div>
-
-        <!-- Reason for change current company -->
-        <div class="form-group">
-          <label for="remarks">Reason For Change:</label>
-          <textarea id="remarks" name="remarks"></textarea>
-          <div class="error-message" id="remarks-error"></div>
-        </div>
-
-        <!-- Total Years of Experience -->
-        <div class="form-group">
-          <label for="experience">Total Years of Experience:</label>
-          <input type="number" id="experience" name="experience" min="0" >
-          <div class="error-message" id="experience-error"></div>
-        </div>
-
-        <!-- Relevant Experience -->
-        <div class="form-group">
-          <label for="relevant-experience">Relevant Years Of Experience:</label>
-          <input type="number" id="relevant-experience" name="relevent_experience" min="0">
-          <div class="error-message" id="relevant-experience-error"></div>
-        </div>
-       
-
-       
-       
- <!-- HTML -->
-<!-- HTML -->
-<div class="form-group">
-  <label>Skills</label>
-  <input type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
-</div>
-<ul id="skillList" class="skill-container"></ul>
-<button type="button" id="addButton">Add</button>
-
-<div id="selectedSkills" class="skill-container"></div>
-
-<!-- JavaScript -->
 <script>
-  var input; // Declare input in the global scope
-  var selectedSkillsContainer;
-
-  fetch('{% static "skills.txt" %}')
-      .then(response => response.text())
-      .then(data => {
-          var skillsList = data.split('\n').map(skill => skill.trim()).filter(Boolean);
-          initializeSkills(skillsList);
-      })
-      .catch(error => console.error('Error loading skills:', error));
-
-  function initializeSkills(skills) {
-      input = document.getElementById('skillsInput'); // Assign input in the global scope
-      var skillList = document.getElementById('skillList');
-      selectedSkillsContainer = document.getElementById('selectedSkills');
-
-      input.addEventListener('input', filterSkills);
-
-      function filterSkills() {
-          var filter = input.value.trim().toLowerCase();
-          skillList.innerHTML = '';
-
-          for (var i = 0; i < skills.length; i++) {
-              var skill = skills[i].toLowerCase();
-              if (skill.includes(filter)) {
-                  var li = document.createElement('li');
-                  li.textContent = skills[i];
-                  li.onclick = function () {
-                      addSkill(this.textContent);
-                      input.value = '';
-                      skillList.innerHTML = '';
-                  };
-                  skillList.appendChild(li);
-              }
-          }
-      }
-
-      function addSkill(skillName) {
-          var skillContainer = document.createElement('div');
-          skillContainer.classList.add('skill-item');
-          var skillInput = document.createElement('input');
-          skillInput.type = 'text';
-          skillInput.value = skillName;
-          skillInput.name = 'skills';
-          skillInput.readOnly = true;
-          skillContainer.appendChild(skillInput);
-          var closeButton = document.createElement('button');
-          closeButton.innerHTML = '<i class="fas fa-times"></i>';
-
-          closeButton.onclick = function () {
-              skillContainer.remove();
-          };
-          skillContainer.appendChild(closeButton);
-          selectedSkillsContainer.appendChild(skillContainer);
-      }
-
-      function addManuallyTypedSkill() {
-          var skillName = input.value.trim();
-
-          if (skillName !== '') {
-              addSkill(skillName);
-              input.value = '';
-              input.focus();
-          }
-      }
-
-      document.getElementById('addButton').addEventListener('click', addManuallyTypedSkill);
-
-      document.getElementById('skillsInput').addEventListener('keydown', function (event) {
-          if (event.key === 'Enter') {
-              event.preventDefault();
-              var skillName = input.value.trim();
-
-              if (skillName !== '') {
-                  addSkill(skillName);
-                  input.value = '';
-              }
-          }
-      });
-
-      document.getElementById('selectedSkills').addEventListener('click', function (event) {
-          if (event.target.tagName === 'BUTTON') {
-              event.target.parentElement.remove();
-          }
-      });
+  var config = {
+    cUrl: 'https://api.countrystatecity.in/v1/countries',
+    ckey: 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA=='
   }
+
+  var stateSelect = document.querySelector('.state'),
+    citySelect = document.querySelector('.city'),
+    resultInput = document.querySelector('.result');
+
+  function loadStates() {
+    stateSelect.disabled = false;
+    citySelect.disabled = true;
+    stateSelect.style.pointerEvents = 'auto';
+    citySelect.style.pointerEvents = 'none';
+
+    const selectedCountryCode = 'IN'; // ISO2 code for India
+    stateSelect.innerHTML = '<option value="">Select State</option>'; // for clearing the existing states
+    citySelect.innerHTML = '<option value="">Select City</option>'; // Clear existing city options
+
+    fetch(`${config.cUrl}/${selectedCountryCode}/states`, { headers: { "X-CSCAPI-KEY": config.ckey } })
+      .then(response => response.json())
+      .then(data => {
+        // Sort states alphabetically by name
+        data.sort((a, b) => a.name.localeCompare(b.name));
+
+        data.forEach(state => {
+          const option = document.createElement('option');
+          option.value = state.iso2;
+          option.textContent = state.name;
+          stateSelect.appendChild(option);
+        });
+      })
+      .catch(error => console.error('Error loading states:', error));
+  }
+
+  function loadCities() {
+    citySelect.disabled = false;
+    citySelect.style.pointerEvents = 'auto';
+
+    const selectedCountryCode = 'IN'; // ISO2 code for India
+    const selectedStateCode = stateSelect.value;
+
+    citySelect.innerHTML = '<option value="">Select City</option>'; // Clear existing city options
+
+    fetch(`${config.cUrl}/${selectedCountryCode}/states/${selectedStateCode}/cities`, { headers: { "X-CSCAPI-KEY": config.ckey } })
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(city => {
+          const option = document.createElement('option');
+          option.value = city.iso2;
+          option.textContent = city.name;
+          citySelect.appendChild(option);
+        });
+      });
+
+    // Set the value of the result input
+    updateResultInput();
+  }
+
+  function updateResultInput() {
+    const selectedStateText = stateSelect.options[stateSelect.selectedIndex].text;
+    const selectedCityText = citySelect.options[citySelect.selectedIndex].text;
+
+    // Exclude "Select City" from the input
+    if (selectedCityText !== 'Select City') {
+      resultInput.value = `${selectedCityText}, ${selectedStateText}`;
+    } else {
+      resultInput.value = selectedStateText;
+    }
+  }
+
+  window.onload = function () {
+    loadStates();
+    // Add onchange event handler to the city dropdown
+    citySelect.onchange = updateResultInput;
+  };
 </script>
+
 
 
 

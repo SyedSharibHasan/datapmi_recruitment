@@ -94,7 +94,7 @@ def admin(request):
 
 
 
-@login_required
+@login_required(login_url='login')
 def user(request):
     return render(request,'user.html')
 
@@ -103,12 +103,13 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 ############  this is only for personal crud operations
-@method_decorator(login_required, name='dispatch')
-class ListCandidate(ListView):
+# @method_decorator(login_required, name='dispatch')
+class ListCandidate(LoginRequiredMixin,ListView):
     model = Candidate
     fields = "__all__"
     template_name = 'mycandidates.html'
     context_object_name = "list"
+    login_url = 'login'
 
 
     def get_queryset(self):
@@ -118,10 +119,11 @@ class ListCandidate(ListView):
 
 
 
-@method_decorator(login_required, name='dispatch')
-class Createcandidate(CreateView):
+
+class Createcandidate(LoginRequiredMixin,CreateView):
     template_name = 'add_candidate.html'
     success_url = reverse_lazy('list')
+    login_url = 'login'
     
     def get(self, request):
         return render(request, self.template_name)      
@@ -220,10 +222,11 @@ from django.shortcuts import get_object_or_404
 
 
 
-class Updatecandidate(UpdateView):
+class Updatecandidate(LoginRequiredMixin,UpdateView):
     model = Candidate
     success_url = reverse_lazy('list')
     template_name = 'update_candidate.html'
+    login_url = 'login'
 
 
     def get(self, request, pk):
@@ -306,15 +309,16 @@ class Updatecandidate(UpdateView):
     
 
 
-class Detailcandidate(DetailView):
+class Detailcandidate(LoginRequiredMixin,DetailView):
     model = Candidate
     context_object_name ='detail'
     template_name = 'detail_candidate.html'
+    login_url = 'login'
     
 
 
 
-
+@login_required(login_url='login')
 def delete_candidate(request, pk):
     candidate = get_object_or_404(Candidate, pk=pk)
 
@@ -335,16 +339,19 @@ def signout(request):
 
 
 
-class Allcandidates(ListView):
+class Allcandidates(LoginRequiredMixin,ListView):
     model = Candidate
     fields = ['email','phone','first_name','last_name','alt_phone','sex','qualification','skills','experience','designation','expected_ctc','current_ctc','availability','notice_period','current_company','location','resume','remarks','updated_by','updated_on']
     template_name = 'allcandidates.html'
     context_object_name = "all"
+    login_url = 'login'
+    
 
 
 
 
 #### dashboard
+@login_required(login_url='login')
 def dashboard(request):
     return render(request,'dashboard.html')
 
@@ -354,11 +361,13 @@ def dashboard(request):
 from .models import Profile
 from django.http import JsonResponse
 
-class ProfileList(ListView):
+
+class ProfileList(LoginRequiredMixin,ListView):
     model = Profile
     fields="__all__"
     context_object_name = 'profile'
     template_name='profile.html'
+    login_url = 'login'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -427,6 +436,7 @@ class Filter(LoginRequiredMixin, ListView):
     model = Candidate
     template_name = 'search_results.html'
     context_object_name = 'users'
+    login_url = 'login'
 
     def get_queryset(self):
         skills_query = self.request.GET.get('skills_search', '')
@@ -478,7 +488,7 @@ from django.views.decorators.http import require_GET
 
 ############# autocomplete for skills filter
 @require_GET
-@login_required
+@login_required(login_url='login')
 def autocomplete_skills(request):
     term = request.GET.get('term', '')
     skills = Skill.objects.filter(name__istartswith=term).values('name').distinct()
@@ -499,7 +509,7 @@ def autocomplete_locations(request):
     return JsonResponse({'suggestions': []})
 
 
-
+@login_required(login_url='login')
 def all_filter(request):
     return render(request,'filtration.html')
 
@@ -509,6 +519,7 @@ def all_filter(request):
 ############# count details displayed on dashboard 
 
 ################# total count of all candidates
+@login_required(login_url='login')
 def totalcandidates_count(request):
     if request.user.is_authenticated:
         count = Candidate.objects.all().count()
@@ -518,6 +529,7 @@ def totalcandidates_count(request):
 
 
 ################# total count of my candidates
+@login_required(login_url='login')
 def mycandidates_count(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user).count()
@@ -528,6 +540,7 @@ def mycandidates_count(request):
 
 
 ############# selected candidates
+@login_required(login_url='login')
 def selected_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Client Select').count()
@@ -538,6 +551,7 @@ def selected_candidates(request):
 
 
 ############# rejected candidates
+@login_required(login_url='login')
 def rejected_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Client Reject').count()
@@ -547,6 +561,7 @@ def rejected_candidates(request):
     
 
 ############# Inprogress candidates
+@login_required(login_url='login')
 def inprogress_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Interview Ongoing').count()
@@ -555,6 +570,7 @@ def inprogress_candidates(request):
         return JsonResponse({'count': 0})
     
 
+@login_required(login_url='login')
 def saved_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Store Data').count()
@@ -563,6 +579,8 @@ def saved_candidates(request):
         return JsonResponse({'count': 0})
 
 
+
+@login_required(login_url='login')
 def list_of_candidates(request, status):
     if request.user.is_authenticated:
         if status == 'selected':
@@ -586,23 +604,13 @@ def list_of_candidates(request, status):
 
 
 
-from .forms import CustomUserUpdateForm
 
-# class Edit_account(UpdateView):
-#     model = CustomUser
-#     form_class = CustomUserUpdateForm
-#     template_name = 'edit_account.html'
-#     success_url = reverse_lazy('profile')
-
-#     def get_object(self, queryset=None):
-#         return get_object_or_404(CustomUser, pk=self.request.user.pk)
-
-
-class Edit_account(UpdateView):
+from django.views import View
+class Edit_account(LoginRequiredMixin,View):
     model = CustomUser
     success_url = reverse_lazy('profile')
     template_name = 'edit_account.html'
-
+    login_url = 'login'
 
     def get(self, request, pk):
         user = get_object_or_404(CustomUser, pk=pk)
@@ -616,10 +624,10 @@ class Edit_account(UpdateView):
         user.last_name = request.POST.get("last_name")
         user.email = request.POST.get("email")
         user.contact = request.POST.get("contact")
-        image= request.POST.get('image')
 
-        # Save the image URL to the user model or do any other processing
-        request.user.image = image
+        # Handle the image file
+        if 'image' in request.FILES:
+            user.image = request.FILES['image']
 
         if user.email:
             if not user.email.endswith('@datapmi.com'):
@@ -628,7 +636,6 @@ class Edit_account(UpdateView):
         user.save()
 
         return redirect(self.success_url)
-
         
 
 
@@ -636,7 +643,7 @@ class Edit_account(UpdateView):
 
 
 ################ delete user account
-@login_required
+@login_required(login_url='login')
 def delete_account(request):
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -653,6 +660,27 @@ def delete_account(request):
         return render(request, 'delete_account.html')
 
 
+
+###### change password
+@login_required(login_url='login')
+def change_password(request):
+    if request.method == 'POST':
+        password = request.POST.get('old_password')
+        password2 = request.POST.get('new_password')
+        user = authenticate(username=request.user.username, password=password)
+        if user is not None:
+            CustomUser.objects.create(password=password2)
+            return redirect('login')
+        else:
+            # Password is incorrect, return an error message
+            return HttpResponse('Not matched')
+            
+    
+        
+
+
+
+    return render(request,'change_password.html')
 
 
 
