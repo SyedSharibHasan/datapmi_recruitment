@@ -644,43 +644,40 @@ class Edit_account(LoginRequiredMixin,View):
 
 ################ delete user account
 @login_required(login_url='login')
-def delete_account(request):
-    if request.method == 'POST':
-        password = request.POST.get('password')
-        user = authenticate(username=request.user.username, password=password)
-        if user is not None:
-            # Password is correct, delete the account
-            user.delete()
-            messages.success(request, 'Your account has been deleted.')
-            return JsonResponse({})
-        else:
-            # Password is incorrect, return an error message
-            return JsonResponse({'incorrect_password': True})
-    else:
-        return render(request, 'delete_account.html')
+def manage_account(request,action):
+    if action == 'delete':
+        if request.method == 'POST':
+            password = request.POST.get('password')
+            user = authenticate(username=request.user.username, password=password)
+            if user is not None:
+                # Password is correct, delete the account
+                user.delete()
+                messages.success(request, 'Your account has been deleted.')
+                return JsonResponse({})
+            else:
+                # Password is incorrect, return an error message
+                return JsonResponse({'incorrect_password': True})
+    if action == 'change':
+        if request.method == 'POST':
+            password = request.POST.get('old_password')
+            password2 = request.POST.get('new_password')
+            user = authenticate(username=request.user.username, password=password)
+            if user is not None:
+                user.set_password(password2)
+                user.save()
+
+                update_session_auth_hash(request, user)
+                return redirect('login')
+            else:
+                # Password is incorrect, return an error message
+                return HttpResponse('Not matched')
+
+    return render(request, 'delete_account.html')
+
+from django.contrib.auth import update_session_auth_hash
 
 
 
-###### change password
-@login_required(login_url='login')
-def change_password(request):
-    if request.method == 'POST':
-        password = request.POST.get('old_password')
-        password2 = request.POST.get('new_password')
-        user = authenticate(username=request.user.username, password=password)
-        if user is not None:
-            CustomUser.objects.create(password=password2)
-            return redirect('login')
-        else:
-            # Password is incorrect, return an error message
-            return HttpResponse('Not matched')
-            
-    
-        
-
-
-
-    return render(request,'change_password.html')
 
 
 

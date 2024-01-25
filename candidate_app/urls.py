@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,delete_account,totalcandidates_count,saved_candidates,change_password
+from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates
 from . import views
 
 
@@ -48,8 +48,8 @@ urlpatterns = [
 
     path('edit_account/<int:pk>/', Edit_account.as_view(), name='edit_account'),
 
-    path('delete_account/', views.delete_account, name='delete_account'),
-    path('change_password/', views.change_password, name='change_password'),
+    path('manage_account/<str:action>/', views.manage_account, name='manage_account'),
+    # path('change_password/', views.change_password, name='change_password'),
     
         
 ]

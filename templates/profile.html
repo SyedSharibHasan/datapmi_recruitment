@@ -225,10 +225,7 @@ button.view-modal {
           
             <div class="button">
               <div>
-                <a href="{% url 'change_password' %}"> <button class="message" type="button">Change Password</button></a>
-              </div>
-              <div>
-                <a href="{% url 'delete_account' %}"><button class="connect" type="button">Delete Account</button></a>
+                <a href="{% url 'manage_account' action='delete' %}"><button class="connect" type="button">Manage Account</button></a>
               </div>
             </div>
           </div>
