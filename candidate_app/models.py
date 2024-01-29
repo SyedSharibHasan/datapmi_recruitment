@@ -9,7 +9,7 @@ from django.utils import timezone
 
 class CustomUser(AbstractUser):
     contact = models.CharField(max_length=15, blank=True, null=True)
-    image = models.ImageField(upload_to='profile_images/', max_length=400, blank=True, null=True)
+    image = models.ImageField(upload_to='image/', max_length=400, blank=True, null=True, default='default_profile_image.png')
 
 
 class Skill(models.Model):

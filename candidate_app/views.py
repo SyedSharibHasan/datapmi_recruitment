@@ -14,6 +14,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 from .forms import CustomUser
+from .utils import generate_otp, send_otp_email
+
+
+
 
 
 def signup(request):
@@ -33,21 +37,65 @@ def signup(request):
             # Handle password mismatch error as needed
             return HttpResponse('Passwords are not matched')
         
-
-        # Create CustomUser instance
-        user = CustomUser(username=username, first_name=first_name, last_name=last_name,email=email)
-        user.set_password(pass1)
-        user.save()
-
         contact = request.POST.get('contact')
-        image = request.FILES.get('image') 
-        user.contact = contact
-        user.image = image
-        user.save()
 
-        return redirect('login')  # Redirect to a success page
+        otp = generate_otp()
+        send_otp_email(email, otp)
+
+        # Store the user details in the session
+        request.session['username'] = username
+        request.session['first_name'] = first_name
+        request.session['last_name'] = last_name
+        request.session['email'] = email
+        request.session['password'] = pass1
+        request.session['contact'] = contact
+        request.session['otp'] = otp
+
+        return redirect('verify_otp')
+    
 
     return render(request, 'signup.html')
+
+
+
+
+
+def verify_otp(request):
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        email = request.session.get('email')
+        stored_otp = request.session.get('otp')
+
+        if otp == stored_otp:
+            # Create a new user account
+            username = request.session.get('username')
+            first_name = request.session.get('first_name')
+            last_name = request.session.get('last_name')
+            email = request.session.get('email')
+            contact = request.session.get('contact')
+            password = request.session.get('password')
+            user = CustomUser.objects.create_user(
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                contact=contact,
+                password=password
+            )
+
+            user.save()
+
+            # Log in the user and redirect to the home page
+            login(request, user)
+            return redirect('user')
+        else:
+            messages.error(request, 'Invalid OTP')
+    else:
+        email = request.session.get('email')
+        if not email:
+            return redirect('signup')
+
+    return render(request, 'otp_verification.html', {'email': email})
 
 
 
@@ -640,7 +688,7 @@ class Edit_account(LoginRequiredMixin,View):
 
 
 
-
+from django.contrib.auth import update_session_auth_hash
 
 ################ delete user account
 @login_required(login_url='login')
@@ -673,12 +721,6 @@ def manage_account(request,action):
                 return HttpResponse('Not matched')
 
     return render(request, 'delete_account.html')
-
-from django.contrib.auth import update_session_auth_hash
-
-
-
-
 
 
 

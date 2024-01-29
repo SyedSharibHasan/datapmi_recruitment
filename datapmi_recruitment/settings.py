@@ -38,34 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
     'candidate_app',
 ]
 
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-)
+SITE_ID = 1  # Use the correct ID of the Site object you created
 
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1084937520407-42jgqcv2hka9s748gquf7iv8vpme9ohh.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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 '
-LOGIN_URL = '/'
-LOGIN_REDIRECT_URL = 'user' 
 
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-        'METHOD': 'oauth2',
-        'VERIFIED_EMAIL': False,
-        'VERSION': 'v2',
-    },
-}
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 's.sharib.hasan@gmail.com'
+EMAIL_HOST_PASSWORD = 'gwge eryc jqrd asiy'
 
 
 
@@ -75,9 +60,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'allauth.socialaccount.middleware.SocialAccountMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
-    
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -109,29 +91,29 @@ WSGI_APPLICATION = 'datapmi_recruitment.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'mysql.connector.django',
-#         'NAME': 'Syed',
-#         'USER': 'root',
-#         'PASSWORD': '',  # Enter your MySQL password here if you have set one
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#         'OPTIONS': {
-#             'autocommit': True,
-#         },
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'syed',
+        'USER': 'root',
+        'PASSWORD': 'your_password',  
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'autocommit': True,
+        },
+    }
+}
 
 
 
