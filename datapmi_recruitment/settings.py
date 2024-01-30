@@ -44,13 +44,14 @@ INSTALLED_APPS = [
 SITE_ID = 1  # Use the correct ID of the Site object you created
 
 
+from gitignore.safe import HOST_PASSWORD
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 's.sharib.hasan@gmail.com'
-EMAIL_HOST_PASSWORD = 'gwge eryc jqrd asiy'
+EMAIL_HOST_PASSWORD = HOST_PASSWORD
 
 
 
@@ -63,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 
 
