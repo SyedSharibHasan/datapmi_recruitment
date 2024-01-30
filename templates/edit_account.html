@@ -8,7 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Registration</title>
   <link rel="stylesheet" href="./style.css" />
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel='stylesheet' href='https://foliotek.github.io/Croppie/croppie.css'>
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
   <style>
@@ -16,40 +17,7 @@
 
 
 
-    html,
-    body {
-      width: 100%;
-
-      display: table;
-
-      font-family: Rubik, sans-serif;
-    }
-
-
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-image: url('https://img.freepik.com/free-vector/geometric-gradient-futuristic-background_23-2149116406.jpg?w=1380&t=st=1703061497~exp=1703062097~hmac=aa51c8117024f5fca8bca18b558670f265c0551d42f3a0426c61ce34dc3502ff');
-      margin: 0;
-      min-height: 100vh;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    .container {
-      display: table-cell;
-      vertical-align: middle;
-      text-align: center;
-      border-radius: .7em;
-      padding: 3rem 3rem 3rem;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      background-color: rgba(255, 255, 255, 0.7);
-      /* Adjust the alpha value (last parameter) for transparency */
-      /* background-image: linear-gradient(90deg, rgb(106, 33, 223), rgb(209, 51, 230)); */
-      margin-top: 50px;
-    }
+  
 
     h1 {
       font-size: 1.5em;
@@ -131,21 +99,18 @@
       border: none;
       font-weight: bold;
       width: 22.5rem;
-      background-image: linear-gradient(90deg, rgb(209, 51, 230), rgb(106, 33, 223), rgb(9, 204, 204));
+     
       border-radius: 2rem;
       height: 2.5rem;
       color: whitesmoke;
     }
 
-    .btn:hover {
-      transition: ease-in 0.5s;
-      border: 4px solid blueviolet;
-    }
+ 
   </style>
 </head>
 
 <body id="body">
-
+<center>
   <div class="container">
     <form action="" method="POST" class="content" enctype="multipart/form-data">
       {% csrf_token %}
@@ -180,26 +145,27 @@
         </div>
 
         <div class="image">
-            <label for="image">Profile Image</label><br />
-            <div class="col-xs-12">
-              <label class="cabinet center-block">
-                <figure>
-                  <img src="" id="item-img-output" />
-                  <figcaption><i title="Select image" class="fa fa-camera"></i></figcaption>
-                </figure>
-               
-                <img src="{% if user.image %}{{ user.image.url }}{% endif %}" width="100px"> <p>Current image</p>
-                <input  style="display: none;" type="file" class="item-img file center-block" name="image" />
-              </label>
-            </div>
+          <label for="image">Profile Image</label><br />
+          <div class="col-xs-12">
+            <label class="cabinet center-block">
+              <figure>
+                <img src="" id="item-img-output" />
+                <figcaption><i title="Select image" class="fa fa-camera"></i></figcaption>
+              </figure>
+             
+              <img src="{% if user.image %}{{ user.image.url }}{% endif %}" width="100px"> <p>Current image</p>
+              <input  style="display: none;" type="file" class="item-img file center-block" name="image" />
+            </label>
           </div>
+        </div>
 
         <div class="submit-button">
-          <button class="btn" type="submit">Submit</button>
+          <button class="btn btn-primary" type="submit">Submit</button>
         </div>
       </div>
     </form>
   </div>
+</center>
 </body>
 
 </html>

@@ -89,7 +89,8 @@ def verify_otp(request):
             login(request, user)
             return redirect('user')
         else:
-            messages.error(request, 'Invalid OTP')
+            messages.error(request, 'Invalid OTP Register again')
+            return redirect('signup')
     else:
         email = request.session.get('email')
         if not email:
@@ -684,6 +685,8 @@ class Edit_account(LoginRequiredMixin,View):
         user.save()
 
         return redirect(self.success_url)
+
+        
         
 
 
@@ -700,7 +703,7 @@ def manage_account(request,action):
             if user is not None:
                 # Password is correct, delete the account
                 user.delete()
-                messages.success(request, 'Your account has been deleted.')
+                
                 return JsonResponse({})
             else:
                 # Password is incorrect, return an error message
@@ -718,7 +721,7 @@ def manage_account(request,action):
                 return redirect('login')
             else:
                 # Password is incorrect, return an error message
-                return HttpResponse('Not matched')
+                return HttpResponse('Invalid password')
 
     return render(request, 'delete_account.html')
 

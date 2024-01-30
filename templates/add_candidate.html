@@ -374,9 +374,158 @@
   };
 </script>
 
+   <!-- College -->
+   <div class="form-group">
+    <label for="college">College:</label>
+    <input  type="text" id="college" name="college">
+    <div class="error-message" id="college-error"></div>
+  </div>
+
+  <!-- Qualification -->
+  <div class="form-group">
+    <label for="qualification">Higher Qualification:</label>
+    <input type="text" id="qualification" name="qualification">
+    <div class="error-message" id="qualification-error"></div>
+  </div>
+
+  <!-- Year of Graduation -->
+  <div class="form-group">
+    <label for="graduation-year">Year of Graduation:</label>
+    <input  type="text" id="graduation-year" name="graduation_year">
+    <div class="error-message" id="graduation-year-error"></div>
+  </div>
+
+  <!-- Current Company -->
+  <div class="form-group">
+    <label for="current-company">Current Company:</label>
+    <input  type="text" id="current-company" name="current_company">
+    <div class="error-message" id="current-company-error"></div>
+  </div>
+
+  <!-- Reason for change current company -->
+  <div class="form-group">
+    <label for="remarks">Reason For Change:</label>
+    <textarea id="remarks" name="remarks"></textarea>
+    <div class="error-message" id="remarks-error"></div>
+    
+
+  <!-- Total Years of Experience -->
+  <div class="form-group">
+    <label for="experience">Total Years of Experience:</label>
+    <input  type="number" id="experience" name="experience">
+    <div class="error-message" id="experience-error"></div>
+  </div>
+
+  <!-- Relevant Experience -->
+  <div class="form-group">
+    <label for="relevant-experience">Relevant Years Of Experience:</label>
+    <input type="number" id="relevant-experience" name="relevent_experience">
+    <div class="error-message" id="relevant-experience-error"></div>
+  </div>
 
 
 
+  <label for="skillsInput">Skills</label>
+  <input type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
+  <button type="button" id="addButton">Add</button>
+  <ul id="skillList" class="skill-container"></ul>
+  <div id="selectedSkills" class="skill-container">
+      {% for skill in candidate.skills.all %}
+      <div class="skill-item">
+          <input type="text"  name="skills" readonly>
+          <button type="button" onclick="removeSkill(this)"><i class="fas fa-times"></i></button>
+      </div>
+      {% endfor %}
+  </div>
+  
+  <script>
+    var input; // Declare input in the global scope
+    var selectedSkillsContainer;
+  
+    fetch('{% static "skills.txt" %}')
+        .then(response => response.text())
+        .then(data => {
+            var skillsList = data.split('\n').map(skill => skill.trim()).filter(Boolean);
+            initializeSkills(skillsList);
+        })
+        .catch(error => console.error('Error loading skills:', error));
+  
+    function initializeSkills(skills) {
+        input = document.getElementById('skillsInput'); // Assign input in the global scope
+        var skillList = document.getElementById('skillList');
+        selectedSkillsContainer = document.getElementById('selectedSkills');
+  
+        input.addEventListener('input', filterSkills);
+  
+        function filterSkills() {
+            var filter = input.value.trim().toLowerCase();
+            skillList.innerHTML = '';
+  
+            for (var i = 0; i < skills.length; i++) {
+                var skill = skills[i].toLowerCase();
+                if (skill.includes(filter)) {
+                    var li = document.createElement('li');
+                    li.textContent = skills[i];
+                    li.onclick = function () {
+                        addSkill(this.textContent);
+                        input.value = '';
+                        skillList.innerHTML = '';
+                    };
+                    skillList.appendChild(li);
+                }
+            }
+        }
+  
+        function addSkill(skillName) {
+            var skillContainer = document.createElement('div');
+            skillContainer.classList.add('skill-item');
+            var skillInput = document.createElement('input');
+            skillInput.type = 'text';
+            skillInput.value = skillName;
+            skillInput.name = 'skills';
+            skillInput.readOnly = true;
+            skillContainer.appendChild(skillInput);
+            var closeButton = document.createElement('button');
+            closeButton.innerHTML = '<i class="fas fa-times"></i>';
+  
+            closeButton.onclick = function () {
+                skillContainer.remove();
+            };
+            skillContainer.appendChild(closeButton);
+            selectedSkillsContainer.appendChild(skillContainer);
+        }
+  
+        function addManuallyTypedSkill() {
+            var skillName = input.value.trim();
+  
+            if (skillName !== '') {
+                addSkill(skillName);
+                input.value = '';
+                input.focus();
+            }
+        }
+  
+        document.getElementById('addButton').addEventListener('click', addManuallyTypedSkill);
+  
+        document.getElementById('skillsInput').addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                var skillName = input.value.trim();
+  
+                if (skillName !== '') {
+                    addSkill(skillName);
+                    input.value = '';
+                }
+            }
+        });
+  
+        document.getElementById('selectedSkills').addEventListener('click', function (event) {
+            if (event.target.tagName === 'BUTTON') {
+                event.target.parentElement.remove();
+            }
+        });
+    }
+  </script>
 
         <!-- Notice Period -->
         <div class="form-group">
@@ -496,39 +645,7 @@
               }
             } 
           </script>
-          
-
-          <!-- reason for rejection for r1-r4 round -->
-          <!-- <div id="reason-for-r1-r2-r3-r4-rejection" style="display: none;">
-            <label for="rejection-reason-text">Reason for Rejection:</label>
-            <textarea id="rejection-reason-text" name="rejection_reason_for_r1-r4"></textarea>
-          </div>
-
-        </div> -->
-
-
-
-
         
-        <!-- <div id="offer-container" style="display: none;">
-          <div class="form-group">
-            <label for="offer-2">Offer:</label>
-            <select id="offer-2" name="offer">
-              <option value="">Select</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
-            <div class="error-message" id="offer-error"></div>
-          </div>
-        </div> -->
-
-        <!-- <div id="offer-reject-reason-container" style="display: none;">
-          <div class="form-group">
-            <label for="offer-reject-reason-text">Reason for Rejection:</label>
-            <textarea id="offer-reject-reason-text" name="offer_reject_reason"></textarea>
-            <div class="error-message" id="offer-reject-reason-error"></div>
-          </div>
-        </div> -->
 
   
 <br>

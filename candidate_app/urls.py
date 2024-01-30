@@ -50,8 +50,7 @@ urlpatterns = [
 
     path('manage_account/<str:action>/', views.manage_account, name='manage_account'),
     path('verify_otp/', views.verify_otp, name='verify_otp'),
-    
-        
+       
 ]
 
 

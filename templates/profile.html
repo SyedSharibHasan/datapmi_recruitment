@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,11 +80,6 @@ button {
   font-size: 12px;
 }
 
-/* .button .message {
-  background: #ededed;
-  border: 2px solid #000;
-  border-radius: 10px;
-} */
 
 .button .connect {
   background-color: #cc1010;
@@ -181,9 +177,6 @@ button.view-modal {
 
 {% include 'sidebar.html' %}
 
-
-
-
 <br>
 <br>
 <br>
@@ -197,19 +190,20 @@ button.view-modal {
             <div class="image">
            
               <br>
-              {% if user.image %}
+              {% if user.image.url %}
               <center>
               <div style="width: 150px; height: 150px; border-radius: 50%;">
                   <img id="zoom" style="width: 100%; height: 100%;"
-                       src="{{ user.image.url }}" alt="Personal Image">
+                       src="{{ user.image.url }}" >
               </div></center>
           {% else %}
-          <center>              <div style="width: 200px; height: 200px; overflow: hidden; border-radius: 50%;">
+          <center> <div style="width: 200px; height: 200px; overflow: hidden; border-radius: 50%;">
                   <img src="https://cdn-icons-png.flaticon.com/512/727/727399.png" style="width: 100%; height: 100%; object-fit: cover;">
               </div></center>
 
           {% endif %}
-          
+         
+         
               
             </div>
             <a href="{% url 'edit_account' user.id %}">
@@ -235,4 +229,7 @@ button.view-modal {
    
 </body>
 </html>
+
+
+
 

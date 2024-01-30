@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
 
 
 class Skill(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -22,7 +22,7 @@ class Skill(models.Model):
 
 
 class Candidate(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=15)
     client_name = models.CharField(max_length=15)
@@ -81,7 +81,7 @@ class Candidate(models.Model):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     image = models.ImageField(upload_to='image/',max_length=400,blank=True)
 
 

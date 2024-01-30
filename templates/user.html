@@ -1064,7 +1064,11 @@
             </button> -->
 					<a href="/profile">
 						<button class="profile-btn">
+							{% if user.image %}
 							<img src="{{user.image.url}}" />
+							{% else %}
+							<img src="https://t3.ftcdn.net/jpg/01/19/67/02/360_F_119670247_HDccziQUuo2kFpaNiM22dIto5I8GPAWW.jpg">
+							{% endif %}
 							<span>{{user}}</span>
 						</button></a>
 				</div>

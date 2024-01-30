@@ -7,14 +7,28 @@ def generate_otp(length=6):
     return ''.join(random.choice(digits) for i in range(length))
 
 
-from django.core.mail import send_mail
+import os
+from django.core.mail import EmailMessage
 from django.conf import settings
+
 
 def send_otp_email(email, otp):
     subject = 'OTP verification for DataPMI Recruiter registration'
     message = f'Your OTP code is: {otp}'
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
-    send_mail(subject, message, from_email, recipient_list)
+
+    # Create an EmailMessage object
+    email_message = EmailMessage(subject, message, from_email, recipient_list)
+
+    # Path to your image file
+    image_path = '/home/user/Downloads/datapmi_recruitment/datapmiemail.png'
+
+    # Open the image file and attach it to the email
+    with open(image_path, 'rb') as image_file:
+        email_message.attach('datapmiemail.png', image_file.read(), 'image/png')
+
+    # Send the email
+    email_message.send()
 
 
