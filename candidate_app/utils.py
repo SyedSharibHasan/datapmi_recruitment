@@ -32,3 +32,20 @@ def send_otp_email(email, otp):
     email_message.send()
 
 
+
+def send_recovery_link(email, link):
+    subject = 'Password reset confirmation mail'
+    message = f'Click on this link to reset your password: {link}'
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+
+    # Create an EmailMessage object
+    email_message = EmailMessage(subject, message, from_email, recipient_list)
+
+    # Send the email
+    email_message.send()
+
+
+
+
+

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <style>
     @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i|Monoton");
@@ -126,8 +126,10 @@ body {
   </div>
   
   <div class="tile-body">
-    <form action="" method="post" id="form">
+    <form action="{% url 'login' action='login' %}" method="post" id="form">
         {% csrf_token %}
+
+        <div id="user_pass" style="display: block;">
       <label class="form-input">
         <i class="material-icons">person</i>
         <input name="username"  type="text" autofocus="true" required />
@@ -140,25 +142,73 @@ body {
         <input name="pass1" type="password" required />
         <span class="label">Password</span>
         <div class="underline"></div>
-      </label>
+      </label></div>
+
+    
+
+   
+
       
       <div class="d-grid gap-6">
-        <button  class="btn btn-primary btn-block mb-4" type="submit">Log in</button>
-        <a href=""> <button  class="btn btn-outline-primary btn-block mb-4" type="submit"><img src="https://pbs.twimg.com/profile_images/1605297940242669568/q8-vPggS_400x400.jpg" width="20px"> Sign in with google</button></a>
+        <button type="submit" id="login" style="display: block;" class="btn btn-primary btn-block mb-4" >Log in</button>
+        <!-- <a href=""> <button  class="btn btn-outline-primary btn-block mb-4" type="submit"><img src="https://pbs.twimg.com/profile_images/1605297940242669568/q8-vPggS_400x400.jpg" width="20px"> Sign in with google</button></a> -->
 
       </div>
         </form>
+
+        
+        <div id="content" style="display: none;">
+          <form method="post" action="{% url 'login' action='recovery' %}">
+              {% csrf_token %}
+              <label class="form-input">
+                  <i class="material-icons">email</i>
+                  <input name="email" type="email" required />
+                  <span class="label">Enter email</span>
+                  <div class="underline"></div>
+              </label>
+              <button class="" type="submit">Request</button>
+          </form>
+      </div>
+     
+
+
+     
+
+    <div id="link">
+      <a onclick="myfunction()" href="#"> <p>forget password ?</p></a>
+    </div>
+   
         <a href="/signup">
         <button class="btn btn-success" type="submit">sign up </button>
       </a> </div>
-        
-        </div>
-      </div>
-    </form>
-  </div>
 </div>
 
+<script>
+
+  function myfunction() {
+    link = document.getElementById('link')
+    elements = document.getElementById('user_pass');
+    login = document.getElementById('login');
+    content = document.getElementById('content')
+    if (content.style.display=='none' || elements.style.display == 'block' || login.style.display == 'block') {
+    elements.style.display = 'none'
+    content.style.display = 'block'
+    login.style.display = 'none'
+    link = document.getElementById('link').innerHTML = '<br><a onclick="myfunction()" href="#"> <p>Back to login</p></a>'
+    
+  }
+  
+  else {
+    elements.style.display = 'block'
+    content.style.display = 'none'
+    login.style.display = 'block'
+    link = document.getElementById('link').innerHTML = '<a onclick="myfunction()" href="#"><p>forget password ?</p></a>'
+
+  }
+  }
 
 
+</script>
 </body>
 </html>
+

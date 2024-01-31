@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates,verify_otp
+from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,dashboard,ProfileList,  ProfileUpdate,ProfileCreate,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates,verify_otp,reset_password
 from . import views
 
 
@@ -8,14 +8,13 @@ urlpatterns = [
     path('user/',user,name='user'),   ## listed candidates
     path('admin_page/',admin,name='admin'),   ## page only for admin
     path('signup/',signup,name='signup'),
-    path('',signin,name='login'),
     path('list/',ListCandidate.as_view(),name='list'),   ## list all cacndidate
     path('create/',Createcandidate.as_view(),name='create'),   ## create each acndidate
     path('detail/<int:pk>/',Detailcandidate.as_view(),name='detail'),   ## details of each candidate
     path('delete/<int:pk>/',delete_candidate,name='delete') ,  ## delete  a candidate
     path('update/<int:pk>/',Updatecandidate.as_view(),name='update') ,  ## update a candidate
     
-    path("signout/", signout, name='signout'),
+
     
     path('all/',Allcandidates.as_view(),name='all'), 
 
@@ -51,6 +50,15 @@ urlpatterns = [
     path('manage_account/<str:action>/', views.manage_account, name='manage_account'),
     path('verify_otp/', views.verify_otp, name='verify_otp'),
        
+     path('reset_password/<str:token>/', views.reset_password, name='reset_password'),
+    
+
+    path("signout/", signout, name='signout'),
+
+     path('<str:action>/',signin,name='login'),
+      path('', views.signin, {'action': 'login'}, name='login_default'), 
+         
+
 ]
 
 

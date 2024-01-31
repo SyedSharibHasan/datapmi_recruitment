@@ -2,17 +2,13 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from functools import wraps
-from django.views.decorators.csrf import csrf_protect,csrf_exempt
-from django.views.generic import ListView,CreateView,UpdateView,DetailView,DeleteView
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView,CreateView,UpdateView,DetailView
 from .models import Candidate,Skill
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-    
-
-
 from .forms import CustomUser
 from .utils import generate_otp, send_otp_email
 
@@ -34,7 +30,6 @@ def signup(request):
                 return HttpResponse('Email format is not valid')
 
         if pass1 != pass2:
-            # Handle password mismatch error as needed
             return HttpResponse('Passwords are not matched')
         
         contact = request.POST.get('contact')
@@ -42,7 +37,6 @@ def signup(request):
         otp = generate_otp()
         send_otp_email(email, otp)
 
-        # Store the user details in the session
         request.session['username'] = username
         request.session['first_name'] = first_name
         request.session['last_name'] = last_name
@@ -52,8 +46,6 @@ def signup(request):
         request.session['otp'] = otp
 
         return redirect('verify_otp')
-    
-
     return render(request, 'signup.html')
 
 
@@ -67,7 +59,6 @@ def verify_otp(request):
         stored_otp = request.session.get('otp')
 
         if otp == stored_otp:
-            # Create a new user account
             username = request.session.get('username')
             first_name = request.session.get('first_name')
             last_name = request.session.get('last_name')
@@ -84,8 +75,6 @@ def verify_otp(request):
             )
 
             user.save()
-
-            # Log in the user and redirect to the home page
             login(request, user)
             return redirect('user')
         else:
@@ -100,25 +89,6 @@ def verify_otp(request):
 
 
 
-@csrf_exempt
-def signin(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        pass1 = request.POST.get('pass1')
-        user = authenticate(request, username=username, password=pass1)
-
-        if user is not None:
-            if user.is_superuser:
-                # Redirect superuser to admin.html
-                login(request, user)
-                return redirect('admin')  # Redirect to the admin page
-            else:
-                # Redirect normal user to user.html
-                login(request, user)
-                return redirect('user')  # Redirect to the user page
-        else:
-            return HttpResponse("Username or password is incorrect!!!")
-    return render(request, 'login.html')
 
 
 
@@ -143,7 +113,7 @@ def admin(request):
 
 
 
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def user(request):
     return render(request,'user.html')
 
@@ -158,7 +128,7 @@ class ListCandidate(LoginRequiredMixin,ListView):
     fields = "__all__"
     template_name = 'mycandidates.html'
     context_object_name = "list"
-    login_url = 'login'
+    login_url = 'login_default'
 
 
     def get_queryset(self):
@@ -172,7 +142,7 @@ class ListCandidate(LoginRequiredMixin,ListView):
 class Createcandidate(LoginRequiredMixin,CreateView):
     template_name = 'add_candidate.html'
     success_url = reverse_lazy('list')
-    login_url = 'login'
+    login_url = 'login_default'
     
     def get(self, request):
         return render(request, self.template_name)      
@@ -275,7 +245,7 @@ class Updatecandidate(LoginRequiredMixin,UpdateView):
     model = Candidate
     success_url = reverse_lazy('list')
     template_name = 'update_candidate.html'
-    login_url = 'login'
+    login_url = 'login_default'
 
 
     def get(self, request, pk):
@@ -355,19 +325,16 @@ class Updatecandidate(LoginRequiredMixin,UpdateView):
             
 
         
-    
-
-
 class Detailcandidate(LoginRequiredMixin,DetailView):
     model = Candidate
     context_object_name ='detail'
     template_name = 'detail_candidate.html'
-    login_url = 'login'
+    login_url = 'login_default'
     
 
 
 
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def delete_candidate(request, pk):
     candidate = get_object_or_404(Candidate, pk=pk)
 
@@ -384,7 +351,7 @@ def delete_candidate(request, pk):
 
 def signout(request):
     logout(request)
-    return redirect('login')
+    return redirect('login_default')
 
 
 
@@ -393,14 +360,14 @@ class Allcandidates(LoginRequiredMixin,ListView):
     fields = ['email','phone','first_name','last_name','alt_phone','sex','qualification','skills','experience','designation','expected_ctc','current_ctc','availability','notice_period','current_company','location','resume','remarks','updated_by','updated_on']
     template_name = 'allcandidates.html'
     context_object_name = "all"
-    login_url = 'login'
+    login_url = 'login_default'
     
 
 
 
 
 #### dashboard
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def dashboard(request):
     return render(request,'dashboard.html')
 
@@ -416,7 +383,7 @@ class ProfileList(LoginRequiredMixin,ListView):
     fields="__all__"
     context_object_name = 'profile'
     template_name='profile.html'
-    login_url = 'login'
+    login_url = 'login_default'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -427,11 +394,12 @@ class ProfileList(LoginRequiredMixin,ListView):
 
 
 
-class ProfileCreate(CreateView):
+class ProfileCreate(LoginRequiredMixin,CreateView):
     model = Profile
     fields = ['image']
     template_name = 'personal-create.html'  # Use the same template for rendering the form
     success_url = reverse_lazy('profile')
+    login_url = 'login_default'
 
 
     def form_valid(self, form):
@@ -445,6 +413,7 @@ class ProfileUpdate(LoginRequiredMixin,UpdateView):
     fields = ['image']
     success_url = reverse_lazy('profile')
     template_name = 'personal-create.html'
+    login_url = 'login_default'
 
 
 
@@ -485,7 +454,7 @@ class Filter(LoginRequiredMixin, ListView):
     model = Candidate
     template_name = 'search_results.html'
     context_object_name = 'users'
-    login_url = 'login'
+    login_url = 'login_default'
 
     def get_queryset(self):
         skills_query = self.request.GET.get('skills_search', '')
@@ -558,7 +527,7 @@ def autocomplete_locations(request):
     return JsonResponse({'suggestions': []})
 
 
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def all_filter(request):
     return render(request,'filtration.html')
 
@@ -568,7 +537,7 @@ def all_filter(request):
 ############# count details displayed on dashboard 
 
 ################# total count of all candidates
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def totalcandidates_count(request):
     if request.user.is_authenticated:
         count = Candidate.objects.all().count()
@@ -578,7 +547,7 @@ def totalcandidates_count(request):
 
 
 ################# total count of my candidates
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def mycandidates_count(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user).count()
@@ -589,7 +558,7 @@ def mycandidates_count(request):
 
 
 ############# selected candidates
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def selected_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Client Select').count()
@@ -600,7 +569,7 @@ def selected_candidates(request):
 
 
 ############# rejected candidates
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def rejected_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Client Reject').count()
@@ -610,7 +579,7 @@ def rejected_candidates(request):
     
 
 ############# Inprogress candidates
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def inprogress_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Interview Ongoing').count()
@@ -619,7 +588,7 @@ def inprogress_candidates(request):
         return JsonResponse({'count': 0})
     
 
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def saved_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Store Data').count()
@@ -629,7 +598,7 @@ def saved_candidates(request):
 
 
 
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def list_of_candidates(request, status):
     if request.user.is_authenticated:
         if status == 'selected':
@@ -659,7 +628,7 @@ class Edit_account(LoginRequiredMixin,View):
     model = CustomUser
     success_url = reverse_lazy('profile')
     template_name = 'edit_account.html'
-    login_url = 'login'
+    login_url = 'login_default'
 
     def get(self, request, pk):
         user = get_object_or_404(CustomUser, pk=pk)
@@ -689,12 +658,10 @@ class Edit_account(LoginRequiredMixin,View):
         
         
 
-
-
 from django.contrib.auth import update_session_auth_hash
 
 ################ delete user account
-@login_required(login_url='login')
+@login_required(login_url='login_default')
 def manage_account(request,action):
     if action == 'delete':
         if request.method == 'POST':
@@ -718,7 +685,7 @@ def manage_account(request,action):
                 user.save()
 
                 update_session_auth_hash(request, user)
-                return redirect('login')
+                return redirect('login_default')
             else:
                 # Password is incorrect, return an error message
                 return HttpResponse('Invalid password')
@@ -728,11 +695,100 @@ def manage_account(request,action):
 
 
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .utils import send_recovery_link
+
+########## password recovery + login 
+
+@csrf_exempt
+def signin(request,action):
+    if action == 'login':
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            pass1 = request.POST.get('pass1')
+            user = authenticate(request, username=username, password=pass1)
+
+            if user is not None:
+                if user.is_superuser:
+                    login(request, user)
+                    return redirect('admin')  # Redirect to the admin page
+                else:
+                    login(request, user)
+                    return redirect('user')  # Redirect to the user page
+            else:
+                return HttpResponse("Username or password is incorrect!!!")
+    
+    if action == 'recovery':  
+        if request.method == 'POST':
+            email = request.POST.get('email')
+            user = CustomUser.objects.filter(email=email).first()
+
+            if user:
+                # Generate a unique token
+                token = Signer().sign(user.id)
+
+                # Set the expiration time (e.g., 15 minutes from now)
+                expiration_time = timezone.now() + datetime.timedelta(minutes=15)
+
+                # Save the token and expiration time in the database
+                user.password_reset_token = token
+                user.password_reset_token_expiration = expiration_time
+                user.save()
+
+                # Create the reset link with the token
+                reset_link = f"http://127.0.0.1:8002/reset_password/{token}/"
+
+                # Send recovery link
+                send_recovery_link(email, reset_link)
+                
+
+            else:
+                return redirect('login', action='recovery')
+    
+    return render(request, 'login.html')
 
 
 
 
 
+import datetime
+from django.utils import timezone
+from django.core.signing import Signer
+from django.core.signing import BadSignature
+
+
+def reset_password(request, token):
+    try:
+        # Verify the token
+        user_id = Signer().unsign(token)
+        user = CustomUser.objects.get(id=user_id)
+
+        # Check if the token is still valid (not expired)
+        if user.password_reset_token_expiration and user.password_reset_token_expiration < timezone.now():
+            return HttpResponse('Token Expired')
+
+        if request.method == 'POST':
+            # Reset password logic here
+            password = request.POST.get('password')
+            user.set_password(password)
+            user.save()
+
+            # Clear the token and expiration time after password reset
+            user.password_reset_token = None
+            user.password_reset_token_expiration = None
+            user.save()
+
+            # Redirect to the login page after successful password reset
+            return redirect('login_default')  # Replace 'login_default' with the actual URL name for your login page
+
+        # Pass the token to the template context
+        context = {'token': token}
+        return render(request, 'reset_password.html', context)
+
+    except (BadSignature, CustomUser.DoesNotExist):
+        # Invalid token or user not found
+        return render(request, 'reset_password_invalid.html')
 
 
 
