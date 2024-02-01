@@ -133,7 +133,7 @@ def signin(request,action):
                 user.save()
 
                 # Create the reset link with the token
-                reset_link = f"http://127.0.0.1:8002/reset_password/{token}/"
+                reset_link = f"http://127.0.0.1:8000/reset_password/{token}/"
 
                 # Send recovery link
                 send_recovery_link(email, reset_link)
@@ -162,30 +162,31 @@ def reset_password(request, token):
         user = CustomUser.objects.get(id=user_id)
 
         # Check if the token is still valid (not expired)
-        if user.password_reset_token_expiration and user.password_reset_token_expiration < timezone.now():
-            return HttpResponse('Token Expired')
-
-        if request.method == 'POST':
-            # Reset password logic here
-            password = request.POST.get('password')
-            user.set_password(password)
-            user.save()
-            
-            # Clear the token and expiration time after password reset
-            user.password_reset_token = None
-            user.password_reset_token_expiration = None
-            user.save()
-
-            # Redirect to the login page after successful password reset
-            return redirect('login_default')  # Replace 'login_default' with the actual URL name for your login page
-
-        # Pass the token to the template context
-        context = {'token': token}
-        return render(request, 'reset_password.html', context)
+        if user.password_reset_token_expiration and user.password_reset_token_expiration < timezone.localtime(timezone.now()):
+            return render(request, 'reset_password_invalid.html')
 
     except (BadSignature, CustomUser.DoesNotExist):
-        # Invalid token or user not found
         return render(request, 'reset_password_invalid.html')
+
+    # If the token is valid and not expired, proceed with password reset logic
+    if request.method == 'POST':
+        # Reset password logic here
+        password = request.POST.get('password')
+        user.set_password(password)
+        user.save()
+
+        # Clear the token and expiration time after password reset
+        user.password_reset_token = None
+        user.password_reset_token_expiration = None
+        user.save()
+
+        # Redirect to the login page after a successful password reset
+        return redirect('login_default')  # Replace 'login_default' with the actual URL name for your login page
+
+    # Pass the token to the template context
+    context = {'token': token}
+    return render(request, 'reset_password.html', context)
+
 
 
 
