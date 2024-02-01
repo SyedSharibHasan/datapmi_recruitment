@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 </head>
 <style>
     @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i|Monoton");
@@ -18,7 +19,7 @@
 }
 
 
-body {
+.login_container {
   background: linear-gradient(to bottom, #075cfaf8, #ffffff);
   display: flex;
   align-items: center;
@@ -114,10 +115,26 @@ body {
 
 
 
+
 </style>
 
 </head>
 <body>
+
+
+  {% if messages %}
+  {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+      </div>
+  {% endfor %}
+{% endif %}
+
+
+
+
+<div class="login_container">
+
 
 
 <div class="tile">
@@ -158,7 +175,7 @@ body {
 
         
         <div id="content" style="display: none;">
-          <form method="post" action="{% url 'login' action='recovery' %}">
+          <form id="recoveryForm" method="post" action="{% url 'login' action='recovery' %}">
               {% csrf_token %}
               <label class="form-input">
                   <i class="material-icons">email</i>
@@ -172,6 +189,15 @@ body {
      
 
 
+      <script>
+        document.getElementById('recoveryForm').addEventListener('submit', function (event) {
+            var emailInput = document.getElementById('recoveryEmail').value;
+            if (!emailInput) {
+                alert('Please enter your email.');
+                event.preventDefault();
+            }
+        });
+    </script>
      
 
     <div id="link">
@@ -209,6 +235,8 @@ body {
 
 
 </script>
+
+</div>
 </body>
 </html>
 

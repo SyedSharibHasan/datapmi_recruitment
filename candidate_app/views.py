@@ -24,10 +24,16 @@ def signup(request):
         email = request.POST.get('email')
         pass1 = request.POST.get('pass1')
         pass2 = request.POST.get('pass2')
+
+        email_exists = CustomUser.objects.filter(email=email).first()
+
         
         if email:
             if not email.endswith('@datapmi.com'):
                 return HttpResponse('Email format is not valid')
+
+        if email_exists:
+            return HttpResponse('Email already exists')
 
         if pass1 != pass2:
             return HttpResponse('Passwords are not matched')
@@ -78,7 +84,7 @@ def verify_otp(request):
             login(request, user)
             return redirect('user')
         else:
-            messages.error(request, 'Invalid OTP Register again')
+            messages.error(request, 'Invalid OTP Register Again !')
             return redirect('signup')
     else:
         email = request.session.get('email')
@@ -89,7 +95,97 @@ def verify_otp(request):
 
 
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .utils import send_recovery_link
 
+########## password recovery + login 
+
+@csrf_exempt
+def signin(request,action):
+    if action == 'login':
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            pass1 = request.POST.get('pass1')
+            user = authenticate(request, username=username, password=pass1)
+
+            if user is not None:
+                if user.is_superuser:
+                    login(request, user)
+                    return redirect('admin')  # Redirect to the admin page
+                else:
+                    login(request, user)
+                    return redirect('user')  # Redirect to the user page
+            else:
+                return HttpResponse("Username or password is incorrect!!!")
+    
+    if action == 'recovery':  
+        if request.method == 'POST':
+            email = request.POST.get('email')
+            user = CustomUser.objects.filter(email=email).first()
+
+            if user:
+                # Generate a unique token
+                token = Signer().sign(user.id)
+
+                user.password_reset_token = token
+                user.password_reset_token_expiration = timezone.now() + datetime.timedelta(minutes=2)
+                user.save()
+
+                # Create the reset link with the token
+                reset_link = f"http://127.0.0.1:8002/reset_password/{token}/"
+
+                # Send recovery link
+                send_recovery_link(email, reset_link)
+                messages.success(request, 'Recovery link sent successfully. Check your email.')
+                return redirect ('login_default')
+
+            else:
+                return HttpResponse("<script>alert('Email not found.'); window.location.href = '/login_default/';</script>")
+    
+    return render(request, 'login.html')
+
+
+
+
+
+import datetime
+from django.utils import timezone
+from django.core.signing import Signer
+from django.core.signing import BadSignature
+
+
+def reset_password(request, token):
+    try:
+        # Verify the token
+        user_id = Signer().unsign(token)
+        user = CustomUser.objects.get(id=user_id)
+
+        # Check if the token is still valid (not expired)
+        if user.password_reset_token_expiration and user.password_reset_token_expiration < timezone.now():
+            return HttpResponse('Token Expired')
+
+        if request.method == 'POST':
+            # Reset password logic here
+            password = request.POST.get('password')
+            user.set_password(password)
+            user.save()
+            
+            # Clear the token and expiration time after password reset
+            user.password_reset_token = None
+            user.password_reset_token_expiration = None
+            user.save()
+
+            # Redirect to the login page after successful password reset
+            return redirect('login_default')  # Replace 'login_default' with the actual URL name for your login page
+
+        # Pass the token to the template context
+        context = {'token': token}
+        return render(request, 'reset_password.html', context)
+
+    except (BadSignature, CustomUser.DoesNotExist):
+        # Invalid token or user not found
+        return render(request, 'reset_password_invalid.html')
 
 
 
@@ -695,100 +791,7 @@ def manage_account(request,action):
 
 
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .utils import send_recovery_link
 
-########## password recovery + login 
-
-@csrf_exempt
-def signin(request,action):
-    if action == 'login':
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            pass1 = request.POST.get('pass1')
-            user = authenticate(request, username=username, password=pass1)
-
-            if user is not None:
-                if user.is_superuser:
-                    login(request, user)
-                    return redirect('admin')  # Redirect to the admin page
-                else:
-                    login(request, user)
-                    return redirect('user')  # Redirect to the user page
-            else:
-                return HttpResponse("Username or password is incorrect!!!")
-    
-    if action == 'recovery':  
-        if request.method == 'POST':
-            email = request.POST.get('email')
-            user = CustomUser.objects.filter(email=email).first()
-
-            if user:
-                # Generate a unique token
-                token = Signer().sign(user.id)
-
-                # Set the expiration time (e.g., 15 minutes from now)
-                expiration_time = timezone.now() + datetime.timedelta(minutes=15)
-
-                # Save the token and expiration time in the database
-                user.password_reset_token = token
-                user.password_reset_token_expiration = expiration_time
-                user.save()
-
-                # Create the reset link with the token
-                reset_link = f"http://127.0.0.1:8002/reset_password/{token}/"
-
-                # Send recovery link
-                send_recovery_link(email, reset_link)
-                
-
-            else:
-                return redirect('login', action='recovery')
-    
-    return render(request, 'login.html')
-
-
-
-
-
-import datetime
-from django.utils import timezone
-from django.core.signing import Signer
-from django.core.signing import BadSignature
-
-
-def reset_password(request, token):
-    try:
-        # Verify the token
-        user_id = Signer().unsign(token)
-        user = CustomUser.objects.get(id=user_id)
-
-        # Check if the token is still valid (not expired)
-        if user.password_reset_token_expiration and user.password_reset_token_expiration < timezone.now():
-            return HttpResponse('Token Expired')
-
-        if request.method == 'POST':
-            # Reset password logic here
-            password = request.POST.get('password')
-            user.set_password(password)
-            user.save()
-
-            # Clear the token and expiration time after password reset
-            user.password_reset_token = None
-            user.password_reset_token_expiration = None
-            user.save()
-
-            # Redirect to the login page after successful password reset
-            return redirect('login_default')  # Replace 'login_default' with the actual URL name for your login page
-
-        # Pass the token to the template context
-        context = {'token': token}
-        return render(request, 'reset_password.html', context)
-
-    except (BadSignature, CustomUser.DoesNotExist):
-        # Invalid token or user not found
-        return render(request, 'reset_password_invalid.html')
 
 
 
