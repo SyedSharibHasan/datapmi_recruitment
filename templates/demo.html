@@ -7,14 +7,10 @@
 </head>
 <body>
     
+    {% for skill in skills %}
+    <li>{{ skill.name }}</li>
+{% endfor %}
 
-
-    {% for user in users %}
-
-        <p>{{user.contact}}</p>
-   
-
-    {% endfor %}
     
 </body>
 </html>

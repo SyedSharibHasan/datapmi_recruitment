@@ -190,11 +190,11 @@ button.view-modal {
             <div class="image">
            
               <br>
-              {% if user.image.url %}
+              {% if user.image %}
               <center>
               <div style="width: 150px; height: 150px; border-radius: 50%;">
                   <img id="zoom" style="width: 100%; height: 100%;"
-                       src="{{ user.image.url }}" >
+                       src="{{ request.user.image.url }}" >
               </div></center>
           {% else %}
           <center> <div style="width: 200px; height: 200px; overflow: hidden; border-radius: 50%;">
@@ -206,15 +206,15 @@ button.view-modal {
          
               
             </div>
-            <a href="{% url 'edit_account' user.id %}">
+            <a href="{% url 'edit_account' request.user.id %}">
             <button title="Make changes" class="view-modal"><i  class="bi bi-pencil-square"></i></button></a>
             <div class="level">
               <p>Recruiter <i style="color: green;" class="bi bi-patch-check-fill"></i></p>
             </div>
             <div class="text">
-              <p class="name">Name : {{user.first_name}} {{user.last_name}}</p>
-             <p>Email : {{user.email}}</p>
-             <p>Mobile : {{user.contact}}</p>
+              <p class="name">Name : {{request.user.first_name}} {{request.user.last_name}}</p>
+             <p>Email : {{request.user.email}}</p>
+             <p>Mobile : {{request.user.contact}}</p>
             </div>
           
             <div class="button">

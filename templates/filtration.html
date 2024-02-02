@@ -106,69 +106,65 @@
               </div>
 
               <script>
-                  $(document).ready(function () {
-                      var selectedSkills = [];
+                $(document).ready(function () {
+    var selectedSkills = [];
 
-                      $("#select_skill").autocomplete({
-                          source: function (request, response) {
-                              $.getJSON("/autocomplete-skills/", { term: request.term }, function (data) {
-                                  response(data.suggestions);
-                              });
-                          },
-                          minLength: 1,
-                          select: function (event, ui) {
-                              var selectedSkill = ui.item.label;
+    $("#select_skill").autocomplete({
+        source: function (request, response) {
+            $.getJSON("/autocomplete-skills/", { term: request.term }, function (data) {
+                response(data.suggestions);
+            });
+        },
+        minLength: 1,
+        select: function (event, ui) {
+            var selectedSkill = ui.item.label;
 
-                              // Add the selected skill to the list and update the UI
-                              if ($.inArray(selectedSkill, selectedSkills) === -1) {
-                                  selectedSkills.push(selectedSkill);
-                                  updateSelectedSkillsUI();
-                                  addHiddenInput(selectedSkill); // Add hidden input field for the selected skill
-                              }
+            // Add the selected skill to the list and update the UI
+            if ($.inArray(selectedSkill, selectedSkills) === -1) {
+                selectedSkills.push(selectedSkill);
+                updateSelectedSkillsUI();
+            }
 
-                              // Clear the selection input for the next skill
-                              $("#select_skill").val('');
+            // Clear the selection input for the next skill
+            $("#select_skill").val('');
 
-                              return false;
-                          }
-                      });
+            return false;
+        }
+    });
 
-                      // Function to update the UI with selected skills
-                      function updateSelectedSkillsUI() {
-                          var selectedSkillsContainer = $("#selectedSkillsContainer");
-                          selectedSkillsContainer.empty();
+    // Function to update the UI with selected skills
+    function updateSelectedSkillsUI() {
+        var selectedSkillsContainer = $("#selectedSkillsContainer");
+        selectedSkillsContainer.empty();
 
-                          $.each(selectedSkills, function (index, skill) {
-                              var skillBox = $('<div class="skill-box">' + skill + '&nbsp;<i id="close-button" class="bi bi-x-lg"></i></div>');
-                              skillBox.find("#close-button").click(function () {
-                                  removeSelectedSkill(index);
-                              });
+        $.each(selectedSkills, function (index, skill) {
+            var skillBox = $('<div class="skill-box">' + skill + '&nbsp;<i id="close-button" class="bi bi-x-lg"></i></div>');
+            skillBox.find("#close-button").click(function () {
+                removeSelectedSkill(index);
+            });
 
-                              selectedSkillsContainer.append(skillBox);
-                          });
-                      }
+            selectedSkillsContainer.append(skillBox);
+        });
 
-                      // Function to add hidden input field for the selected skill
-                      function addHiddenInput(skill) {
-                          var hiddenInput = $('<input type="hidden" name="skills_search" value="' + skill + '">');
-                          $("form").append(hiddenInput);
-                      }
+        // Update hidden input for all selected skills
+        updateHiddenInputs();
+    }
 
-                      // Function to remove a selected skill
-                      function removeSelectedSkill(index) {
-                          selectedSkills.splice(index, 1);
-                          updateSelectedSkillsUI();
-                          updateHiddenInputs(); // Update hidden inputs when a skill is removed
-                      }
+    // Function to remove a selected skill
+    function removeSelectedSkill(index) {
+        selectedSkills.splice(index, 1);
+        updateSelectedSkillsUI();
+    }
 
-                      // Function to update hidden inputs when a skill is removed
-                      function updateHiddenInputs() {
-                          $("input[name='skills_search']").remove();
-                          $.each(selectedSkills, function (index, skill) {
-                              addHiddenInput(skill);
-                          });
-                      }
-                  });
+    // Function to update hidden input for all selected skills
+    function updateHiddenInputs() {
+        var hiddenInput = $('<input type="hidden" name="skills_search" value="' + selectedSkills.join(',') + '">');
+        $("form").find("input[name='skills_search']").remove();  // Remove existing hidden input
+        $("form").append(hiddenInput);
+    }
+});
+
+
               </script>
 
               <br>
@@ -210,3 +206,15 @@
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

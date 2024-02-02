@@ -5,17 +5,18 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from functools import wraps
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView,CreateView,UpdateView,DetailView
+from django.views.generic import ListView,CreateView,UpdateView,DetailView,DeleteView
 from .models import Candidate,Skill
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CustomUser
 from .utils import generate_otp, send_otp_email
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .utils import send_recovery_link
 
 
-
-
-
+##### registration
 def signup(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -26,7 +27,6 @@ def signup(request):
         pass2 = request.POST.get('pass2')
 
         email_exists = CustomUser.objects.filter(email=email).first()
-
         
         if email:
             if not email.endswith('@datapmi.com'):
@@ -56,8 +56,7 @@ def signup(request):
 
 
 
-
-
+####### after register otp verify
 def verify_otp(request):
     if request.method == 'POST':
         otp = request.POST.get('otp')
@@ -95,12 +94,9 @@ def verify_otp(request):
 
 
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .utils import send_recovery_link
 
-########## password recovery + login 
 
+########## login + password recovery 
 @csrf_exempt
 def signin(request,action):
     if action == 'login':
@@ -112,10 +108,10 @@ def signin(request,action):
             if user is not None:
                 if user.is_superuser:
                     login(request, user)
-                    return redirect('admin')  # Redirect to the admin page
+                    return redirect('admin')  
                 else:
                     login(request, user)
-                    return redirect('user')  # Redirect to the user page
+                    return redirect('user')  
             else:
                 return HttpResponse("Username or password is incorrect!!!")
     
@@ -129,7 +125,7 @@ def signin(request,action):
                 token = Signer().sign(user.id)
 
                 user.password_reset_token = token
-                user.password_reset_token_expiration = timezone.now() + datetime.timedelta(minutes=2)
+                user.password_reset_token_expiration = timezone.now() + datetime.timedelta(minutes=5)
                 user.save()
 
                 # Create the reset link with the token
@@ -142,18 +138,15 @@ def signin(request,action):
 
             else:
                 return HttpResponse("<script>alert('Email not found.'); window.location.href = '/login_default/';</script>")
-    
     return render(request, 'login.html')
 
 
 
-
-
+########### reset password
 import datetime
 from django.utils import timezone
 from django.core.signing import Signer
 from django.core.signing import BadSignature
-
 
 def reset_password(request, token):
     try:
@@ -177,8 +170,8 @@ def reset_password(request, token):
 
         # Clear the token and expiration time after password reset
         user.password_reset_token = None
-        user.password_reset_token_expiration = None
-        user.save()
+        user.password_reset_token_expiration = timezone.now() - datetime.timedelta(days=1)
+        user.save()                 
 
         # Redirect to the login page after a successful password reset
         return redirect('login_default')  # Replace 'login_default' with the actual URL name for your login page
@@ -262,7 +255,6 @@ class Createcandidate(LoginRequiredMixin,CreateView):
             current_company = request.POST.get("current_company")
             experience = request.POST.get("experience")
             relevent_experience = request.POST.get("relevent_experience")
-            # skills = request.POST.getlist("skills")
             notice_period = request.POST.get("notice_period")
             current_ctc = request.POST.get("current_ctcs")
             expected_ctc = request.POST.get("expected_ctc")
@@ -445,7 +437,7 @@ def delete_candidate(request, pk):
 
 
 
-
+#### logout
 def signout(request):
     logout(request)
     return redirect('login_default')
@@ -470,47 +462,50 @@ def dashboard(request):
 
 
 
-##### personal profile
-from .models import Profile
+##### personal profile (account settings info)
 from django.http import JsonResponse
 
-
-class ProfileList(LoginRequiredMixin,ListView):
-    model = Profile
-    fields="__all__"
-    context_object_name = 'profile'
-    template_name='profile.html'
-    login_url = 'login_default'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['profile'] = context['profile'].filter(user=self.request.user)
-        return context
+@login_required(login_url='login_default')
+def account(request):
+    user = request.user
+    return render(request,'profile.html',context={'user':user})
 
 
-
-
-
-class ProfileCreate(LoginRequiredMixin,CreateView):
-    model = Profile
-    fields = ['image']
-    template_name = 'personal-create.html'  # Use the same template for rendering the form
+from django.views import View
+class Edit_account(LoginRequiredMixin,View):
+    model = CustomUser
     success_url = reverse_lazy('profile')
+    template_name = 'edit_account.html'
     login_url = 'login_default'
 
+    def get(self, request, pk):
+        user = get_object_or_404(CustomUser, pk=pk)
+        return render(request, self.template_name, {'user': user})   
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(ProfileCreate, self).form_valid(form)
+    def post(self, request, pk):
+        user = get_object_or_404(CustomUser, pk=pk)
+        
+        user.username = request.POST.get("username")
+        user.first_name = request.POST.get("first_name")
+        user.last_name = request.POST.get("last_name")
+        user.email = request.POST.get("email")
+        user.contact = request.POST.get("contact")
 
+        if user.email:
+            if not user.email.endswith('@datapmi.com'):
+                return HttpResponse('Email format is not valid')
 
+        # Handle the image file
+        if 'image' in request.FILES:
+            user.image = request.FILES['image']
 
-class ProfileUpdate(LoginRequiredMixin,UpdateView):
-    model = Profile
-    fields = ['image']
-    success_url = reverse_lazy('profile')
-    template_name = 'personal-create.html'
-    login_url = 'login_default'
+        if 'remove_image' in request.POST:
+        # Remove the image associated with the user
+            user.image.delete()
+
+        user.save()
+
+        return redirect(self.success_url)
 
 
 
@@ -518,7 +513,6 @@ class ProfileUpdate(LoginRequiredMixin,UpdateView):
 
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 
 
 ########### autocomplete recommendation using AJAX for email id filtration
@@ -544,8 +538,8 @@ from django.views.generic import ListView
 from django.db.models import Q
 from .models import Candidate, Skill
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 from django.db.models import Q
+from django.db.models import Count
 
 class Filter(LoginRequiredMixin, ListView):
     model = Candidate
@@ -562,17 +556,17 @@ class Filter(LoginRequiredMixin, ListView):
         # Start with all candidates
         users = Candidate.objects.all()
 
-        # Filter candidates based on skills
         if skills_query:
             skills = [skill.strip() for skill in skills_query.split(',')]
-            q_objects = [Q(skills__name__iexact=skill) for skill in skills]
-            skill_sets = [set(Candidate.objects.filter(q).values_list('id', flat=True)) for q in q_objects]
-            intersection_set = set.intersection(*skill_sets)
-            users = Candidate.objects.filter(id__in=intersection_set)
 
+            for skill in skills:
+                users = users.filter(skills__name__iexact=skill)
+
+            
             # Check if the queryset is empty
             if not users.exists():
                 return HttpResponse("No results found for skills", status=200)
+
         else:
             users = Candidate.objects.all()
 
@@ -717,47 +711,12 @@ def list_of_candidates(request, status):
             candidates = []
         return render(request, 'selected_list.html', context={'candidates': candidates, 'status': status,'heading':heading})
 
-
-
-
-from django.views import View
-class Edit_account(LoginRequiredMixin,View):
-    model = CustomUser
-    success_url = reverse_lazy('profile')
-    template_name = 'edit_account.html'
-    login_url = 'login_default'
-
-    def get(self, request, pk):
-        user = get_object_or_404(CustomUser, pk=pk)
-        return render(request, self.template_name, {'user': user})   
-
-    def post(self, request, pk):
-        user = get_object_or_404(CustomUser, pk=pk)
-        
-        user.username = request.POST.get("username")
-        user.first_name = request.POST.get("first_name")
-        user.last_name = request.POST.get("last_name")
-        user.email = request.POST.get("email")
-        user.contact = request.POST.get("contact")
-
-        # Handle the image file
-        if 'image' in request.FILES:
-            user.image = request.FILES['image']
-
-        if user.email:
-            if not user.email.endswith('@datapmi.com'):
-                return HttpResponse('Email format is not valid')
-
-        user.save()
-
-        return redirect(self.success_url)
-
         
         
 
 from django.contrib.auth import update_session_auth_hash
 
-################ delete user account
+################ delete user account or change password
 @login_required(login_url='login_default')
 def manage_account(request,action):
     if action == 'delete':
@@ -788,6 +747,27 @@ def manage_account(request,action):
                 return HttpResponse('Invalid password')
 
     return render(request, 'delete_account.html')
+
+
+
+
+
+
+def get_skills(request):
+    # Fetch skills from the Skill model
+    skills_from_database = Skill.objects.values_list('name', flat=True)
+
+    # Fetch skills from the text file
+    with open('candidate_app/static/skills.txt', 'r') as file:
+        skills_from_file = [line.strip() for line in file if line.strip()]
+
+    # Combine skills from both sources
+    all_skills = list(set(skills_from_database) | set(skills_from_file))
+
+    # Return the combined skills as a JSON response
+    return JsonResponse({'skills': all_skills})
+    
+
 
 
 

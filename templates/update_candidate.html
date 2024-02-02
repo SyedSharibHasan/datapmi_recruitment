@@ -329,160 +329,107 @@
         <button type="button" id="addButton">Add</button>
         <ul id="skillList" class="skill-container"></ul>
         <div id="selectedSkills" class="skill-container">
-            {% for skill in candidate.skills.all %}
-            <div class="skill-item">
-                <input type="text" value="{{ skill.name }}" name="skills" readonly>
-                <button type="button" onclick="removeSkill(this)"><i class="fas fa-times"></i></button>
-            </div>
-            {% endfor %}
-        </div>
-        
-        <script>
-          var input; // Declare input in the global scope
-          var selectedSkillsContainer;
-        
-          fetch('{% static "skills.txt" %}')
-              .then(response => response.text())
-              .then(data => {
-                  var skillsList = data.split('\n').map(skill => skill.trim()).filter(Boolean);
-                  initializeSkills(skillsList);
-              })
-              .catch(error => console.error('Error loading skills:', error));
-        
-          function initializeSkills(skills) {
-              input = document.getElementById('skillsInput'); // Assign input in the global scope
-              var skillList = document.getElementById('skillList');
-              selectedSkillsContainer = document.getElementById('selectedSkills');
-        
-              input.addEventListener('input', filterSkills);
-        
-              function filterSkills() {
-                  var filter = input.value.trim().toLowerCase();
-                  skillList.innerHTML = '';
-        
-                  for (var i = 0; i < skills.length; i++) {
-                      var skill = skills[i].toLowerCase();
-                      if (skill.includes(filter)) {
-                          var li = document.createElement('li');
-                          li.textContent = skills[i];
-                          li.onclick = function () {
-                              addSkill(this.textContent);
-                              input.value = '';
-                              skillList.innerHTML = '';
-                          };
-                          skillList.appendChild(li);
-                      }
-                  }
-              }
-        
-              function addSkill(skillName) {
-                  var skillContainer = document.createElement('div');
-                  skillContainer.classList.add('skill-item');
-                  var skillInput = document.createElement('input');
-                  skillInput.type = 'text';
-                  skillInput.value = skillName;
-                  skillInput.name = 'skills';
-                  skillInput.readOnly = true;
-                  skillContainer.appendChild(skillInput);
-                  var closeButton = document.createElement('button');
-                  closeButton.innerHTML = '<i class="fas fa-times"></i>';
-        
-                  closeButton.onclick = function () {
-                      skillContainer.remove();
-                  };
-                  skillContainer.appendChild(closeButton);
-                  selectedSkillsContainer.appendChild(skillContainer);
-              }
-        
-              function addManuallyTypedSkill() {
-                  var skillName = input.value.trim();
-        
-                  if (skillName !== '') {
-                      addSkill(skillName);
-                      input.value = '';
-                      input.focus();
-                  }
-              }
-        
-              document.getElementById('addButton').addEventListener('click', addManuallyTypedSkill);
-        
-              document.getElementById('skillsInput').addEventListener('keydown', function (event) {
-                  if (event.key === 'Enter') {
-                      event.preventDefault();
-                      var skillName = input.value.trim();
-        
-                      if (skillName !== '') {
-                          addSkill(skillName);
-                          input.value = '';
-                      }
-                  }
-              });
-        
-              document.getElementById('selectedSkills').addEventListener('click', function (event) {
-                  if (event.target.tagName === 'BUTTON') {
-                      event.target.parentElement.remove();
-                  }
-              });
-          }
-        </script>
-        
-     
-
-        <!-- Notice Period -->
-        <div class="form-group">
-          <label for="notice-period">Notice Period:</label>
-          <input value="{{candidate.notice_period}}" type="text" id="notice-period" name="notice_period">
-          <div class="error-message" id="notice-period-error"></div>
-        </div>
-
-        <!-- Current CTC -->
-        <div class="form-group">
-          <label for="current-ctc">Current CTC:</label>
-          <input value="{{candidate.current_ctc}}" type="text" id="current-ctc" name="current_ctcs">
-          <div class="error-message" id="current-ctc-error"></div>
-        </div>
-
-        <!-- Expected CTC -->
-        <div class="form-group">
-          <label for="expected-ctc">Expected CTC:</label>
-          <input value="{{candidate.expected_ctc}}" type="text" id="expected-ctc" name="expected_ctc">
-          <div class="error-message" id="expected-ctc-error"></div>
-        </div>
-
-        <!-- Offer in hands -->
-        <div class="form-group">
-          <label for="offer">Offer In Hands:</label>
-          <select id="offer" name="offer_in_hands">
-            <option value="" {% if not candidate.offer_in_hands %}selected{% endif %}>Select</option>
-            <option value="yes" {% if candidate.offer_in_hands == 'yes' %}selected{% endif %}>Yes</option>
-            <option value="no" {% if candidate.offer_in_hands == 'no' %}selected{% endif %}>No</option>
-        </select>
-        
-          <div class="error-message" id="offer-error"></div>
-        </div>
-
-        <!-- Offer Rejection Reason -->
-        <div id="offer-reject-reason" style="display: none;">
-          <div class="form-group">
-            <label for="offer-reject-reason-text">Details:</label>
-            <textarea id="offer-reject-reason-text" name="offer_details"></textarea>
-            <div class="error-message" id="offer-reject-reason-error"></div>
+          {% for skill in candidate.skills.all %}
+          <div class="skill-item">
+              <input type="text" value="{{ skill.name }}" name="skills" readonly>
+              <button type="button" onclick="removeSkill(this)"><i class="fas fa-times"></i></button>
           </div>
-        </div>
+          {% endfor %}
+      </div>
+      
+      <script>
+        var input; // Declare input in the global scope
+        var selectedSkillsContainer;
+      
+        function fetchSkillsFromAPI() {
+    fetch('/get_skills_api/')
+      .then(response => response.json())
+      .then(data => {
+        initializeSkills(data.skills);
+      })
+      .catch(error => console.error('Error loading skills from API:', error));
+  }
 
-        <script>
-          document.getElementById('offer').addEventListener('change', function () {
-            var offerValue = this.value;
-            var offerDetailsDiv = document.getElementById('offer-reject-reason');
-
-            if (offerValue === 'yes') {
-              offerDetailsDiv.style.display = 'block';
-            } else {
-              offerDetailsDiv.style.display = 'none';
+  // Call the function to fetch skills from the API
+  fetchSkillsFromAPI();
+      
+        function initializeSkills(skills) {
+            input = document.getElementById('skillsInput'); // Assign input in the global scope
+            var skillList = document.getElementById('skillList');
+            selectedSkillsContainer = document.getElementById('selectedSkills');
+      
+            input.addEventListener('input', filterSkills);
+      
+            function filterSkills() {
+                var filter = input.value.trim().toLowerCase();
+                skillList.innerHTML = '';
+      
+                for (var i = 0; i < skills.length; i++) {
+                    var skill = skills[i].toLowerCase();
+                    if (skill.includes(filter)) {
+                        var li = document.createElement('li');
+                        li.textContent = skills[i];
+                        li.onclick = function () {
+                            addSkill(this.textContent);
+                            input.value = '';
+                            skillList.innerHTML = '';
+                        };
+                        skillList.appendChild(li);
+                    }
+                }
             }
-          });
-        </script>
-
+      
+            function addSkill(skillName) {
+                var skillContainer = document.createElement('div');
+                skillContainer.classList.add('skill-item');
+                var skillInput = document.createElement('input');
+                skillInput.type = 'text';
+                skillInput.value = skillName;
+                skillInput.name = 'skills';
+                skillInput.readOnly = true;
+                skillContainer.appendChild(skillInput);
+                var closeButton = document.createElement('button');
+                closeButton.innerHTML = '<i class="fas fa-times"></i>';
+      
+                closeButton.onclick = function () {
+                    skillContainer.remove();
+                };
+                skillContainer.appendChild(closeButton);
+                selectedSkillsContainer.appendChild(skillContainer);
+            }
+      
+            function addManuallyTypedSkill() {
+                var skillName = input.value.trim();
+      
+                if (skillName !== '') {
+                    addSkill(skillName);
+                    input.value = '';
+                    input.focus();
+                }
+            }
+      
+            document.getElementById('addButton').addEventListener('click', addManuallyTypedSkill);
+      
+            document.getElementById('skillsInput').addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    var skillName = input.value.trim();
+      
+                    if (skillName !== '') {
+                        addSkill(skillName);
+                        input.value = '';
+                    }
+                }
+            });
+      
+            document.getElementById('selectedSkills').addEventListener('click', function (event) {
+                if (event.target.tagName === 'BUTTON') {
+                    event.target.parentElement.remove();
+                }
+            });
+        }
+      </script>
+      
         <!-- Resume -->
        <!-- Display current resume and provide an option to change it -->
 <div class="form-group">

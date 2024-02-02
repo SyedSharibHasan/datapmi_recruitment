@@ -10,3 +10,6 @@ admin.site.register(Skill)
 
 
 
+
+
+

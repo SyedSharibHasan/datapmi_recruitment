@@ -6,7 +6,6 @@ from django.db import models
 from django.utils import timezone
 
 
-
 class CustomUser(AbstractUser):
     contact = models.CharField(max_length=15, blank=True, null=True)
     image = models.ImageField(upload_to='image/', max_length=400, blank=True, null=True, default='default_profile_image.png')
@@ -20,8 +19,7 @@ class Skill(models.Model):
 
     def __str__(self):
         return self.name
-
-
+    
 
 class Candidate(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
@@ -31,17 +29,13 @@ class Candidate(models.Model):
     first_name = models.CharField(max_length=150, null=True)
     last_name = models.CharField(max_length=150)
     mode_of_work = models.CharField(max_length=150, default='full_time',null=True)
-
     gender = models.CharField(max_length=50, default='unknown', null=True,blank=True)
     college = models.CharField(max_length=50,    null=True,blank=True)
     graduation_year= models.CharField(max_length=50, null=True,blank=True)
     qualification = models.TextField(null=True,blank=True)
     skills = models.ManyToManyField(Skill)  
-    
     experience = models.FloatField(null=True, blank=True)
     relevent_experience = models.FloatField(null=True, blank=True)
-
-
     designation = models.CharField(max_length=50, null=True,blank=True)
     expected_ctc = models.CharField(max_length=50, null=True,blank=True)
     current_ctc = models.CharField(max_length=50, null=True,blank=True)
@@ -64,7 +58,6 @@ class Candidate(models.Model):
     offer = models.CharField(max_length=100, null=True,blank=True)
     offer_reject_reason = models.CharField(max_length=100, null=True,blank=True)
     
-    
     def __str__(self):
         return self.email
 
@@ -76,17 +69,6 @@ class Candidate(models.Model):
 
         # Format the datetime
         return updated_on_timezone.strftime('%d/%b/%Y %I:%M %p')
-
-
-
-
-
-
-class Profile(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-    image = models.ImageField(upload_to='image/',max_length=400,blank=True)
-
-
 
 
 

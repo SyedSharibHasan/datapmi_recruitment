@@ -105,6 +105,26 @@
       color: whitesmoke;
     }
 
+
+    #remove_image {
+            display: none;
+        }
+
+        /* Style the label to look like a button */
+        #ourlabel {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        /* Change label background when checkbox is checked */
+        #remove_image:checked + #ourlabel {
+            background-color: #e74c3c;
+        }
+
  
   </style>
 </head>
@@ -145,19 +165,60 @@
         </div>
 
         <div class="image">
-          <label for="image">Profile Image</label><br />
+          
           <div class="col-xs-12">
-            <label class="cabinet center-block">
-              <figure>
-                <img src="" id="item-img-output" />
-                <figcaption><i title="Select image" class="fa fa-camera"></i></figcaption>
-              </figure>
-             
-              <img src="{% if user.image %}{{ user.image.url }}{% endif %}" width="100px"> <p>Current image</p>
-              <input  style="display: none;" type="file" class="item-img file center-block" name="image" />
-            </label>
+              <label class="cabinet center-block">
+                  <figure>
+                    <img src="" id="item-img-output" style="max-width: 100px; max-height: 100px;" />
+                    
+                      <figcaption>Select image &nbsp;&nbsp; <i style="font-size: larger;" title="Select image" class="fa fa-camera"></i></figcaption>
+                  </figure>
+                  {% if user.image %}
+                  <img src="{{ user.image.url }}" width="100px"> 
+              {% else %}
+                  <img src="https://cdn-icons-png.flaticon.com/512/727/727399.png" width="100px">
+              {% endif %}
+              <p>Current image</p>
+              <input style="display: none;" type="file" class="item-img file center-block" name="image" id="image-input" onchange="previewImage(this)" />
+              </label>
           </div>
-        </div>
+      </div>
+      
+      <script>
+          function previewImage(input) {
+              var preview = document.getElementById('item-img-output');
+              var file = input.files[0];
+              var reader = new FileReader();
+      
+              reader.onloadend = function () {
+                  preview.src = reader.result;
+              };
+      
+              if (file) {
+                  reader.readAsDataURL(file);
+              } else {
+                  preview.src = "";
+              }
+          }
+      </script>
+     
+      <!-- Checkbox and Label -->
+ <input type="checkbox" id="remove_image" name="remove_image" />
+ <label id="ourlabel" for="remove_image">Remove Image</label>
+
+ <script>
+     // Get the checkbox and label elements
+     const checkbox = document.getElementById('remove_image');
+     const label = document.getElementById('ourlabel');
+
+     // Add a click event listener to the checkbox
+     checkbox.addEventListener('click', function() {
+         // Change the label text based on checkbox state
+         label.textContent = checkbox.checked ? 'Removed' : 'Remove Image';
+     });
+ </script>
+
+    
 
         <div class="submit-button">
           <button class="btn btn-primary" type="submit">Submit</button>
@@ -166,6 +227,12 @@
     </form>
   </div>
 </center>
+
+
+
+
+
 </body>
 
 </html>
+
