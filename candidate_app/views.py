@@ -203,9 +203,26 @@ def admin(request):
 
 
 
+@superuser_login_required
+def user_control(request,pk):
+    users = get_object_or_404(CustomUser, pk=pk)
+    if request.method == 'POST':
+        users.delete()
+    return render(request,'user_control.html',context={'users':users})
+
+
+
+
+
+
+
+
 @login_required(login_url='login_default')
 def user(request):
     return render(request,'user.html')
+
+
+
 
 
 from django.contrib.auth.decorators import login_required
@@ -768,6 +785,10 @@ def get_skills(request):
     return JsonResponse({'skills': all_skills})
     
 
+
+
+
+########## admin page user's control 
 
 
 
