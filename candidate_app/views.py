@@ -208,10 +208,8 @@ def user_control(request,pk):
     users = get_object_or_404(CustomUser, pk=pk)
     if request.method == 'POST':
         users.delete()
+        return redirect('admin')
     return render(request,'user_control.html',context={'users':users})
-
-
-
 
 
 
@@ -220,7 +218,6 @@ def user_control(request,pk):
 @login_required(login_url='login_default')
 def user(request):
     return render(request,'user.html')
-
 
 
 

@@ -194,9 +194,8 @@ button.view-modal {
               <center>
               <div style="width: 150px; height: 150px; border-radius: 50%;">
                   <img id="zoom" style="width: 100%; height: 100%;"
-                       src="https://cdn-icons-png.flaticon.com/512/727/727399.png{% if user.image %}{{ request.user.image.url }}{% endif %}" >
+                      src="{% if user.image %}{{ request.user.image.url }}{% else %}https://media.licdn.com/dms/image/C4D0BAQFu_R1oMevPkg/company-logo_200_200/0/1630467196037?e=2147483647&v=beta&t=hepueD9lxcVzt7A0JeUHJA6yuOnP8BVASvI4tqxQM3c{% endif %}"  >
               </div></center>
-         
          
          
               
