@@ -1,12 +1,15 @@
 from django.urls import path
-from .views import signup,signin,user,admin,ListCandidate,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,dashboard,account,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates,verify_otp,reset_password,get_skills,user_control
+from .views import signup,signin,user,ListCandidate,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,dashboard,account,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates,verify_otp,reset_password,get_skills,admin,user_control
 from . import views
 
 
 
 urlpatterns = [
-    path('user/',user,name='user'),   
-    path('admin_page/',admin,name='admin'),   
+    path('user/',user,name='user'),
+
+    path('admin_page/',admin,name='admin'), 
+    path('user_control/<int:pk>/', user_control, name='user_control'), 
+    
     path('signup/',signup,name='signup'),
     path('list/',ListCandidate.as_view(),name='list'),   
     path('create/',Createcandidate.as_view(),name='create'),  
@@ -33,10 +36,8 @@ urlpatterns = [
     path('verify_otp/', views.verify_otp, name='verify_otp'), 
     path('reset_password/<str:token>/', views.reset_password, name='reset_password'),
     path('get_skills_api/', get_skills, name='get_skills_api'),
-    path('user_control/<int:pk>/', user_control, name='user_control'),
     path("signout/", signout, name='signout'),
-
-   
+ 
     path('<str:action>/',signin,name='login'),
     path('', views.signin, {'action': 'login'}, name='login_default'), 
          

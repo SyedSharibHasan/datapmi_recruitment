@@ -195,6 +195,8 @@ def superuser_login_required(view_func):
 
 
 
+
+
 @superuser_login_required
 def admin(request):
     users = CustomUser.objects.exclude(username=request.user.username)
@@ -205,11 +207,16 @@ def admin(request):
 
 @superuser_login_required
 def user_control(request,pk):
-    users = get_object_or_404(CustomUser, pk=pk)
+    users = CustomUser.objects.exclude(username=request.user.username)
+    user = get_object_or_404(CustomUser, pk=pk)
     if request.method == 'POST':
-        users.delete()
+        user.delete()
         return redirect('admin')
-    return render(request,'user_control.html',context={'users':users})
+    return render(request,'admin.html',context={'user':user,'users':users})
+
+
+
+
 
 
 
