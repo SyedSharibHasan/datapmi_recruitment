@@ -1010,36 +1010,7 @@
 				<div class="app-header-left">
 					<span class="app-icon"></span>
 					<p class="app-name">DATAPMI</p>
-					<div class="search-wrapper">
-
-						<form action="" method="get">
-							{% csrf_token %}
-							<input id="search-input" class="search-input" type="text"
-								placeholder="Search by email or mobile">
-
-							<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-							<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-							<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
-							<script>
-								$(function () {
-									$("#search-input").autocomplete({
-										source: function (request, response) {
-											$.getJSON("/autocomplete-username/", { term: request.term }, function (data) {
-												response(data.suggestions);
-											});
-										},
-										minLength: 1,
-										select: function (event, ui) {
-											window.location.href = '/detail/' + ui.item.value;
-										}
-									});
-								});
-							</script>
-
-						</form>
-
-					</div>
+				
 				</div>
 				<div class="app-header-right">
 					<button class="mode-switch" title="Switch Theme">
@@ -1063,7 +1034,7 @@
 							{% if user.image %}
 							<img src="{{user.image.url}}" />
 							{% else %}
-							<img src="https://media.licdn.com/dms/image/C4D0BAQFu_R1oMevPkg/company-logo_200_200/0/1630467196037?e=2147483647&v=beta&t=hepueD9lxcVzt7A0JeUHJA6yuOnP8BVASvI4tqxQM3c">
+							<img src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
 							{% endif %}
 							<span>{{user}}</span>
 						</button></a>

@@ -1,124 +1,344 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Registration</title>
-  <link rel="stylesheet" href="./style.css" />
-  <link rel='stylesheet' href='https://foliotek.github.io/Croppie/croppie.css'>
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
 
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+body {
+	 font-family: Verdana, Geneva, sans-serif;
+	 font-size: 14px;
+	 background: #f2f2f2;
+}
+ .clearfix:after {
+	 content: "";
+	 display: block;
+	 clear: both;
+	 visibility: hidden;
+	 height: 0;
+}
+ .form_wrapper {
+	 background: #fff;
+	 width: 400px;
+	 max-width: 100%;
+	 box-sizing: border-box;
+	 padding: 25px;
+	 margin: 8% auto 0;
+	 position: relative;
+	 z-index: 1;
+	 border-top: 5px solid #301af5;
+	 -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	 -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	 box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	 -webkit-transform-origin: 50% 0%;
+	 transform-origin: 50% 0%;
+	 -webkit-transform: scale3d(1, 1, 1);
+	 transform: scale3d(1, 1, 1);
+	 -webkit-transition: none;
+	 transition: none;
+	 -webkit-animation: expand 0.8s 0.6s ease-out forwards;
+	 animation: expand 0.8s 0.6s ease-out forwards;
+	 opacity: 0;
+}
+ .form_wrapper h2 {
+	 font-size: 1.5em;
+	 line-height: 1.5em;
+	 margin: 0;
+}
+ .form_wrapper .title_container {
+	 text-align: center;
+	 padding-bottom: 15px;
+}
+ .form_wrapper h3 {
+	 font-size: 1.1em;
+	 font-weight: normal;
+	 line-height: 1.5em;
+	 margin: 0;
+}
+ .form_wrapper label {
+	 font-size: 12px;
+}
+ .form_wrapper .row {
+	 margin: 10px -15px;
+}
+ .form_wrapper .row > div {
+	 padding: 0 15px;
+	 box-sizing: border-box;
+}
+ .form_wrapper .col_half {
+	 width: 50%;
+	 float: left;
+}
+ .form_wrapper .input_field {
+	 position: relative;
+	 margin-bottom: 20px;
+	 -webkit-animation: bounce 0.6s ease-out;
+	 animation: bounce 0.6s ease-out;
+}
+ .form_wrapper .input_field > span {
+	 position: absolute;
+	 left: 0;
+	 top: 0;
+	 color: #333;
+	 height: 100%;
+	 border-right: 1px solid #ccc;
+	 text-align: center;
+	 width: 30px;
+}
+ .form_wrapper .input_field > span > i {
+	 padding-top: 10px;
+}
+ .form_wrapper .textarea_field > span > i {
+	 padding-top: 10px;
+}
+ .form_wrapper input[type="text"], .form_wrapper input[type="email"], .form_wrapper input[type="password"] {
+	 width: 100%;
+	 padding: 8px 10px 9px 35px;
+	 height: 35px;
+	 border: 1px solid #ccc;
+	 box-sizing: border-box;
+	 outline: none;
+	 -webkit-transition: all 0.3s ease-in-out;
+	 -moz-transition: all 0.3s ease-in-out;
+	 -ms-transition: all 0.3s ease-in-out;
+	 transition: all 0.3s ease-in-out;
+}
+ .form_wrapper input[type="text"]:hover, .form_wrapper input[type="email"]:hover, .form_wrapper input[type="password"]:hover {
+	 background: #fafafa;
+}
+ .form_wrapper input[type="text"]:focus, .form_wrapper input[type="email"]:focus, .form_wrapper input[type="password"]:focus {
+	 -webkit-box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
+	 -moz-box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
+	 box-shadow: 0 0 2px 1px rgba(255, 169, 0, 0.5);
+	 border: 1px solid #291af5;
+	 background: #fafafa;
+}
+ .form_wrapper input[type="submit"] {
+	 background: #1a72f5;
+	 height: 35px;
+	 line-height: 35px;
+	 width: 100%;
+	 border: none;
+	 outline: none;
+	 cursor: pointer;
+	 color: white;
+	 font-size: 1.1em;
+	 margin-bottom: 10px;
+	 -webkit-transition: all 0.3s ease-in-out;
+	 -moz-transition: all 0.3s ease-in-out;
+	 -ms-transition: all 0.3s ease-in-out;
+	 transition: all 0.3s ease-in-out;
+}
+ .form_wrapper input[type="submit"]:hover {
+	 background: #1f0ae1;
+}
+ .form_wrapper input[type="submit"]:focus {
+	 background: #2a0ae1;
+}
+ .form_wrapper input[type="checkbox"], .form_wrapper input[type="radio"] {
+	 border: 0;
+	 clip: rect(0 0 0 0);
+	 height: 1px;
+	 margin: -1px;
+	 overflow: hidden;
+	 padding: 0;
+	 position: absolute;
+	 width: 5px;
+}
+ .form_container .row .col_half.last {
+	 border-left: 1px solid #ccc;
+}
+ .checkbox_option label {
+	 margin-right: 1em;
+	 position: relative;
+}
+ .checkbox_option label:before {
+	 content: "";
+	 display: inline-block;
+	 width: 0.5em;
+	 height: 0.5em;
+	 margin-right: 0.5em;
+	 vertical-align: -2px;
+	 border: 2px solid #ccc;
+	 padding: 0.12em;
+	 background-color: transparent;
+	 background-clip: content-box;
+	 transition: all 0.2s ease;
+}
+ .checkbox_option label:after {
+	 border-right: 2px solid #000;
+	 border-top: 2px solid #000;
+	 content: "";
+	 height: 20px;
+	 left: 2px;
+	 position: absolute;
+	 top: 7px;
+	 transform: scaleX(-1) rotate(135deg);
+	 transform-origin: left top;
+	 width: 7px;
+	 display: none;
+}
+ .checkbox_option input:hover + label:before {
+	 border-color: #000;
+}
+ .checkbox_option input:checked + label:before {
+	 border-color: #000;
+}
+ .checkbox_option input:checked + label:after {
+	 -moz-animation: check 0.8s ease 0s running;
+	 -webkit-animation: check 0.8s ease 0s running;
+	 animation: check 0.8s ease 0s running;
+	 display: block;
+	 width: 7px;
+	 height: 20px;
+	 border-color: #000;
+}
+ 
 
-    html,
-    body {
-      width: 100%;
-
-      display: table;
-
-      font-family: Rubik, sans-serif;
-    }
-
-   
-    h1 {
-      font-size: 1.5em;
-    }
-
-    .content {
-      display: inline-block;
-      text-align: left;
-      background-color: whitesmoke;
-      border-radius: .7em;
-      padding: 3rem 3rem 3rem;
-    }
-
-    .fld,
-    .slt {
-      width: 20em;
-      height: 3rem;
-    }
-
-    .slt::placeholder {
-      color: rgb(109, 109, 109);
-    }
-
-    .fld::placeholder {
-      color: rgba(128, 128, 128, 0.568);
-    }
-
-    .fld:focus,
-    .slt:focus,
-    .ta:focus {
-      outline: none;
-      transition: ease 1s;
-      border-bottom-color: black;
-    }
-
-    .msg,
-    .ta {
-      width: 20em;
-      font-family: Rubik, sans-serif;
-      height: 6rem;
-      margin-bottom: 2.5rem;
-      resize: none;
-    }
-
-    .ta::placeholder {
-      color: rgba(128, 128, 128, 0.568);
-    }
-
-    #say-hello {
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .name,
-    .email,
-    .contact,
-    .password,
-    .confirm-password,
-    .submit-button {
-      padding-top: 0.8em;
-      padding-bottom: 0.8em;
-    }
-
-    label {
-      font-size: small;
-      color: gray;
-    }
-
-    .fld,
-    .ta,
-    .slt {
-      border: none;
-      background-color: whitesmoke;
-      font-size: large;
-      border-bottom: 2px solid rgba(128, 128, 128, 0.616);
-    }
-
-    .btn {
-      border: none;
-      font-weight: bold;
-      width: 22.5rem;
-    
-      border-radius: 2rem;
-      height: 2.5rem;
-      color: whitesmoke;
-    }
+ @-webkit-keyframes check {
+	 0% {
+		 height: 0;
+		 width: 0;
+	}
+	 25% {
+		 height: 0;
+		 width: 7px;
+	}
+	 50% {
+		 height: 20px;
+		 width: 7px;
+	}
+}
+ @keyframes check {
+	 0% {
+		 height: 0;
+		 width: 0;
+	}
+	 25% {
+		 height: 0;
+		 width: 7px;
+	}
+	 50% {
+		 height: 20px;
+		 width: 7px;
+	}
+}
+ @-webkit-keyframes expand {
+	 0% {
+		 -webkit-transform: scale3d(1, 0, 1);
+		 opacity: 0;
+	}
+	 25% {
+		 -webkit-transform: scale3d(1, 1.2, 1);
+	}
+	 50% {
+		 -webkit-transform: scale3d(1, 0.85, 1);
+	}
+	 75% {
+		 -webkit-transform: scale3d(1, 1.05, 1);
+	}
+	 100% {
+		 -webkit-transform: scale3d(1, 1, 1);
+		 opacity: 1;
+	}
+}
+ @keyframes expand {
+	 0% {
+		 -webkit-transform: scale3d(1, 0, 1);
+		 transform: scale3d(1, 0, 1);
+		 opacity: 0;
+	}
+	 25% {
+		 -webkit-transform: scale3d(1, 1.2, 1);
+		 transform: scale3d(1, 1.2, 1);
+	}
+	 50% {
+		 -webkit-transform: scale3d(1, 0.85, 1);
+		 transform: scale3d(1, 0.85, 1);
+	}
+	 75% {
+		 -webkit-transform: scale3d(1, 1.05, 1);
+		 transform: scale3d(1, 1.05, 1);
+	}
+	 100% {
+		 -webkit-transform: scale3d(1, 1, 1);
+		 transform: scale3d(1, 1, 1);
+		 opacity: 1;
+	}
+}
+ @-webkit-keyframes bounce {
+	 0% {
+		 -webkit-transform: translate3d(0, -25px, 0);
+		 opacity: 0;
+	}
+	 25% {
+		 -webkit-transform: translate3d(0, 10px, 0);
+	}
+	 50% {
+		 -webkit-transform: translate3d(0, -6px, 0);
+	}
+	 75% {
+		 -webkit-transform: translate3d(0, 2px, 0);
+	}
+	 100% {
+		 -webkit-transform: translate3d(0, 0, 0);
+		 opacity: 1;
+	}
+}
+ @keyframes bounce {
+	 0% {
+		 -webkit-transform: translate3d(0, -25px, 0);
+		 transform: translate3d(0, -25px, 0);
+		 opacity: 0;
+	}
+	 25% {
+		 -webkit-transform: translate3d(0, 10px, 0);
+		 transform: translate3d(0, 10px, 0);
+	}
+	 50% {
+		 -webkit-transform: translate3d(0, -6px, 0);
+		 transform: translate3d(0, -6px, 0);
+	}
+	 75% {
+		 -webkit-transform: translate3d(0, 2px, 0);
+		 transform: translate3d(0, 2px, 0);
+	}
+	 100% {
+		 -webkit-transform: translate3d(0, 0, 0);
+		 transform: translate3d(0, 0, 0);
+		 opacity: 1;
+	}
+}
+ @media (max-width: 600px) {
+	 .form_wrapper .col_half {
+		 width: 100%;
+		 float: none;
+	}
+	 .bottom_row .col_half {
+		 width: 50%;
+		 float: left;
+	}
+	 .form_container .row .col_half.last {
+		 border-left: none;
+	}
+	 .remember_me {
+		 padding-bottom: 20px;
+	}
+}
+ 
 
   </style>
+
 </head>
+<body>
 
-<body id="body">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
   {% if messages %}
     {% for message in messages %}
@@ -130,64 +350,71 @@
       </div>
    {% endfor %}
   {% endif %}
-  
 
-<center>
-  <div class="container">
-    <form action="" method="POST" class="content" enctype="multipart/form-data">
-      {% csrf_token %}
 
-      <h1 id="say-hello">Welcome To DataPMI</h1>
-      <h4 id="say-hello">Register Here</h4>
-      <div>
 
-        <div class="name">
-          <label for="name">Username</label><br />
-          <input name="username" class="fld" placeholder="Enter your username" id="name" required />
-        </div>
+  <div class="form_wrapper">
+    <div class="form_container">
+      <div class="title_container">
+        <h2>DataPMI Registration Form</h2>
+      </div>
+      <div class="row clearfix">
+        <div class="">
+          <form action="" method="POST" class="content" enctype="multipart/form-data">
+            {% csrf_token %}
+      
+            <div class="input_field"> <span>  <i class="material-icons">person_3</i></span>
+              <input type="text" name="username" placeholder="Username" required />
+            </div>
 
-        <div class="name">
-          <label for="name">First Name</label><br />
-          <input name="first_name" class="fld" placeholder="Enter your first name" id="name" required />
-        </div>
+            <div class="row clearfix">
+              <div class="col_half">
+                <div class="input_field"> <span><i class="material-icons">person_3</i></span>
+                  <input type="text" name="first_name" placeholder="First Name" />
+                </div>
+              </div>
+              <div class="col_half">
+                <div class="input_field"> <span><i class="material-icons">person</i></span>
+                  <input type="text" name="last_name" placeholder="Last Name" required />
+                </div>
+              </div>
+            </div>
 
-        <div class="name">
-          <label for="last-name">Last Name</label><br />
-          <input name="last_name" class="fld" placeholder="Enter your last name" id="last-name" required />
-        </div>
+            <div class="input_field"> <span>   <i class="material-icons">email</i></span>
+              <input type="email" name="email" placeholder="Email" required />
+            </div>
 
-        <div class="email">
-          <label for="email">Email</label><br />
-          <input name="email" class="fld" type="email" placeholder="Enter your email address" id="email" required />
-        </div>
+            <div class="input_field"> <span>  <i class="material-icons">call</i></span>
+              <input type="text" name="contact" placeholder="Contact" required />
+            </div>
+            
 
-        <div class="contact">
-          <label for="contact">Contact</label><br />
-          <input name="contact" class="fld" type="tel" placeholder="Enter your contact number" id="contact" required />
-        </div>
-
-       
-
-        <div class="password">
-          <label for="password">Password</label><br />
-          <input name="pass1" class="fld" type="password" placeholder="Enter your password" id="password" required />
-        </div>
-
-        <div class="confirm-password">
-          <label for="confirm-password">Confirm Password</label><br />
-          <input name="pass2" class="fld" type="password" placeholder="Confirm your password" id="confirm-password"
-            required />
-        </div>
-
-        <div class="submit-button">
-          <button class="btn btn-success" type="submit">Submit</button>
+            <div class="input_field"> <span><i class="material-icons">lock</i></span>
+              <input type="password" name="pass1" placeholder="Password" required />
+            </div>
+            <div class="input_field"> <span><i class="material-icons">lock</i></span>
+              <input type="password" name="pass2" placeholder="Re-type Password" required />
+            </div>
+           
           
+              <div class="input_field checkbox_option">
+                <input type="checkbox" id="cb1" required>
+            <label for="cb1">I declare everything is correct</label>
+              </div>
+             
+            <input class="button" type="submit" value="Register" />
+          </form>
+          <a href="/login"><button class="btn btn-secondary">Login</button></a>
         </div>
       </div>
-    </form>
+    </div>
   </div>
-</center>
 
+  
 </body>
-
 </html>
+
+
+
+
+

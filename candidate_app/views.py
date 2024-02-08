@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .utils import send_recovery_link
 
 
+
 ##### registration
 def signup(request):
     if request.method == 'POST':
@@ -56,7 +57,7 @@ def signup(request):
 
 
 
-####### after register otp verify
+####### after register otp verification process
 def verify_otp(request):
     if request.method == 'POST':
         otp = request.POST.get('otp')
@@ -78,7 +79,6 @@ def verify_otp(request):
                 contact=contact,
                 password=password
             )
-
             user.save()
             login(request, user)
             return redirect('user')
@@ -91,8 +91,6 @@ def verify_otp(request):
             return redirect('signup')
 
     return render(request, 'otp_verification.html', {'email': email})
-
-
 
 
 
@@ -128,7 +126,7 @@ def signin(request,action):
                 user.password_reset_token_expiration = timezone.now() + datetime.timedelta(minutes=5)
                 user.save()
 
-                # Create the reset link with the token
+                # Create the reset link with the token      ######## local host should be change after hosting
                 reset_link = f"http://127.0.0.1:8000/reset_password/{token}/"
 
                 # Send recovery link
@@ -142,7 +140,7 @@ def signin(request,action):
 
 
 
-########### reset password
+########### reset password and expiration process
 import datetime
 from django.utils import timezone
 from django.core.signing import Signer
@@ -209,16 +207,10 @@ def admin(request):
 def user_control(request,pk):
     users = CustomUser.objects.exclude(username=request.user.username)
     user = get_object_or_404(CustomUser, pk=pk)
-    if request.method == 'POST':
+    if request.method == 'POST' and request.POST.get('action') == 'delete':
         user.delete()
         return redirect('admin')
     return render(request,'admin.html',context={'user':user,'users':users})
-
-
-
-
-
-
 
 
 
@@ -350,7 +342,6 @@ from django.shortcuts import get_object_or_404
 
 
 
-
 class Updatecandidate(LoginRequiredMixin,UpdateView):
     model = Candidate
     success_url = reverse_lazy('list')
@@ -432,9 +423,7 @@ class Updatecandidate(LoginRequiredMixin,UpdateView):
             return render(request, self.template_name, {'error': 'Error: Could not save the candidate.'})
 
 
-            
-
-        
+             
 class Detailcandidate(LoginRequiredMixin,DetailView):
     model = Candidate
     context_object_name ='detail'
@@ -457,7 +446,6 @@ def delete_candidate(request, pk):
 
 
 
-
 #### logout
 def signout(request):
     logout(request)
@@ -472,7 +460,6 @@ class Allcandidates(LoginRequiredMixin,ListView):
     context_object_name = "all"
     login_url = 'login_default'
     
-
 
 
 
@@ -492,6 +479,7 @@ def account(request):
     return render(request,'profile.html',context={'user':user})
 
 
+####### account editing 
 from django.views import View
 class Edit_account(LoginRequiredMixin,View):
     model = CustomUser
@@ -535,7 +523,6 @@ class Edit_account(LoginRequiredMixin,View):
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
 ########### autocomplete recommendation using AJAX for email id filtration
 from django.http import JsonResponse
 
@@ -546,8 +533,6 @@ def autocomplete_username(request):
         suggestions = [{'label': user.email, 'value': user.id} for user in users]
         return JsonResponse({'suggestions': suggestions}, safe=False)
     return JsonResponse({'suggestions': []})
-
-
 
 
 
@@ -737,7 +722,7 @@ def list_of_candidates(request, status):
 
 from django.contrib.auth import update_session_auth_hash
 
-################ delete user account or change password
+################ delete user account and change password function
 @login_required(login_url='login_default')
 def manage_account(request,action):
     if action == 'delete':
@@ -773,7 +758,7 @@ def manage_account(request,action):
 
 
 
-
+###### get skills from skills.txt
 def get_skills(request):
     # Fetch skills from the Skill model
     skills_from_database = Skill.objects.values_list('name', flat=True)
@@ -788,16 +773,6 @@ def get_skills(request):
     # Return the combined skills as a JSON response
     return JsonResponse({'skills': all_skills})
     
-
-
-
-
-########## admin page user's control 
-
-
-
-
-
 
 
 

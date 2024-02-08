@@ -32,7 +32,7 @@ body {
   align-items: center;
   min-height: 100vh;
   background: #a4bdb7;
-  background-image: url('https://t3.ftcdn.net/jpg/01/19/67/02/360_F_119670247_HDccziQUuo2kFpaNiM22dIto5I8GPAWW.jpg');
+  background-image: url('/static/project_images/Profile.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -194,7 +194,7 @@ button.view-modal {
               <center>
               <div style="width: 150px; height: 150px; border-radius: 50%;">
                   <img id="zoom" style="width: 100%; height: 100%;"
-                      src="{% if user.image %}{{ request.user.image.url }}{% else %}https://media.licdn.com/dms/image/C4D0BAQFu_R1oMevPkg/company-logo_200_200/0/1630467196037?e=2147483647&v=beta&t=hepueD9lxcVzt7A0JeUHJA6yuOnP8BVASvI4tqxQM3c{% endif %}"  >
+                      src="{% if user.image %}{{ request.user.image.url }}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}"  >
               </div></center>
          
          

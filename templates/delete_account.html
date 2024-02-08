@@ -14,7 +14,7 @@
 
   <style>
     body {
-      background-image: url('https://t3.ftcdn.net/jpg/01/19/67/02/360_F_119670247_HDccziQUuo2kFpaNiM22dIto5I8GPAWW.jpg');
+      background-image: url('/static/project_images/Profile.jpg');
       background-repeat: no-repeat;
       background-size: cover;
     }
@@ -84,6 +84,7 @@
          <p style="color: red; position: relative;"> Change Password &nbsp; <i style="font-size: 25px; position: absolute; top: -6.5px;" class="bi bi-key-fill"></i></p>
           {% csrf_token %}
           <div class="form-group">
+            
             <input class="form-control" name="old_password" type="password" placeholder="Enter current password" required>
             <input name="new_password" class="form-control" type="password" placeholder="Enter new password">
             <input style="color:blue" type="submit" class="form-control" value="Submit">
@@ -92,13 +93,7 @@
         </form>
       </div>
 
-      <div class="col">
-
-        <p style="color: red;">Forget Password</p>
-        <a href="">Continue with gmail</a><br>
-        <a href="">Continue with mobile</a>
-
-      </div>
+    
 
 
     </div>

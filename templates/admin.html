@@ -6,10 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap"
+        rel="stylesheet" />
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         .table td,
@@ -20,11 +31,6 @@
             cursor: pointer;
             color: white;
         }
-
-
-
-       
-
 
         .table img {
             width: 40px;
@@ -38,8 +44,6 @@
             gap: 7px;
         }
 
-
-
         @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap");
 
         * {
@@ -51,198 +55,195 @@
 
         body {
             min-height: 100vh;
-            color: white;
-            background: #a4bdb7;
-            background-image: url('https://w0.peakpx.com/wallpaper/677/889/HD-wallpaper-black-stylish-background-green-neon-lines-green-light-effects-abstract-black-background.jpg');
+            color: black;
             background-size: cover;
             background-repeat: no-repeat;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
 
-
         *,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
 
 
+        nav {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 15%;
+            background: transparent;
+            transition: all 0.50s ease;
+        }
 
-nav {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    right: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 30px 15%;
-    background: transparent;
-    transition: all 0.50s ease;
-}
+        .logo {
+            color: #FFF;
+            font-size: 35px;
+            font-weight: 700;
+            cursor: pointer;
+        }
 
-.logo {
-    color: #FFF;
-    font-size: 35px;
-    font-weight: 700;
-    cursor: pointer;
-}
+        .nav-list {
+            display: flex;
+        }
 
-.nav-list {
-    display: flex;
-}
+        .nav-list a {
+            margin: 0 5px;
+            padding: 5px 10px;
+            color: black;
+            font-size: 17px;
+            font-weight: 500;
+            transition: all 0.50s ease;
+        }
 
-.nav-list a {
-    margin: 0 5px;
-    padding: 5px 10px;
-    color: #FFF;
-    font-size: 17px;
-    font-weight: 500;
-    transition: all 0.50s ease;
-}
+        .nav-list a:hover {
+            color: #00C9E0;
+        }
 
-.nav-list a:hover {
-    color: #00C9E0;
-}
+        .btn {
+            display: inline-block;
+            padding: 6px 30px;
+            color: #FFF;
+            background: blue;
+            border-radius: 70px;
+            font-size: 15px;
+            border: 2px solid transparent;
+            transition: all 0.40s ease;
+        }
 
-.btn {
-    display: inline-block;
-    padding: 12px 30px;
-    color: #FFF;
-    background: red;
-    border-radius: 30px;
-    font-size: 15px;
-    border: 2px solid transparent;
-    transition: all 0.40s ease;
-}
+        .btn:hover {
+            border: 2px solid blue;
+            background: transparent;
+            color: blue;
+        }
 
-.btn:hover {
-    border: 2px solid red;
-    background: transparent;
-    color: red;
-}
+        #menu-icon {
+            color: #FFF;
+            font-size: 38px;
+            z-index: 10001;
+            cursor: pointer;
+            display: none;
+        }
 
-#menu-icon {
-    color: #FFF;
-    font-size: 38px;
-    z-index: 10001;
-    cursor: pointer;
-    display: none;
-}
+        section {
+            padding: 0 15%;
+        }
 
-section {
-    padding: 0 15%;
-}
+        .hero {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
 
-.hero {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
+        .m-text h1 {
+            font-size: 90px;
+            font-weight: 800;
+            mask-border: 5px;
+        }
 
-.m-text h1 {
-    font-size: 90px;
-    font-weight: 800;
-    mask-border: 5px;
-}
-
-.m-text p {
-    font-size: 30px;
-    font-weight: 600;
-}
+        .m-text p {
+            font-size: 30px;
+            font-weight: 600;
+        }
 
 
-ul {
-    list-style: none; /* Removes the default list style */
-}
+        ul {
+            list-style: none;
+            /* Removes the default list style */
+        }
 
-@media (max-width:1350px) {
-    nav {
-        padding: 20px 5%;
-    }
+        @media (max-width:1350px) {
+            nav {
+                padding: 20px 5%;
+            }
 
-    section {
-        padding: 0 5%;
-    }
-}
+            section {
+                padding: 0 5%;
+            }
+        }
 
-@media (max-width:950px) {
-    .m-text h1 {
-        font-size: 70px;
-    }
+        @media (max-width:950px) {
+            .m-text h1 {
+                font-size: 70px;
+            }
 
-    .m-text p {
-        font-size: 22px;
-    }
+            .m-text p {
+                font-size: 22px;
+            }
 
-    .logo {
-        font-size: 30px;
-    }
+            .logo {
+                font-size: 30px;
+            }
 
-    .btn {
-        padding: 9px 27px;
-    }
-}
+            .btn {
+                padding: 9px 27px;
+            }
+        }
 
-@media (max-width:860px) {
-    #menu-icon {
-        display: block;
-    }
+        @media (max-width:860px) {
+            #menu-icon {
+                display: block;
+            }
 
-    .nav-list {
-        position: absolute;
-        top: -800px;
-        left: 0;
-        right: 0;
-        display: flex;
-        flex-direction: column;
-        background: #00C9E0;
-        text-align: left;
-        transition: all 0.50s ease;
-    }
+            .nav-list {
+                position: absolute;
+                top: -800px;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column;
+                background: #00C9E0;
+                text-align: left;
+                transition: all 0.50s ease;
+            }
 
-    .nav-list a {
-        color: #FFF;
-        padding: 1rem;
-        margin: 1rem;
-        border-left: 2px solid #FFF;
-        display: block;
-    }
+            .nav-list a {
+                color: #FFF;
+                padding: 1rem;
+                margin: 1rem;
+                border-left: 2px solid #FFF;
+                display: block;
+            }
 
-    .nav-list a:hover {
-        background: #FFF;
-        color: #00C9E0;
-    }
+            .nav-list a:hover {
+                background: #FFF;
+                color: #00C9E0;
+            }
 
-    .nav-list.open {
-        top: 100%;
-    }
-}
+            .nav-list.open {
+                top: 100%;
+            }
+        }
 
-@media (max-width:750px) {
-    .m-text h1 {
-        font-size: 50px;
-    }
-}
+        @media (max-width:750px) {
+            .m-text h1 {
+                font-size: 50px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-
     <nav>
-        <img src="https://www.shutterstock.com/shutterstock/videos/1061055712/thumb/6.jpg?ip=x480" width="80px">
+        <h4 style="font-weight: 500;"><i class="bi bi-person-video3"></i> &nbsp;ADMIN</h4>
         <div class="bx bx-menu" id="menu-icon"></div>
         <ul class="nav-list">
 
-            <li><a href="">support</a></li>
+            <li><a href="">Support</a></li>
             <li><a href="">Contact</a></li>
         </ul>
-        <a href="#" id="openModalBtn" class="btn">Logout</a>
+        <a href="#" id="open" class="btn">Logout</a>
     </nav>
 
     <br>
@@ -252,36 +253,36 @@ ul {
     <br>
     <br>
 
-    <div class="container-fluid ml-5">
-        <h5 style="color: rgb(0, 66, 128);">Active Recruiters</h5>
-        <div class="row">
-            <div class="col-md-6">
-                <div id="recruitersTable" id="table" class="table">
-                
-                    <table>
+    <div class="container mx-auto px-5">
+        <div class="md:flex md:flex-row md:space-x-5">
+            <div class="md:w-3/4">
+                <div id="recruitersTable" class="overflow-x-auto"> <br><br><br>
+                    <h5 class="text-blue-700">Active Recruiters<span style="color: green;font-size: 70px;">.</span></h5>
+                    <table class="table-auto">
                         <thead>
                             <tr>
-                                <th>SL no</th>
-                                <th>Name</th>
-                                <th>Mobile</th>
-                                <th>Email</th>
+                                <th class="px-4 py-2">IMG</th>
+                                <th class="px-4 py-2">Name</th>
+                                <th class="px-4 py-2">Mobile</th>
+                                <th class="px-4 py-2">Email</th>
                                 <th>Joined on</th>
-                                <th>Manage</th>
+                                <th class="px-4 py-2">Manage</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% if users %}
                             {% for user in users %}
                             <tr>
+                                <td class="px-4 py-2"><img style="width: 150px; height: 70px;border-radius: 50%;"
+                                        src="{% if user.image %}{{user.image.url}}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}"
+                                        alt="No image"></td>
+                                <td class="px-4 py-2">{{user.username}}</td>
+                                <td class="px-4 py-2">{{user.contact}}</td>
+                                <td class="px-4 py-2">{{user.email}}</td>
+                                <td class="px-4 py-2 whitespace-nowrap">{{user.join_date}}</td>
 
-                                <td><img src="{%if user.image %}{{user.image.url}}{% else %}https://media.licdn.com/dms/image/C4D0BAQFu_R1oMevPkg/company-logo_200_200/0/1630467196037?e=2147483647&v=beta&t=hepueD9lxcVzt7A0JeUHJA6yuOnP8BVASvI4tqxQM3c{% endif %}"
-                                        alt="No image"> </td>
-                                <td>{{user.username}}</td>
-                                <td>{{user.contact}}</td>
-                                <td>{{user.email}}</td>
-                                <td>{{user.join_date}}</td>
-                                <td><a href="{% url 'user_control' pk=user.id  %}"><button class="btn btn-secondary">View</button></a></td>
-
+                                <td class="px-4 py-2"><a href="{% url 'user_control' pk=user.id  %}"
+                                        class="btn btn-secondary">View</a></td>
                             </tr>
                             {% endfor %}
                             {% endif %}
@@ -290,47 +291,319 @@ ul {
                 </div>
             </div>
 
-            <div class="col-1"></div>
-
-
-            <div class="col">
-
-                <section>
-                    
-                    <div class="text">
-                        {% if user %}
-                        {% if user.first_name or user.last_name or user.email or user.contact %}
-                        <div style="width: 150px; height: 150px; border-radius: 50%;">
-                            <img id="zoom" style="width: 100%; height: 100%;"
-                                src="{% if user.image %}{{ user.image.url }}{% else %}https://media.licdn.com/dms/image/C4D0BAQFu_R1oMevPkg/company-logo_200_200/0/1630467196037?e=2147483647&v=beta&t=hepueD9lxcVzt7A0JeUHJA6yuOnP8BVASvI4tqxQM3c{% endif %}">
-                        </div>
-                        <p>Recruiter <i style="color: green;" class="bi bi-patch-check-fill"></i></p>
-                        <p class="name">Name : {{ user.first_name }} {{ user.last_name }}</p>
-                        <p>Email : {{ user.email }}</p>
-                        <p>Mobile : {{ user.contact }}</p>
-                        <a href="#"><button class="connect" type="button">Delete Account</button></a>
-                        {% else %}
-                        <img src="https://intellipaat.com/blog/wp-content/uploads/2015/07/Big-Data.gif" width="500px">
-                        {% endif %}
-                        {% else %}
-                        <img src="https://intellipaat.com/blog/wp-content/uploads/2015/07/Big-Data.gif">
-                        {% endif %}
+            <div class="md:w-1/2 mt-5 md:mt-0">
+                <div class="text-center"> 
+                    {% if user %}
+                    {% if user.first_name or user.last_name or user.email or user.contact %}
+                    <div style="width: 150px; height: 150px; border-radius: 50%;" class="mx-auto">
+                        <img id="zoom" class="w-full h-full"
+                            src="{% if user.image %}{{ user.image.url }}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}">
                     </div>
+                    <p class="text-lg text-green-500 mb-1">Recruiter <i class="bi bi-patch-check-fill"></i></p>
+                    <p class="text-lg mb-1">Name: {{ user.first_name }} {{ user.last_name }}</p>
+                    <p class="text-lg mb-1">Email: {{ user.email }}</p>
+                    <p class="text-lg mb-1">Mobile: {{ user.contact }}</p>
 
-                </section>
-
-               
-                       
-
-               
-
+                    <button style="background-color: red;color: white;padding: 10px;border-radius: 20px;" class="myBtn"
+                        id="myBtn">Remove Account</button>
+                    {% else %}
+                    <img src="/static/project_images/DataPMI.gif"
+                        alt="" class="mx-auto">
+                     
+                    {% endif %}
+                    {% else %}
+                    <img src="/static/project_images/DataPMI.gif" class="mx-auto">
+                   
+                    {% endif %}
+                </div>
             </div>
-
 
 
         </div>
     </div>
 
+
+
+
+
+    <style>
+        .toast {
+            position: fixed;
+            top: 250px;
+            right: 25px;
+            width: 375px;
+            background: #FFF;
+            color: #00C9E0;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 12px;
+            border-left: 3px solid red;
+            overflow: hidden;
+            transform: translateX(calc(100% + 25px));
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35)
+        }
+
+        .toast.active {
+            transform: translateX(0);
+        }
+
+        .toast i:first-child {
+            color: red;
+            font-size: 20px;
+        }
+
+        .toast-text {
+            margin: 0;
+            font-size: .8125rem;
+            text-transform: uppercase;
+        }
+
+        .toast i:last-child {
+            color: #ccc;
+            cursor: pointer;
+            transition: 350ms;
+        }
+
+        .toast i:last-child:hover {
+            color: #333;
+        }
+
+        #open {
+            border: none;
+            outline: none;
+            background: #343434;
+            padding: 1em;
+            font-size: 1em;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 350ms;
+        }
+
+        #open:hover {
+            background: #666;
+        }
+    </style>
+
+
+    <div class="toast" id="toast">
+        <i class="fas fa-exclamation-circle"></i>
+        <p class="toast-text">Are you sure to logout?</p>
+        <form action="{% url 'signout' %}">
+            <button style="color: red;" type="submit">Logout</button>
+        </form>
+        <i class="bi bi-x-lg" style="color:red" id="close"></i>
+    </div>
+
+
+    <script>
+        const openBtn = document.getElementById("open");
+        const toast = document.getElementById("toast");
+        const closeBtn = document.getElementById("close");
+
+        openBtn.addEventListener("click", () => {
+            toast.classList.add("active");
+            setTimeout(() => {
+                toast.classList.remove("active");
+            }, 5000)
+        })
+
+        closeBtn.addEventListener("click", () => {
+            toast.classList.remove("active");
+        })
+    </script>
+
+
+    <div class="modal-container" id="myModal">
+        <div class="modal-wrapper">
+            <div class="modal">
+                <header>
+                    <h2>Delete</h2>
+                </header>
+                <main>
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                    </div>
+                    <div class="text-wrapper">
+                        <span>Delete {{user.email}}  from Datapmi </span>
+                    </div>
+                </main>
+                <footer>
+                    <div class="btn-container">
+                        <div class="cancel-wrapper">
+                            <button class="btn btn-cancel">Cancel</button>
+                        </div>
+                        <div class="delet-confirm-wrapper">
+
+                            <form action="{% url 'user_control' pk=user.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete">
+                                <button type="submit" class="btn btn-confirm">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // variable
+        let modal = document.querySelector(".modal-container");
+        let btn = document.getElementById("myBtn");
+        let closeBtns = document.querySelectorAll(".btn");
+
+        // EventListener
+        btn.addEventListener("click", () => {
+            modal.classList.add("show");
+        });
+
+        closeBtns.forEach((eachBtn) => {
+            eachBtn.addEventListener("click", () => {
+                modal.classList.remove("show");
+            });
+        });
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.classList.remove("show");
+            }
+        };
+
+    </script>
+
+
+    <style>
+        .modal-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s visibility ease-in, opacity 0.3s ease-out;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .modal-container.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal {
+            width: 412px;
+            min-height: 275px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 15px rgba(34, 34, 53, 0.1);
+        }
+
+        header {
+            padding: 25px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 2px solid #eaeaef;
+        }
+
+        h2 {
+            color: #32324d;
+        }
+
+        /* Main */
+        main {
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-bottom: 2px solid #eaeaef;
+        }
+
+        .fa-circle-exclamation {
+            font-size: 22px;
+            color: #d02b20;
+        }
+
+        .text-wrapper span {
+            font-weight: 400;
+            color: #32324d;
+        }
+
+        /* Footer */
+        footer {
+            padding: 17px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn {
+
+            border-radius: 4px;
+            outline: 0;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            color: #32324d;
+            font-weight: 700;
+            border: 1px solid #dcdce4;
+            background-color: #fff;
+        }
+
+        .btn-cancel:hover {
+            box-shadow: rgba(50, 50, 77, 0.1) 0px 2px 8px 0px;
+        }
+
+        .btn-confirm {
+            color: #d02b20;
+            font-weight: 700;
+            border: 1px solid #f5c0b8;
+            background-color: #fcecea;
+        }
+
+        .btn-confirm:hover {
+            box-shadow: rgba(208, 43, 32, 0.1) 0px 2px 8px 0px;
+        }
+
+        .fa-trash {
+            color: #d02b20;
+            margin-left: 2px;
+        }
+
+        /* Media Query */
+        @media only screen and (max-width: 600px) {
+            .modal {
+                width: 362px;
+            }
+
+            .btn {
+                padding: 10px 58px;
+            }
+        }
+    </style>
 </body>
 
 </html>
