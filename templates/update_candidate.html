@@ -429,6 +429,83 @@
             });
         }
       </script>
+
+
+
+            <!-- Notice Period -->
+            <div class="form-group">
+              <label for="notice-period">Notice Period:</label>
+              <input value="{{candidate.notice_period}}" type="text" id="notice-period" name="notice_period">
+              <div class="error-message" id="notice-period-error"></div>
+            </div>
+    
+            <!-- Current CTC -->
+            <div class="form-group">
+              <label for="current-ctc">Current CTC:</label>
+              <input value="{{candidate.current_ctc}}" type="text" id="current-ctc" name="current_ctcs">
+              <div class="error-message" id="current-ctc-error"></div>
+            </div>
+    
+            <!-- Expected CTC -->
+            <div class="form-group">
+              <label for="expected-ctc">Expected CTC:</label>
+              <input value="{{candidate.expected_ctc}}" type="text" id="expected-ctc" name="expected_ctc">
+              <div class="error-message" id="expected-ctc-error"></div>
+            </div>
+    
+            <!-- Offer in hands -->
+            <div class="form-group">
+              <label for="offer">Offer In Hands:</label>
+              <select id="offer" name="offer_in_hands">
+                <option value="" {% if not candidate.offer_in_hands %}selected{% endif %} >Select</option>
+                <option value="yes" {% if candidate.offer_in_hands == 'yes' %}selected{% endif %}>Yes</option>
+                <option value="no"{% if candidate.offer_in_hands == 'no' %}selected{% endif %}>No</option>
+              </select>
+              <div class="error-message" id="offer-error"></div>
+            </div>
+    
+    
+    <script>
+    
+        document.getElementById('offer').addEventListener('change', function () {
+                    var offerValue = this.value;
+                    var offerDetailsDiv = document.getElementById('offer-reject-reason');
+        
+                    if (offerValue === 'yes') {
+                      offerDetailsDiv.style.display = 'block';
+                    } else {
+                      offerDetailsDiv.style.display = 'none';
+                    }
+                  });
+    
+    
+    
+                  document.getElementById('offer-2').addEventListener('change', function () {
+                    var offerValue = this.value;
+                    var offerDetailsDiv = document.getElementById('offer-reject-reason-container');
+        
+                    if (offerValue === 'no') {
+                      offerDetailsDiv.style.display = 'block';
+                    } else {
+                      offerDetailsDiv.style.display = 'none';
+                    }
+                  });
+    </script>
+    
+
+
+        <!-- Offer Rejection Reason -->
+        <div id="offer-reject-reason" style="display: none;">
+          <div class="form-group">
+            <label for="offer-reject-reason-text">Details:</label>
+            <textarea id="offer-reject-reason-text" name="offer_details"></textarea>
+            <div class="error-message" id="offer-reject-reason-error"></div>
+          </div>
+        </div>
+
+
+
+
       
         <!-- Resume -->
        <!-- Display current resume and provide an option to change it -->

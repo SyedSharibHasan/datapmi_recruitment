@@ -27,7 +27,11 @@ def signup(request):
         pass1 = request.POST.get('pass1')
         pass2 = request.POST.get('pass2')
 
+        username_exists = CustomUser.objects.filter(username=username).first()
         email_exists = CustomUser.objects.filter(email=email).first()
+        
+        if username_exists:
+            return HttpResponse('Username already exists')
         
         if email:
             if not email.endswith('@datapmi.com'):
@@ -504,6 +508,14 @@ class Edit_account(LoginRequiredMixin,View):
         user.last_name = request.POST.get("last_name")
         user.email = request.POST.get("email")
         user.contact = request.POST.get("contact")
+
+
+        user_pk = user.pk
+        if CustomUser.objects.exclude(pk=user_pk).filter(username=user.username).exists():
+            return HttpResponse({'User with current Username already exists'})
+        
+        if CustomUser.objects.exclude(pk=user_pk).filter(email=user.email).exists():
+            return HttpResponse({'User with current Email address already exists'})
 
         if user.email:
             if not user.email.endswith('@datapmi.com'):
