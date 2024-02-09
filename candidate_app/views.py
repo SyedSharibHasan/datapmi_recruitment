@@ -93,7 +93,6 @@ def verify_otp(request):
     return render(request, 'otp_verification.html', {'email': email})
 
 
-
 ########## login + password recovery 
 @csrf_exempt
 def signin(request,action):
@@ -123,10 +122,10 @@ def signin(request,action):
                 token = Signer().sign(user.id)
 
                 user.password_reset_token = token
-                user.password_reset_token_expiration = timezone.now() + datetime.timedelta(minutes=5)
+                user.password_reset_token_expiration = timezone.now() + datetime.timedelta(minutes=10)
                 user.save()
 
-                # Create the reset link with the token      ######## local host should be change after hosting
+                # Create the reset link with the token      ######## local host should be change after hosting for redirecting
                 reset_link = f"http://127.0.0.1:8000/reset_password/{token}/"
 
                 # Send recovery link
@@ -279,7 +278,7 @@ class Createcandidate(LoginRequiredMixin,CreateView):
             additional_status = request.POST.get("client-details")
 
             if Candidate.objects.filter(email=email).exists():
-                return HttpResponse({'Email already exists'})
+                return HttpResponse({'Candidate with current Email address already exists'})
             
             
             candidate = Candidate(
@@ -386,9 +385,15 @@ class Updatecandidate(LoginRequiredMixin,UpdateView):
         candidate.status = request.POST.get("status")
         candidate.additional_status = request.POST.get("client-details")
       
-        
         new_resume = request.FILES.get('new_resume')
         keep_resume = request.POST.get('keep_resume')
+
+
+        candidate_pk = candidate.pk
+
+        if Candidate.objects.exclude(pk=candidate_pk).filter(email=candidate.email).exists():
+            return HttpResponse({'Candidate with current Email address already exists'})
+
 
         if not keep_resume and new_resume:
             candidate.resume = new_resume
@@ -525,7 +530,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 ########### autocomplete recommendation using AJAX for email id filtration
 from django.http import JsonResponse
-
 def autocomplete_username(request):
     if 'term' in request.GET:
         term = request.GET.get('term')
@@ -603,7 +607,6 @@ from django.views.decorators.http import require_GET
 
 ############# autocomplete for skills filter
 @require_GET
-@login_required(login_url='login')
 def autocomplete_skills(request):
     term = request.GET.get('term', '')
     skills = Skill.objects.filter(name__istartswith=term).values('name').distinct()
@@ -717,12 +720,12 @@ def list_of_candidates(request, status):
             candidates = []
         return render(request, 'selected_list.html', context={'candidates': candidates, 'status': status,'heading':heading})
 
-        
-        
+
+
 
 from django.contrib.auth import update_session_auth_hash
 
-################ delete user account and change password function
+############### delete user account and change password function
 @login_required(login_url='login_default')
 def manage_account(request,action):
     if action == 'delete':
@@ -747,6 +750,7 @@ def manage_account(request,action):
                 user.save()
 
                 update_session_auth_hash(request, user)
+                logout(request)
                 return redirect('login_default')
             else:
                 # Password is incorrect, return an error message
@@ -773,8 +777,4 @@ def get_skills(request):
     # Return the combined skills as a JSON response
     return JsonResponse({'skills': all_skills})
     
-
-
-
-
 

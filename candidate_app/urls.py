@@ -6,10 +6,8 @@ from . import views
 
 urlpatterns = [
     path('user/',user,name='user'),
-
     path('admin_page/',admin,name='admin'), 
     path('user_control/<int:pk>/', user_control, name='user_control'), 
-    
     path('signup/',signup,name='signup'),
     path('list/',ListCandidate.as_view(),name='list'),   
     path('create/',Createcandidate.as_view(),name='create'),  
@@ -36,33 +34,11 @@ urlpatterns = [
     path('verify_otp/', views.verify_otp, name='verify_otp'), 
     path('reset_password/<str:token>/', views.reset_password, name='reset_password'),
     path('get_skills_api/', get_skills, name='get_skills_api'),
+
+    ### these 3 url's should be kept last 
     path("signout/", signout, name='signout'),
- 
     path('<str:action>/',signin,name='login'),
     path('', views.signin, {'action': 'login'}, name='login_default'), 
-         
+
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

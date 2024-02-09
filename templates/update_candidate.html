@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Update page</title>
+  <title>Update Candidate</title>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-LsW3s5DkVe9dzS3q22I/1oRSt3n6DZnZa7mVJrN9VUsbA9a3+Hf/Adsz5Lj5R5uOdax8C7v4Xdt72otR3L9w=="/>
@@ -145,7 +145,7 @@
         <!-- Email -->
         <div class="form-group">
           <label for="email">Email:</label>
-          <input value="{{candidate.email}}" type="email" id="email" name="email">
+          <input value="{{candidate.email}}" type="email" id="email" name="email" required>
           <div class="error-message" id="email-error"></div>
         </div>
 
@@ -312,14 +312,14 @@
         <!-- Total Years of Experience -->
         <div class="form-group">
           <label for="experience">Total Years of Experience:</label>
-          <input value="{{candidate.experience}}" type="number" id="experience" name="experience">
+          <input value="{{candidate.experience}}" type="number" id="experience" name="experience" required>
           <div class="error-message" id="experience-error"></div>
         </div>
 
         <!-- Relevant Experience -->
         <div class="form-group">
           <label for="relevant-experience">Relevant Years Of Experience:</label>
-          <input value="{{candidate.relevent_experience}}" type="number" id="relevant-experience" name="relevent_experience">
+          <input value="{{candidate.relevent_experience}}" type="number" id="relevant-experience" name="relevent_experience" required>
           <div class="error-message" id="relevant-experience-error"></div>
         </div>
  
@@ -467,7 +467,7 @@
 
           <!-- Status -->
           <label for="status">Status:</label>
-          <select id="status" name="status" onchange="showHideClientDetails()">
+          <select id="status" name="status" onchange="showHideClientDetails()" required>
             <option value="" {% if not candidate.status %}selected{% endif %}>Select</option>
             <option value="Interview Ongoing" {% if candidate.status == 'Interview Ongoing' %}selected{% endif %}>Interview Ongoing</option>
             <option value="Client Select" {% if candidate.status == 'Client Select' %}selected{% endif %}>Client Select</option>

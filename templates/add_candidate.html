@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +12,7 @@
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <title>Transparent Form Validation</title>
+  <title>Add New Candidate</title>
 
 </head>
 <body>
@@ -145,7 +144,7 @@
         <!-- Email -->
         <div class="form-group">
           <label for="email">Email:</label>
-          <input type="email" id="email" name="email">
+          <input type="email" id="email" name="email" required>
           <div class="error-message" id="email-error"></div>
       </div>
   
@@ -412,14 +411,14 @@
   <!-- Total Years of Experience -->
   <div class="form-group">
     <label for="experience">Total Years of Experience:</label>
-    <input  type="number" id="experience" name="experience">
+    <input  type="number" id="experience" name="experience" required>
     <div class="error-message" id="experience-error"></div>
   </div>
 
   <!-- Relevant Experience -->
   <div class="form-group">
     <label for="relevant-experience">Relevant Years Of Experience:</label>
-    <input type="number" id="relevant-experience" name="relevent_experience">
+    <input type="number" id="relevant-experience" name="relevent_experience" required>
     <div class="error-message" id="relevant-experience-error"></div>
   </div>
 

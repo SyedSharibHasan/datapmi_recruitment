@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-KpOqU7gZ1R8qROiS1z3Pxm6ofuV3LlBOsPFvG9b0L4ZLTOEzVZ4AMdTEFVzjI5zj" crossorigin="anonymous">
-  <title>Profile</title>
+  <title>Personal Account</title>
 
 
 <style>
@@ -194,7 +194,7 @@ button.view-modal {
               <center>
               <div style="width: 150px; height: 150px; border-radius: 50%;">
                   <img id="zoom" style="width: 100%; height: 100%;"
-                      src="{% if user.image %}{{ request.user.image.url }}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}"  >
+                      src="{% if user.image %}{{ request.user.image.url }}{% else %}/static/project_images/Noprofile.png{% endif %}"  >
               </div></center>
          
          
