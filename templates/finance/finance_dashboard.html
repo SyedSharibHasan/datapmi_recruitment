@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard-Fiannce</title>
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>  
+  <style>
+
+nav {
+        
+            width: 100%;
+            top: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 12%;
+            background: transparent;
+            transition: all 0.50s ease;
+        }
+
+        .logo {
+            color: #FFF;
+            font-size: 35px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .nav-list {
+            display: flex;
+        }
+
+        .nav-list a {
+            margin: 0 5px;
+            padding: 5px 10px;
+            color: black;
+            font-size: 17px;
+            font-weight: 500;
+            transition: all 0.50s ease;
+        }
+
+        .nav-list a:hover {
+            color: #00C9E0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 6px 30px;
+            color: #FFF;
+            background: blue;
+            border-radius: 70px;
+            font-size: 15px;
+            border: 2px solid transparent;
+            transition: all 0.40s ease;
+        }
+
+        .btn:hover {
+            border: 2px solid blue;
+            background: transparent;
+            color: blue;
+        }
+
+        #menu-icon {
+            color: #FFF;
+            font-size: 38px;
+            z-index: 10001;
+            cursor: pointer;
+            display: none;
+        }
+
+        section {
+            padding: 0 15%;
+        }
+
+        .hero {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .m-text h1 {
+            font-size: 90px;
+            font-weight: 800;
+            mask-border: 5px;
+        }
+
+        .m-text p {
+            font-size: 30px;
+            font-weight: 600;
+        }
+
+
+        ul {
+            list-style: none;
+            /* Removes the default list style */
+        }
+
+        body {
+  background-color:white;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+ .dark-mode {
+  background-color: black;
+  color: white;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.dark-mode .nav-link {
+    color: white;
+  }
+
+
+
+#employee {
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 30px;
+  /* background-color: #3863db; */
+  }
+
+#employee:hover {
+  border: 1px solid black;
+  border-radius: 20px;
+  transform: scale(1.2);
+  transition: .4s;
+  cursor: pointer;
+
+}
+/* 
+.container {
+  border:0px solid black;
+  border-radius: 10px;
+  padding: 170px ;
+  background-color: rgb(132, 90, 199) ;
+} */
+
+        @media (max-width:1350px) {
+            nav {
+                padding: 20px 5%;
+            }
+
+            section {
+                padding: 0 5%;
+            }
+        }
+
+        @media (max-width:950px) {
+            .m-text h1 {
+                font-size: 70px;
+            }
+
+            .m-text p {
+                font-size: 22px;
+            }
+
+            .logo {
+                font-size: 30px;
+            }
+
+            .btn {
+                padding: 9px 27px;
+            }
+        }
+
+        @media (max-width:860px) {
+            #menu-icon {
+                display: block;
+            }
+
+            .nav-list {
+                position: absolute;
+                top: -800px;
+                left: 0;
+                right: 0;
+                display: flex;
+                flex-direction: column;
+                background: #00C9E0;
+                text-align: left;
+                transition: all 0.50s ease;
+            }
+
+            .nav-list a {
+                color: #FFF;
+                padding: 1rem;
+                margin: 1rem;
+                border-left: 2px solid #FFF;
+                display: block;
+            }
+
+            .nav-list a:hover {
+                background: #FFF;
+                color: #00C9E0;
+            }
+
+            .nav-list.open {
+                top: 100%;
+            }
+        }
+
+        @media (max-width:750px) {
+            .m-text h1 {
+                font-size: 50px;
+            }
+        }
+
+        .dropdown {
+    height: fit-content;
+    width: 400px;
+    position: relative;
+    display: inline-block;
+}
+.dropdown-toggle {
+    background-color: #f1f1f1;
+    color: #333;
+    padding: .75rem 2.5rem;
+    border: none;
+    border-radius: .5rem;
+    cursor: pointer;
+    width: 400px;
+}
+  
+.dropdown-menu {
+    position: absolute;
+    top: 120%;
+    left: 0;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+    padding: 0;
+    list-style: none;
+    display: none;
+}
+.dropdown-menu .menu-item:first-child{
+    border-radius: 1rem 1rem 0 0 ;
+}
+.dropdown-menu .menu-item:last-child{
+    border-radius: 0 0 1rem 1rem  ;
+} 
+.menu-item {
+    width: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 5rem;
+    background-color: white;
+    border: none;
+    font-size: 1.1rem;
+}
+.item-icon{
+    font-size: 1.5rem;
+}
+.item-txt{
+    width: 50%;
+    text-align: left;
+}
+.menu-item:hover{
+    cursor: pointer;
+    color: rgb(19, 98, 255);
+}
+button:focus ~ .dropdown-menu {   
+    display: block;
+}
+
+.attribute{
+    position: absolute;
+    bottom: 10px;
+}
+
+@media (max-width:768px) {
+    .dropdown{
+        width: 350px;
+    }
+    .menu-item{
+        width: 320px;
+    }
+}
+
+  
+  </style>
+</head>
+<body>
+  
+
+  <nav>
+    <h4 style="font-weight: 500;"><i class="bi bi-bank2"></i> &nbsp;Finance</h4>
+    <div class="bx bx-menu" id="menu-icon"></div>
+    <ul class="nav-list">
+
+        <li><a href="">Support & Contact</a></li>
+       
+    </ul>
+    <i style="font-size: 30px;" onclick="toggleDarkMode()"  id="darkModeIcon"  class="bi bi-toggle2-off"></i>
+    <div class="dropdown">
+      <button class="dropdown-toggle menu-item">
+          <span class="item-icon">
+              <i class='bx bxs-user-circle'></i>
+          </span>
+          <span class="item-txt">
+              {{request.user}}
+          </span>
+      </button>
+      <ul class="dropdown-menu">
+        <li class="menu-item">
+          <span class="item-icon">
+              <i class='bx bxs-dashboard'></i>
+          </span>
+          <span class="item-txt">
+              Dashboard
+          </span>
+      </li>
+        <li class="menu-item">
+          <span class="item-icon">
+              <i class='bx bx-log-out'></i>
+          </span>
+          <span class="item-txt">
+              <a href="{% url 'signout' %}"></a> logout
+          </span>
+      </li>
+        <li class="menu-item">
+          <span class="item-icon">
+              <i class='bx bx-cog' ></i>
+          </span>
+          <span class="item-txt">
+              setting
+          </span>
+      </li>
+      </ul>
+    </div>
+    
+
+  
+  </div>
+</nav>
+
+
+<br>
+<br>
+<br>
+
+
+  <div class="container">
+    <div class="row">
+
+      <a href="/all_employee">
+      <div id="employee"class="col">
+        All Employees<br>
+        <img  src="https://cdn-icons-png.flaticon.com/512/9271/9271306.png" width="180rem">
+      </div> </a> &nbsp;
+      &nbsp;
+      &nbsp;
+      &nbsp;
+     
+
+<div id="employee" class="col">
+  Active Employees<br>
+<img  src="https://cdn-icons-png.flaticon.com/256/9512/9512680.png" width="170rem">
+</div>&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+
+  <div id="employee"  class="col">
+    Inactive Employees
+<img src="https://www.iconpacks.net/icons/1/free-remove-user-icon-303-thumb.png" width="170rem">
+</div>&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+<a href="/add_employee">
+<div id="employee" class="col">
+  Add Employee<br>
+  <img  src="https://cdn-icons-png.freepik.com/512/6799/6799093.png" width="180rem">
+</div></a>&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+  </div>
+</div>
+
+
+
+<script>
+  function toggleDarkMode() {
+      var element = document.body;
+      element.classList.toggle("dark-mode");
+
+      // Save the dark mode preference in local storage
+      var darkModeEnabled = element.classList.contains("dark-mode");
+      localStorage.setItem("darkMode", darkModeEnabled);
+
+      // Toggle the dark mode icon
+      var icon = document.getElementById("darkModeIcon");
+      if (darkModeEnabled) {
+          icon.classList.remove("bi-toggle2-off");
+          icon.classList.add("bi-toggle2-on");
+      } else {
+          icon.classList.remove("bi-toggle2-on");
+          icon.classList.add("bi-toggle2-off");
+      }
+  }
+
+  // Apply dark mode on page load if the preference is saved
+  document.addEventListener("DOMContentLoaded", function() {
+      var darkModeEnabled = localStorage.getItem("darkMode");
+      if (darkModeEnabled === "true") {
+          var element = document.body;
+          element.classList.add("dark-mode");
+
+          // Change the icon to the moon if dark mode is enabled
+          var icon = document.getElementById("darkModeIcon");
+          icon.classList.remove("bi-toggle2-off");
+          icon.classList.add("bi-toggle2-on");
+      }
+  });
+</script>
+
+
+</body>
+</html>

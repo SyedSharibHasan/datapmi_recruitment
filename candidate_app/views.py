@@ -44,6 +44,7 @@ def signup(request):
             return HttpResponse('Passwords are not matched')
         
         contact = request.POST.get('contact')
+        role = request.POST.get('role')
 
         otp = generate_otp()
         send_otp_email(email, otp)
@@ -54,6 +55,7 @@ def signup(request):
         request.session['email'] = email
         request.session['password'] = pass1
         request.session['contact'] = contact
+        request.session['role'] = role
         request.session['otp'] = otp
 
         return redirect('verify_otp')
@@ -74,6 +76,7 @@ def verify_otp(request):
             last_name = request.session.get('last_name')
             email = request.session.get('email')
             contact = request.session.get('contact')
+            role = request.session.get('role')
             password = request.session.get('password')
             user = CustomUser.objects.create_user(
                 username=username,
@@ -81,11 +84,12 @@ def verify_otp(request):
                 last_name=last_name,
                 email=email,
                 contact=contact,
+                role=role,
                 password=password
             )
             user.save()
             login(request, user)
-            return redirect('user')
+            return redirect('login_default')
         else:
             messages.error(request, 'Invalid OTP Register Again !')
             return redirect('signup')
@@ -107,11 +111,14 @@ def signin(request,action):
             user = authenticate(request, username=username, password=pass1)
 
             if user is not None:
+                login(request, user)
                 if user.is_superuser:
-                    login(request, user)
-                    return redirect('admin')  
+                    return redirect('admin') 
+                
+                elif user.role == 'Finance':
+                    return redirect('finance_dashboard') 
+                
                 else:
-                    login(request, user)
                     return redirect('user')  
             else:
                 return HttpResponse("Username or password is incorrect!!!")
@@ -195,6 +202,34 @@ def superuser_login_required(view_func):
     return _wrapped_view
 
 
+########  for only fianance
+def finance_login_required(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.role == 'Finance':
+                return view_func(request, *args, **kwargs)
+            else:
+                return HttpResponse("Access denied.You must be a finance administrator")
+        else:
+            # Redirect to the login page if the user is not authenticated
+            return redirect('login_default')  # Change 'login_page' to your actual login URL
+
+    return _wrapped_view
+
+
+### for recruiter
+def recruiter_login_required(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.role == 'Recruiter':
+                return view_func(request, *args, **kwargs)
+            else:
+                return HttpResponse("Access denied.You must be a recruiter")
+        else:
+            # Redirect to the login page if the user is not authenticated
+            return redirect('login_default')  # Change 'login_page' to your actual login URL
+
+    return _wrapped_view
 
 
 
@@ -217,10 +252,10 @@ def user_control(request,pk):
 
 
 
-@login_required(login_url='login_default')
+
+@recruiter_login_required
 def user(request):
     return render(request,'user.html')
-
 
 
 
@@ -228,13 +263,17 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 ############  this is only for personal crud operations
-# @method_decorator(login_required, name='dispatch')
+
 class ListCandidate(LoginRequiredMixin,ListView):
     model = Candidate
     fields = "__all__"
     template_name = 'mycandidates.html'
     context_object_name = "list"
     login_url = 'login_default'
+
+    @method_decorator(recruiter_login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
     def get_queryset(self):
@@ -249,6 +288,10 @@ class Createcandidate(LoginRequiredMixin,CreateView):
     template_name = 'add_candidate.html'
     success_url = reverse_lazy('list')
     login_url = 'login_default'
+
+    @method_decorator(recruiter_login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request):
         return render(request, self.template_name)      
@@ -351,6 +394,10 @@ class Updatecandidate(LoginRequiredMixin,UpdateView):
     template_name = 'update_candidate.html'
     login_url = 'login_default'
 
+    @method_decorator(recruiter_login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
 
     def get(self, request, pk):
         candidate = get_object_or_404(Candidate, pk=pk, user=request.user)
@@ -438,11 +485,15 @@ class Detailcandidate(LoginRequiredMixin,DetailView):
     context_object_name ='detail'
     template_name = 'detail_candidate.html'
     login_url = 'login_default'
+
+    @method_decorator(recruiter_login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     
 
 
 
-@login_required(login_url='login_default')
+@recruiter_login_required
 def delete_candidate(request, pk):
     candidate = get_object_or_404(Candidate, pk=pk)
 
@@ -468,14 +519,11 @@ class Allcandidates(LoginRequiredMixin,ListView):
     template_name = 'allcandidates.html'
     context_object_name = "all"
     login_url = 'login_default'
+
+    @method_decorator(recruiter_login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     
-
-
-
-#### dashboard
-@login_required(login_url='login_default')
-def dashboard(request):
-    return render(request,'dashboard.html')
 
 
 
@@ -569,6 +617,11 @@ class Filter(LoginRequiredMixin, ListView):
     context_object_name = 'users'
     login_url = 'login_default'
 
+    @method_decorator(recruiter_login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
     def get_queryset(self):
         skills_query = self.request.GET.get('skills_search', '')
         location_query = self.request.GET.get('location_search', '')
@@ -639,7 +692,7 @@ def autocomplete_locations(request):
     return JsonResponse({'suggestions': []})
 
 
-@login_required(login_url='login_default')
+@recruiter_login_required
 def all_filter(request):
     return render(request,'filtration.html')
 
@@ -649,7 +702,7 @@ def all_filter(request):
 ############# count details displayed on dashboard 
 
 ################# total count of all candidates
-@login_required(login_url='login_default')
+@recruiter_login_required
 def totalcandidates_count(request):
     if request.user.is_authenticated:
         count = Candidate.objects.all().count()
@@ -659,7 +712,7 @@ def totalcandidates_count(request):
 
 
 ################# total count of my candidates
-@login_required(login_url='login_default')
+@recruiter_login_required
 def mycandidates_count(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user).count()
@@ -670,7 +723,7 @@ def mycandidates_count(request):
 
 
 ############# selected candidates
-@login_required(login_url='login_default')
+@recruiter_login_required
 def selected_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Client Select').count()
@@ -681,7 +734,7 @@ def selected_candidates(request):
 
 
 ############# rejected candidates
-@login_required(login_url='login_default')
+@recruiter_login_required
 def rejected_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Client Reject').count()
@@ -691,7 +744,7 @@ def rejected_candidates(request):
     
 
 ############# Inprogress candidates
-@login_required(login_url='login_default')
+@recruiter_login_required
 def inprogress_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Interview Ongoing').count()
@@ -700,7 +753,7 @@ def inprogress_candidates(request):
         return JsonResponse({'count': 0})
     
 
-@login_required(login_url='login_default')
+@recruiter_login_required
 def saved_candidates(request):
     if request.user.is_authenticated:
         count = Candidate.objects.filter(user=request.user, status='Store Data').count()
@@ -710,7 +763,7 @@ def saved_candidates(request):
 
 
 
-@login_required(login_url='login_default')
+@recruiter_login_required
 def list_of_candidates(request, status):
     if request.user.is_authenticated:
         if status == 'selected':
@@ -789,4 +842,86 @@ def get_skills(request):
     # Return the combined skills as a JSON response
     return JsonResponse({'skills': all_skills})
     
+
+
+
+
+################## Finance team section
+from .models import Employee
+
+@finance_login_required
+def finance_dashboard(request):
+    return render(request,'finance/finance_dashboard.html')
+
+
+
+@finance_login_required
+def add_employee(request):
+     
+     if request.method == 'POST':
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        mobile=request.POST.get('mobile')
+        alternate=request.POST.get('alternate')
+        position=request.POST.get('position')
+        clientName=request.POST.get('clientName')
+        clientLocation=request.POST.get('clientLocation')
+        projectDirector=request.POST.get('projectDirector')
+        projectPartner=request.POST.get('projectPartner')
+        fees=request.POST.get('fees')
+        employeeStatus=request.POST.get('employeeStatus')
+        joiningDate=request.POST.get('joiningDate')
+        lastWorkingDate=request.POST.get('lastWorkingDate')
+        workOrderStartDate=request.POST.get('workOrderStartDate')
+        workOrderEndDate=request.POST.get('workOrderEndDate')
+        woDetail=request.POST.get('woDetail')
+        uploadWorkOrder=request.FILES.get('uploadWorkOrder')
+        uploadNDA=request.FILES.get('uploadNDA')
+        uploadResume=request.FILES.get('uploadResume')
+
+        employee = Employee(user=request.user,
+                            name=name,
+                            email=email,
+                            mobile=mobile,
+                            alt_mobile=alternate,
+                            position=position,
+                            client_name=clientName,
+                            client_location=clientLocation,
+                            project_director=projectDirector,
+                            project_partner=projectPartner,
+                            fees=fees,
+                            employee_status=employeeStatus,
+                            joining_date=joiningDate,
+                            last_working_date=lastWorkingDate,
+                            start_date_of_work_order=workOrderStartDate,
+                            end_date_of_work_order=workOrderEndDate,
+                            work_order_detail=woDetail,
+                            upload_work_order=uploadWorkOrder,
+                            upload_nda=uploadNDA,
+                            upload_resume=uploadResume)
+        
+        employee.save()
+
+        return redirect('finance_dashboard')
+     
+     return render(request,'finance/add_employee.html')
+
+
+
+
+
+@finance_login_required
+def all_employee(request):
+    employees = Employee.objects.all()
+    return render(request,'finance/all_employee.html',context={'employees':employees})
+
+
+
+@finance_login_required
+def detail_employee(request,pk):
+    employees = Employee.objects.get(id=pk)
+    return render(request,'finance/detail_employee.html',context={'detail':employees})
+
+
+
 

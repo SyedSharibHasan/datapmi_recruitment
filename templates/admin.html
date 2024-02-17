@@ -300,7 +300,7 @@
                         <img id="zoom" class="w-full h-full"
                             src="{% if user.image %}{{ user.image.url }}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}">
                     </div>
-                    <p class="text-lg text-green-500 mb-1">Recruiter <i class="bi bi-patch-check-fill"></i></p>
+                    <p class="text-lg text-green-500 mb-1">{{ user.role  }}  <i class="bi bi-patch-check-fill"></i></p>
                     <p class="text-lg mb-1">Name: {{ user.first_name }} {{ user.last_name }}</p>
                     <p class="text-lg mb-1">Email: {{ user.email }}</p>
                     <p class="text-lg mb-1">Mobile: {{ user.contact }}</p>

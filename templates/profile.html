@@ -203,7 +203,7 @@ button.view-modal {
             <a href="{% url 'edit_account' request.user.id %}">
             <button title="Make changes" class="view-modal"><i  class="bi bi-pencil-square"></i></button></a>
             <div class="level">
-              <p>Recruiter <i style="color: green;" class="bi bi-patch-check-fill"></i></p>
+              <p>{{request.user.role}} <i style="color: green;" class="bi bi-patch-check-fill"></i></p>
             </div>
             <div class="text">
               <p class="name">Name : {{request.user.first_name}} {{request.user.last_name}}</p>

@@ -402,7 +402,8 @@
 
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="/user">
+                    
+                        <a href="{% if user.role == 'Recruiter' %}{% url 'user' %}{% else %}{% url 'finance_dashboard' %}{% endif %}" >
                             <i class='bx bx-home-alt icon'></i>
                             <span class="text nav-text">Dashboard</span>
                         </a>

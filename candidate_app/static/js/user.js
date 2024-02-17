@@ -37,6 +37,7 @@
      console.error('Error fetching candidate count:', error);
    });
 
+   
    fetch('/selected_candidates')
    .then(response => response.json())
    .then(data => {
@@ -46,3 +47,6 @@
    .catch(error => {
      console.error('Error fetching candidate count:', error);
    });
+   
+
+   
