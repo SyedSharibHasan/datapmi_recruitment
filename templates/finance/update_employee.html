@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <title>Job Application Form</title>
+    
+    <style>
+
+
+.section-add {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 40px; /* Increased padding */
+    background-color: #f4f4f4;
+    transition: background-color 0.5s ease, color 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: #fff;
+    padding: 60px; /* Increased padding */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-container .form-section {
+    width: 100%;
+    margin-bottom: 20px; /* Increased margin */
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 10px; /* Increased margin */
+    font-weight: bold;
+    color: #333333;
+}
+
+.form-container input,
+.form-container textarea,
+.form-container select {
+    width: 100%;
+    padding: 15px; /* Increased padding */
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 15px; /* Increased padding */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px; /* Increased margin */
+}
+
+@media screen and (min-width: 768px) {
+    .form-container .form-section {
+        width: 48%;
+    }
+}
+
+
+.ui-datepicker {
+opacity: 1 !important;
+}
+
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+
+    <div class="section-add">  
+
+    <form  action="" method="post" enctype="multipart/form-data"> 
+        {% csrf_token %}
+<div class="form-container">
+    <div class="form-section">
+        <br>
+        <br>
+            <label for="name">Name:</label>
+        <input value="{{employee.name}}" type="text" id="name" name="name" placeholder="Enter your name">
+
+        <label for="email">Email:</label>
+        <input value="{{employee.email}}" type="email" id="email" name="email" placeholder="Enter your email">
+
+        <label for="mobile">Mobile Number:</label>
+        <input value="{{employee.mobile}}" type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number">
+
+        <label for="alternate">Alternate Number:</label>
+        <input value="{{employee.alt_mobile}}" type="tel" id="alternate" name="alternate" placeholder="Enter alternate number">
+
+        <label for="position">Position:</label>
+        <input value="{{employee.position}}" type="text" id="position" name="position" placeholder="Enter your position">
+
+        <label for="clientName">Client Name:</label>
+        <input value="{{employee.client_name}}" type="text" id="clientName" name="clientName" placeholder="Enter client name">
+
+        <label for="clientLocation">Client Location:</label>
+        <input value="{{employee.client_location}}" type="text" id="clientLocation" name="clientLocation" placeholder="Enter client location">
+
+        <label for="projectDirector">Project Director:</label>
+        <input value="{{employee.project_director}}" type="text" id="projectDirector" name="projectDirector" placeholder="Enter project director">
+
+        <label for="projectPartner">Project Partner:</label>
+        <input value="{{employee.project_partner}}" type="text" id="projectPartner" name="projectPartner" placeholder="Enter project partner">
+
+        <label for="fees">Fees:</label>
+        <input value="{{employee.fees}}" type="text" id="fees" name="fees" placeholder="Enter fees">
+
+
+        <label for="active_inactive">Active Status:</label>
+        <select id="active_inactive" name="active_inactive">
+            <option value="">Select Status</option>
+            <option value="Active" {% if employee.active_inactive == 'Active' %}selected{% endif %}>Active</option>
+            <option value="InActive" {% if employee.active_inactive == 'Inactive' %}selected{% endif %}>InActive</option></select>
+
+
+        <label for="employeeStatus">Employee Status:</label>
+        <select id="employeeStatus" name="employeeStatus">
+            <option value="">Select Status</option>
+            <option value="Permanent" {% if employee.employee_status == 'Permanent' %}selected{% endif %}>Permanent</option>
+            <option value="Contractor" {% if employee.employee_status == 'Contractor' %}selected{% endif %}>Contractor</option>
+        </select>
+    </div>
+  &nbsp;
+  &nbsp;
+  
+
+    <div class="form-section">
+        <br><br>
+             
+                   
+<label for="joiningDate">Joining Date:</label>
+<input class="date" value="{{employee.joining_date|date:'Y-m-d' }}" id="joiningDate" name="joiningDate" required>
+
+<label for="lastWorkingDate">Last Working Date:</label>
+<input class="date" value="{{employee.last_working_date|date:'Y-m-d'}}" id="lastWorkingDate" name="lastWorkingDate" required>
+
+<label for="workOrderStartDate">Start Date of Work Order:</label>
+<input class="date" value="{{employee.start_date_of_work_order|date:'Y-m-d'}}" id="workOrderStartDate" name="workOrderStartDate" required>
+
+<label for="workOrderEndDate">End Date of Work Order:</label>
+<input class="date" value="{{employee.end_date_of_work_order|date:'Y-m-d'}}" id="workOrderEndDate" name="workOrderEndDate" required>
+
+
+<!-- slow loading causes due to this jquery handle later -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $(function() {
+    // Initialize datepicker for each input field with class 'date'
+    $(".date").datepicker({
+      dateFormat: "yy-mm-dd",
+      onSelect: function(dateText, inst) {
+        // When a date is selected, update the input field value
+        $(this).val(dateText);
+      }
+    });
+  });
+</script>
+
+
+        <label for="woDetail">Work Order Detail:</label>
+        <textarea id="woDetail" name="woDetail" rows="4" placeholder="Enter work order details">{{employee.work_order_detail}}</textarea>
+
+  
+
+
+        {% if employee.upload_work_order %}
+        <label for="workorder">Current work order:</label>   <a href="{{ employee.upload_work_order.url }}" target="_blank">View work order</a>
+        {% else %}
+            Currently No work order uploaded.
+        {% endif %}
+        <br><br>
+
+        <label for="uploadWorkorder">New Work order:</label>
+        <input type="file" id="uploadWorkorder" name="uploadWorkorder" >
+
+    
+        {% if employee.upload_nda %}
+        <label for="nda">Current NDA:</label>   <a href="{{ employee.upload_nda.url }}" target="_blank">View NDA</a>
+        {% else %}
+        Currently  No NDA uploaded.
+        {% endif %}
+        <br><br>
+
+        <label for="uploadNDA">New NDA:</label>
+        <input type="file" id="uploadNDA" name="uploadNDA" >
+
+        
+        {% if employee.upload_resume %}
+        <label for="resume">Current Resume:</label>   <a href="{{ employee.upload_resume.url }}" target="_blank">View Resume</a>
+        {% else %}
+        Currently  No resume uploaded.
+        {% endif %}
+        <br><br>
+
+        <label for="uploadResume">New Resume:</label>
+        <input type="file" id="uploadResume" name="uploadResume" >
+
+
+        <button class="button" type="submit">Submit</button>
+    
+    </div>
+  
+</div>
+</form>
+
+</div>
+
+</body>
+</html>
+
+
+
+
+
+

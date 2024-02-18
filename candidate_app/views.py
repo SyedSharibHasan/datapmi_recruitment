@@ -869,6 +869,7 @@ def add_employee(request):
         projectDirector=request.POST.get('projectDirector')
         projectPartner=request.POST.get('projectPartner')
         fees=request.POST.get('fees')
+        active_inactive = request.POST.get('active_inactive')
         employeeStatus=request.POST.get('employeeStatus')
         joiningDate=request.POST.get('joiningDate')
         lastWorkingDate=request.POST.get('lastWorkingDate')
@@ -878,6 +879,9 @@ def add_employee(request):
         uploadWorkOrder=request.FILES.get('uploadWorkOrder')
         uploadNDA=request.FILES.get('uploadNDA')
         uploadResume=request.FILES.get('uploadResume')
+
+        if Employee.objects.filter(email=email).exists():
+                return HttpResponse({'Employee with current Email address already exists'})
 
         employee = Employee(user=request.user,
                             name=name,
@@ -890,6 +894,7 @@ def add_employee(request):
                             project_director=projectDirector,
                             project_partner=projectPartner,
                             fees=fees,
+                            active_inactive = active_inactive,
                             employee_status=employeeStatus,
                             joining_date=joiningDate,
                             last_working_date=lastWorkingDate,
@@ -908,11 +913,90 @@ def add_employee(request):
 
 
 
+from django.db import IntegrityError
+
+class Updateemployee(LoginRequiredMixin,UpdateView):
+    model = Employee
+    success_url = reverse_lazy('all_employee')
+    template_name = 'finance/update_employee.html'
+    login_url = 'login_default'
+
+    @method_decorator(finance_login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, pk):
+        employee = get_object_or_404(Employee, pk=pk, user=request.user)
+        return render(request, self.template_name, {'employee': employee})   
+
+    def post(self, request, pk):
+        if pk is None:
+            # Creating a new candidate
+            employee = Employee(user=request.user)
+        else:
+            # Updating an existing candidate
+            employee = get_object_or_404(Employee, pk=pk, user=request.user)
+        
+        employee.name = request.POST.get("name")
+        employee.email = request.POST.get("email")
+        employee.mobile = request.POST.get("mobile")
+        employee.alt_mobile = request.POST.get("alternate")
+        employee.position = request.POST.get("position")
+        employee.client_name = request.POST.get("clientName")
+        employee.client_location = request.POST.get("clientLocation")
+        employee.project_director = request.POST.get("projectDirector")
+        employee.project_partner = request.POST.get("projectPartner")
+        employee.fees = request.POST.get("fees")
+        employee.active_inactive = request.POST.get("active_inactive")
+        employee.employee_status = request.POST.get("employeeStatus")
+        employee.joining_date = request.POST.get("joiningDate")
+        employee.last_working_date = request.POST.get("lastWorkingDate")
+        employee.start_date_of_work_order = request.POST.get("workOrderStartDate")
+        employee.end_date_of_work_order = request.POST.get("workOrderEndDate")
+        employee.work_order_detail = request.POST.get("woDetail")
+        
+        # new_resume = request.FILES.get('new_resume')
+        # keep_resume = request.POST.get('keep_resume')
+
+        employee_pk = employee.pk
+
+        if Employee.objects.exclude(pk=employee_pk).filter(email=employee.email).exists():
+            return HttpResponse({'Employee with current Email address already exists'})
+        
+        employee.save()
+        
+        try:
+
+            upload_work_order = request.FILES.get('uploadWorkorder')
+            keep_workorder = request.POST.get('keep')
+            if not keep_workorder and upload_work_order:
+                employee.upload_work_order = upload_work_order
+
+            upload_nda = request.FILES.get('uploadNDA')
+            keep_nda = request.POST.get('keep')
+            if not keep_nda and upload_nda:
+                employee.upload_nda = upload_nda
+
+            new_resume = request.FILES.get('uploadResume')
+            keep_resume = request.POST.get('keep_resume')
+            if not keep_resume and new_resume:
+                employee.upload_resume = new_resume
+
+            employee.save()
+            return redirect(self.success_url)
+
+        except IntegrityError as e:
+            if 'email' in str(e):
+                error_message = 'An employee with this email already exists.'
+            else:
+                error_message = 'An error occurred while saving the employee.'
+            return render(request, self.template_name, {'employee': employee, 'error_message': error_message})
+
 
 
 @finance_login_required
 def all_employee(request):
-    employees = Employee.objects.all()
+    employees = Employee.objects.all().order_by('-joining_date')
     return render(request,'finance/all_employee.html',context={'employees':employees})
 
 
@@ -921,6 +1005,9 @@ def all_employee(request):
 def detail_employee(request,pk):
     employees = Employee.objects.get(id=pk)
     return render(request,'finance/detail_employee.html',context={'detail':employees})
+
+
+
 
 
 

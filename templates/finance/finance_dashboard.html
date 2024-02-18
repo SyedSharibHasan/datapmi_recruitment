@@ -216,13 +216,11 @@ nav {
                 font-size: 50px;
             }
         }
-
         .dropdown {
-    height: fit-content;
-    width: 400px;
     position: relative;
     display: inline-block;
 }
+
 .dropdown-toggle {
     background-color: #f1f1f1;
     color: #333;
@@ -232,10 +230,10 @@ nav {
     cursor: pointer;
     width: 400px;
 }
-  
+
 .dropdown-menu {
     position: absolute;
-    top: 120%;
+    top: 100%; /* Adjust as needed */
     left: 0;
     background-color: #f1f1f1;
     border: 1px solid #ccc;
@@ -244,12 +242,15 @@ nav {
     list-style: none;
     display: none;
 }
-.dropdown-menu .menu-item:first-child{
-    border-radius: 1rem 1rem 0 0 ;
+
+.dropdown-menu .menu-item:first-child {
+    border-radius: 1rem 1rem 0 0;
 }
-.dropdown-menu .menu-item:last-child{
-    border-radius: 0 0 1rem 1rem  ;
-} 
+
+.dropdown-menu .menu-item:last-child {
+    border-radius: 0 0 1rem 1rem;
+}
+
 .menu-item {
     width: 350px;
     display: flex;
@@ -260,34 +261,22 @@ nav {
     border: none;
     font-size: 1.1rem;
 }
-.item-icon{
+
+.item-icon {
     font-size: 1.5rem;
 }
-.item-txt{
+
+.item-txt {
     width: 50%;
     text-align: left;
 }
-.menu-item:hover{
+
+.menu-item:hover {
     cursor: pointer;
     color: rgb(19, 98, 255);
 }
-button:focus ~ .dropdown-menu {   
-    display: block;
-}
 
-.attribute{
-    position: absolute;
-    bottom: 10px;
-}
 
-@media (max-width:768px) {
-    .dropdown{
-        width: 350px;
-    }
-    .menu-item{
-        width: 320px;
-    }
-}
 
   
   </style>
@@ -304,48 +293,70 @@ button:focus ~ .dropdown-menu {
        
     </ul>
     <i style="font-size: 30px;" onclick="toggleDarkMode()"  id="darkModeIcon"  class="bi bi-toggle2-off"></i>
-    <div class="dropdown">
-      <button class="dropdown-toggle menu-item">
-          <span class="item-icon">
-              <i class='bx bxs-user-circle'></i>
-          </span>
-          <span class="item-txt">
-              {{request.user}}
-          </span>
-      </button>
-      <ul class="dropdown-menu">
-        <li class="menu-item">
-          <span class="item-icon">
-              <i class='bx bxs-dashboard'></i>
-          </span>
-          <span class="item-txt">
-              Dashboard
-          </span>
-      </li>
-        <li class="menu-item">
-          <span class="item-icon">
-              <i class='bx bx-log-out'></i>
-          </span>
-          <span class="item-txt">
-              <a href="{% url 'signout' %}"></a> logout
-          </span>
-      </li>
-        <li class="menu-item">
-          <span class="item-icon">
-              <i class='bx bx-cog' ></i>
-          </span>
-          <span class="item-txt">
-              setting
-          </span>
-      </li>
-      </ul>
-    </div>
-    
+    <div class="dropdown" id="dropdownMenu">
+        <button class="dropdown-toggle menu-item" id="dropdownToggle">
+            <span class="item-icon">
+                {% if user.image %}
+                <img src="{{user.image.url}}" / width="25px">
+                {% else %}
+                <img src="/static/project_images/Noprofile.png" width="25px">
+                {% endif %}
+            </span>
+            <span class="item-txt">
+                {{request.user}}
+            </span>
+        </button>
+        <ul class="dropdown-menu" id="dropdownMenuContent">
+            <li class="menu-item">
+                <span class="item-icon">
+                    <i class='bx bxs-dashboard'></i>
+                </span>
+                <span class="item-txt">
+                    Dashboard
+                </span>
+            </li>
 
-  
+            <a href="{% url 'signout' %}">
+            <li style="color: red;" class="menu-item">
+                <span class="item-icon">
+                    <i class='bx bx-log-out'></i>
+                </span>
+                <span class="item-txt">
+                   Logout
+                </span>
+            </li></a>
+
+            <a href="{% url 'profile' %}">
+            <li class="menu-item">
+                <span class="item-icon">
+                    <i class='bx bx-cog'></i>
+                </span>
+                <span class="item-txt">
+                    Settings
+                </span>
+            </li></a>
+
+        </ul>
+    </div>
+
   </div>
 </nav>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var dropdownToggle = document.getElementById('dropdownToggle');
+    var dropdownMenuContent = document.getElementById('dropdownMenuContent');
 
+    dropdownToggle.addEventListener('click', function() {
+        dropdownMenuContent.classList.toggle('show');
+    });
+
+    window.addEventListener('click', function(event) {
+        if (!dropdownToggle.contains(event.target) && !dropdownMenuContent.contains(event.target)) {
+            dropdownMenuContent.classList.remove('show');
+        }
+    });
+});
+</script>
 
 <br>
 <br>

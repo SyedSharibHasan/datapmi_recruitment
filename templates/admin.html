@@ -258,7 +258,8 @@
         <div class="md:flex md:flex-row md:space-x-5">
             <div class="md:w-3/4">
                 <div id="recruitersTable" class="overflow-x-auto"> <br><br><br>
-                    <h5 class="text-blue-700">Active Recruiters<span style="color: green;font-size: 70px;">.</span></h5>
+                   
+                    <h5 class="text-blue-700">Active Employees<span style="color: green;font-size: 70px;">.</span></h5>
                     <table class="table-auto">
                         <thead>
                             <tr>
@@ -271,8 +272,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% if users %}
+                          
                             {% for user in users %}
+                            
                             <tr>
                                 <td class="px-4 py-2"><img style="width: 150px; height: 70px;border-radius: 50%;"
                                         src="{% if user.image %}{{user.image.url}}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}"
@@ -286,7 +288,7 @@
                                         class="btn btn-secondary">View</a></td>
                             </tr>
                             {% endfor %}
-                            {% endif %}
+                           
                         </tbody>
                     </table>
                 </div>

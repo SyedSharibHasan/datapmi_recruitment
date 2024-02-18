@@ -7,34 +7,13 @@
 
 
 
-
-
-<nav id="nav" class="navbar navbar-expand-lg ">
-    <div class="d-flex ml-auto">
-        <form class="d-flex me-2" action="" method="get">
-            {% csrf_token %}
-            <input  id="search-input" name="q" class="form-control" type="search" placeholder="Search by email address" aria-label="Search">&nbsp;&nbsp;
-            <script>
-                $(function () {
-                    $("#search-input").autocomplete({
-                        source: function (request, response) {
-                            $.getJSON("/autocomplete-username/", { term: request.term }, function (data) {
-                                response(data.suggestions);
-                            });
-                        },
-                        minLength: 1,
-                        select: function (event, ui) {
-                            window.location.href = '/detail/' + ui.item.value; // Assuming 'value' contains the user ID or similar
-                        }
-                    });
-                });
-            </script>
-          
-        </form>
-        <a href="{% if user.role == 'Recruiter' %}{% url 'user' %}{% else %}{% url 'finance_dashboard' %}{% endif %}" class="btn btn-primary mx-2"><i class="bi bi-house"></i></a>
-        <a href="/back" class="btn btn-primary" onclick="goBack()"><i class="bi bi-arrow-90deg-left"></i></a>
-    </div>
+<nav id="nav" class="navbar">
+    <a href="{% if user.role == 'Recruiter' %}{% url 'user' %}{% else %}{% url 'finance_dashboard' %}{% endif %}" class="btn btn-success" style="margin-right: 10px;"><i style="font-size: 30px;" class="bi bi-house"></i></a>
+    <a href="/back" class="btn btn-danger" onclick="goBack();" style="margin-left: auto;"><i style="font-size: 30px;"  class="bi bi-arrow-90deg-left"></i></a>
 </nav>
+
+
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -44,5 +23,6 @@
         window.history.back();
     }
 </script>
+
 
 

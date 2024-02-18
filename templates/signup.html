@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
 
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
@@ -396,15 +397,45 @@ body {
               <input type="password" name="pass2" placeholder="Re-type Password" required />
             </div>
            
-				<select id="status" name="role"  required>
-					<option value="Recruiter">Recruiter</option>
-					<option value="Finance">Finance</option>
+			<label>Select Your Role</label>
+				<select id="status" name="role" class="custom-select" required>
+					<option value="" >Select an option</option>
+					<option value="Recruiter">&#128373; Recruiter</option>
+					<option value="Finance">&#128176; Finance</option>
 				  </select>
 				  <br><br>
+				  
+
+				  <style>
+					.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.custom-select option {
+    background-color: #ffffff;
+    color: #333333;
+}
+
+				  </style>
 
               <div class="input_field checkbox_option">
                 <input type="checkbox" id="cb1" required>
-            <label for="cb1">I declare that everything is correct</label>
+            <label for="cb1">I declare the given information are correct</label>
               </div>
 			 
              

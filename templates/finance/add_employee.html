@@ -6,11 +6,15 @@
     <title>Job Application Form</title>
     <style>
 
-body {
+
+
+
+.section-add {
     font-family: Arial, sans-serif;
     margin: 20px;
-    padding: 40px; /* Increased padding */
+    padding: 40px; 
     background-color: #f4f4f4;
+    transition: background-color 0.5s ease, color 0.5s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,7 +85,12 @@ button {
 </head>
 <body>
 
+    {% include 'navbar.html' %}
 
+    
+  
+<div class="section-add">
+      
     <form  action="{% url 'add_employee' %}" method="post" enctype="multipart/form-data"> 
         {% csrf_token %}
 <div class="form-container">
@@ -117,6 +126,12 @@ button {
 
         <label for="fees">Fees:</label>
         <input type="text" id="fees" name="fees" placeholder="Enter fees">
+
+        <label for="active_inactive">Active Status:</label>
+            <select id="active_inactive" name="active_inactive">
+                <option value="">Select Status</option>
+                <option value="Active">Active</option>
+                <option value="InActive">InActive</option></select>
 
       
     </div>
@@ -162,12 +177,13 @@ button {
         <input type="file" id="uploadResume" name="uploadResume" >
 
         <button class="button" type="submit">Submit</button>
-    
+                
     </div>
   
 </div>
 </form>
 
+</div>
 
 </body>
 </html>

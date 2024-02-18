@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
     password_reset_token = models.CharField(max_length=255, null=True, blank=True)
     password_reset_token_expiration = models.DateTimeField(null=True, blank=True)
     join_date = models.DateTimeField(auto_now_add=True, verbose_name='Join Date',null=True)
-    role = models.CharField(max_length=255,null=False,default='Recruiter')                     ######## Fianance or Recruiter
+    role = models.CharField(max_length=255,null=False)                     ######## Fianance or Recruiter
 
 
 
@@ -77,7 +77,7 @@ class Candidate(models.Model):
 ##### Finance team
     
 class Employee(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=150, null=True, blank=True)
     email = models.EmailField(unique=True)
     mobile = models.CharField(max_length=150, null=True, blank=True)
@@ -97,9 +97,14 @@ class Employee(models.Model):
     upload_work_order = models.FileField(upload_to='work_order/', null=True, blank=True)
     upload_nda = models.FileField(upload_to='nda/', null=True, blank=True)
     upload_resume = models.FileField(upload_to='employeeresume/', null=True, blank=True)
+    active_inactive = models.CharField(max_length=20, null=True, blank=True)
+    joining_date = models.DateTimeField(auto_now=True, null=True)
 
+    def __str__(self):
+        return self.email
 
-
+    class Meta:
+        ordering = ["-joining_date"]
 
 
 

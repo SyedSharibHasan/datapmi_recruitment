@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,ListCandidate,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,account,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates,verify_otp,reset_password,get_skills,admin,user_control,finance_dashboard,add_employee,all_employee,detail_employee
+from .views import signup,signin,user,ListCandidate,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,account,autocomplete_username,Filter,autocomplete_skills,all_filter,autocomplete_locations,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates,verify_otp,reset_password,get_skills,admin,user_control,finance_dashboard,add_employee,all_employee,detail_employee,Updateemployee
 from . import views
 
 
@@ -35,10 +35,12 @@ urlpatterns = [
     path('get_skills_api/', get_skills, name='get_skills_api'),
 
     ### finance team
+    path('update_employee/<int:pk>/',Updateemployee.as_view(),name='update_employee'), 
     path("finance_dashboard/", finance_dashboard, name='finance_dashboard'),
     path("add_employee/", add_employee, name='add_employee'),
     path("all_employee/", all_employee, name='all_employee'),
     path("detail_employee/<int:pk>/", detail_employee, name='detail_employee'),
+   
 
     ### these 3 url's should be kept last 
     path("signout/", signout, name='signout'),

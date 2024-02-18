@@ -19,7 +19,7 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background-image: url('/static/project_images/Profile.jpg');
+            background: url('/static/project_images/Profile.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -79,6 +79,9 @@ label {
  
     <br>
     <br>
+
+
+    
 <div class="container">
     <table class="table">
         <thead>
@@ -114,9 +117,9 @@ label {
                         <span>{{i.project_director}}</span>
                     </td>
                   
-                <td>{{i.formatted_updated_on}}</td>
+                <td>{{i.joining_date}}</td>
                 <td>  
-                    <a href="{% url 'update' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="Edit"
+                    <a href="{% url 'update_employee' i.pk %}"><button style="font-size: 10px;padding: 5px 8px;" title="Edit"
                         class="btn btn-outline-info my-1"><i class="bi bi-pencil"></i></button></a>&nbsp; 
                     <a href="{% url 'detail_employee' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"
                         class="btn btn-outline-primary"><i class="bi bi-search"></i></button></a>&nbsp;
