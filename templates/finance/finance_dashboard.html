@@ -406,6 +406,32 @@ nav {
 </div>
 
 
+<h1>Employee End Dates</h1>
+    <ul id="employee-list"></ul>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $.ajax({
+        url: '/end_work_order/',  // URL of your backend endpoint
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Iterate through the data received from the backend and add each employee's name and end date to the list
+            data.employees.forEach(function(employee) {
+                $('#employee-list').append('<li>' + employee.name + ' - ' + employee.end_date_of_work_order + '</li>');
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching employee data:', error);
+        }
+    });
+});
+
+</script>
+
+
 
 <script>
   function toggleDarkMode() {

@@ -127,23 +127,16 @@ opacity: 1 !important;
         <input value="{{employee.fees}}" type="text" id="fees" name="fees" placeholder="Enter fees">
 
 
-        <label for="active_inactive">Active Status:</label>
-        <select id="active_inactive" name="active_inactive">
-            <option value="">Select Status</option>
-            <option value="Active" {% if employee.active_inactive == 'Active' %}selected{% endif %}>Active</option>
-            <option value="InActive" {% if employee.active_inactive == 'Inactive' %}selected{% endif %}>InActive</option></select>
-
-
-        <label for="employeeStatus">Employee Status:</label>
+        <label for="employeeStatus">Work Type:</label>
         <select id="employeeStatus" name="employeeStatus">
             <option value="">Select Status</option>
             <option value="Permanent" {% if employee.employee_status == 'Permanent' %}selected{% endif %}>Permanent</option>
             <option value="Contractor" {% if employee.employee_status == 'Contractor' %}selected{% endif %}>Contractor</option>
         </select>
+
     </div>
   &nbsp;
   &nbsp;
-  
 
     <div class="form-section">
         <br><br>
@@ -217,12 +210,17 @@ opacity: 1 !important;
         <label for="uploadResume">New Resume:</label>
         <input type="file" id="uploadResume" name="uploadResume" >
 
-
-        <button class="button" type="submit">Submit</button>
+        <label for="active_inactive">Active Status:   <span style="font-size: 12px;color: red;">Currently the employee in cotract</span></label>   
+       
+        <select id="active_inactive" name="active_inactive">
+            <option value="">Select Status</option>
+            <option value="Active" {% if employee.active_inactive == 'Active' %}selected{% endif %}>Active</option>
+            <option value="InActive" {% if employee.active_inactive == 'InActive' %}selected{% endif %}>InActive</option></select>
     
     </div>
-  
+    <button class="button" type="submit">Submit</button>
 </div>
+
 </form>
 
 </div>

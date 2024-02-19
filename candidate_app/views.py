@@ -1007,6 +1007,43 @@ def detail_employee(request,pk):
     return render(request,'finance/detail_employee.html',context={'detail':employees})
 
 
+from django.db.models import F
+from datetime import date,timedelta
+########### display 5 employee have contract end date is approaching
+def end_work_order(request):
+    today = date.today()
+    employees = Employee.objects.annotate(
+        days_until_end=F('end_date_of_work_order') - today
+    ).order_by('days_until_end')[:5]
+
+    employee_names = [employee.name for employee in employees]
+    return JsonResponse({'employee_names': employee_names})
+
+
+
+
+
+from django.core.management.base import BaseCommand
+from .utils import send_notification
+############# email sending to user before 15 days of end work date
+class Command(BaseCommand):
+    help = 'Notify users 15 days before their contract end date'
+
+    def handle(self, *args, **kwargs):
+        # Get today's date
+        today = timezone.now().date()
+
+        # Calculate the date 15 days from now
+        notification_date = today + timedelta(days=15)
+
+        # Get employees whose contract end date is equal to the notification date
+        employees_to_notify = Employee.objects.filter(end_date_of_work_order=notification_date)
+
+        finance_user = CustomUser.objects.get(role='Finance')
+
+        for employee in employees_to_notify:
+            self.send_notification(finance_user.email, employee.name)
+
 
 
 

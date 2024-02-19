@@ -46,6 +46,16 @@ def send_recovery_link(email, link):
     email_message.send()
 
 
+def send_notification(self, email, name):
+    subject = 'Contract Ending Notification'
+    message = f'The contract of {name} is ending in 15 days.'
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = [email]
+
+    email_message = EmailMessage(subject, message, from_email, recipient_list)
+    email_message.send()
+
+
 
 
 

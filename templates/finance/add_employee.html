@@ -127,14 +127,16 @@ button {
         <label for="fees">Fees:</label>
         <input type="text" id="fees" name="fees" placeholder="Enter fees">
 
-        <label for="active_inactive">Active Status:</label>
-            <select id="active_inactive" name="active_inactive">
-                <option value="">Select Status</option>
-                <option value="Active">Active</option>
-                <option value="InActive">InActive</option></select>
+    
+        <label for="employeeStatus">Work Type:</label>
+        <select id="employeeStatus" name="employeeStatus">
+            <option value="">Select Status</option>
+            <option value="Permanent">Permanent</option>
+            <option value="Contractor">Contractor</option></select>
 
       
     </div>
+  &nbsp;
   &nbsp;
   &nbsp;
   
@@ -143,14 +145,6 @@ button {
   
     <div class="form-section">
         <br><br>
-     
-
-        <label for="employeeStatus">Employee Status:</label>
-            <select id="employeeStatus" name="employeeStatus">
-                <option value="">Select Status</option>
-                <option value="Permanent">Permanent</option>
-                <option value="Contractor">Contractor</option></select>
-
         <label for="joiningDate">Joining Date:</label>
         <input type="date" id="joiningDate" name="joiningDate" required>
 
@@ -175,6 +169,13 @@ button {
 
         <label for="uploadResume">Upload Resume:</label>
         <input type="file" id="uploadResume" name="uploadResume" >
+
+        <label for="active_inactive">Active Status:   <span style="font-size: 11px;color: red;">Currently the employee is working or not</span></label>
+      
+        <select id="active_inactive" name="active_inactive">
+            <option value="">Select Status</option>
+            <option value="Active">Active</option>
+            <option value="InActive">InActive</option></select>
 
         <button class="button" type="submit">Submit</button>
                 
