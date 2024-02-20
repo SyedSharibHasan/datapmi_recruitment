@@ -855,6 +855,35 @@ def finance_dashboard(request):
 
 
 
+from celery import shared_task
+from django.core.mail import EmailMessage
+from django.conf import settings
+############# email sending to user before 15 days of end work date
+@shared_task
+def send_notification(employee_id,finance_user_email):  # Default delay is 180 seconds (3 minutes)
+    try:
+        # Retrieve the employee instance
+        employee = Employee.objects.get(pk=employee_id)
+        
+        subject = 'Employee Contract Expiring'
+        message = f'A new employee with email {employee.email} contract has been expiring with in 15 days.'
+        from_email = settings.EMAIL_HOST_USER
+        recipient_list =  [finance_user_email]
+
+        email_message = EmailMessage(subject, message, from_email, recipient_list)
+        email_message.send()
+
+        return f'Notification email sent for employee {employee.name}'
+
+    except Employee.DoesNotExist:
+        return f'Employee with id {employee_id} does not exist'
+    except CustomUser.DoesNotExist:
+        return 'Finance user does not exist'
+    except Exception as e:
+        return f'An error occurred: {str(e)}'
+        
+
+
 @finance_login_required
 def add_employee(request):
      
@@ -907,8 +936,27 @@ def add_employee(request):
         
         employee.save()
 
+        workOrderEndDate = timezone.datetime.strptime(workOrderEndDate, '%Y-%m-%d').date()
+
+        # Save the employee instance
+        employee = Employee.objects.create(name=name, email=email, mobile=mobile, workOrderEndDate=workOrderEndDate)
+
+        finance_user_email = CustomUser.objects.get(role='Finance').email
+
+        # Calculate the notification date (15 days before end_date_of_work_order)
+        notification_date = employee.end_date_of_work_order - timedelta(days=15)
+
+        # Calculate the time remaining until the notification date
+        time_until_notification = notification_date - timezone.now().date()
+
+        # Convert time remaining to seconds
+        countdown_seconds = time_until_notification.total_seconds()
+
+        # Call the task with the calculated countdown
+        send_notification.apply_async(args=[employee.pk, finance_user_email], countdown=countdown_seconds)
+
         return redirect('finance_dashboard')
-     
+              
      return render(request,'finance/add_employee.html')
 
 
@@ -983,6 +1031,7 @@ class Updateemployee(LoginRequiredMixin,UpdateView):
                 employee.upload_resume = new_resume
 
             employee.save()
+            # send_notification.apply_async(args=[employee.id], countdown=180)
             return redirect(self.success_url)
 
         except IntegrityError as e:
@@ -1007,6 +1056,22 @@ def detail_employee(request,pk):
     return render(request,'finance/detail_employee.html',context={'detail':employees})
 
 
+
+
+######## active and inactive employees
+def active_inactive(request,action):
+    if action == 'active':
+        heading = 'On Contract'
+        employee_active = Employee.objects.filter(active_inactive='Active').order_by('-joining_date')
+        # return render(request,'finance/active_inactive.html',context={'employee_active':employee_active})
+    if action == 'inactive':
+        heading = 'Contract Expired'
+        employee_active = Employee.objects.filter(active_inactive='InActive').order_by('-joining_date')
+    return render(request,'finance/active_inactive.html',context={'employee_active':employee_active,'heading':heading})
+
+
+
+
 from django.db.models import F
 from datetime import date,timedelta
 ########### display 5 employee have contract end date is approaching
@@ -1023,26 +1088,9 @@ def end_work_order(request):
 
 
 
-from django.core.management.base import BaseCommand
-from .utils import send_notification
-############# email sending to user before 15 days of end work date
-class Command(BaseCommand):
-    help = 'Notify users 15 days before their contract end date'
 
-    def handle(self, *args, **kwargs):
-        # Get today's date
-        today = timezone.now().date()
 
-        # Calculate the date 15 days from now
-        notification_date = today + timedelta(days=15)
-
-        # Get employees whose contract end date is equal to the notification date
-        employees_to_notify = Employee.objects.filter(end_date_of_work_order=notification_date)
-
-        finance_user = CustomUser.objects.get(role='Finance')
-
-        for employee in employees_to_notify:
-            self.send_notification(finance_user.email, employee.name)
+    
 
 
 

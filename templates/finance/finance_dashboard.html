@@ -366,19 +366,22 @@ nav {
   <div class="container">
     <div class="row">
 
-      <a href="/all_employee">
+ 
       <div id="employee"class="col">
         All Employees<br>
-        <img  src="https://cdn-icons-png.flaticon.com/512/9271/9271306.png" width="180rem">
-      </div> </a> &nbsp;
+        <a href="/all_employee">
+        <img  src="https://cdn-icons-png.flaticon.com/512/9271/9271306.png" width="180rem"> </a>
+      </div> &nbsp;
       &nbsp;
       &nbsp;
       &nbsp;
      
 
+     
 <div id="employee" class="col">
   Active Employees<br>
-<img  src="https://cdn-icons-png.flaticon.com/256/9512/9512680.png" width="170rem">
+  <a href="{% url 'active_inactive' action='active' %}">
+<img  src="https://cdn-icons-png.flaticon.com/256/9512/9512680.png" width="180rem"></a>
 </div>&nbsp;
 &nbsp;
 &nbsp;
@@ -386,18 +389,21 @@ nav {
 
 
   <div id="employee"  class="col">
+   
     Inactive Employees
-<img src="https://www.iconpacks.net/icons/1/free-remove-user-icon-303-thumb.png" width="170rem">
+    <a href="{% url 'active_inactive' action='inactive' %}">
+<img src="https://www.iconpacks.net/icons/1/free-remove-user-icon-303-thumb.png" width="170rem"></a>
 </div>&nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
 
-<a href="/add_employee">
+
 <div id="employee" class="col">
   Add Employee<br>
-  <img  src="https://cdn-icons-png.freepik.com/512/6799/6799093.png" width="180rem">
-</div></a>&nbsp;
+  <a href="/add_employee">
+  <img  src="https://cdn-icons-png.freepik.com/512/6799/6799093.png" width="180rem"></a>
+</div>&nbsp;
 &nbsp;
 &nbsp;
 &nbsp;
@@ -405,8 +411,8 @@ nav {
   </div>
 </div>
 
-
-<h1>Employee End Dates</h1>
+<!-- 
+<h1>Employee End Dates</h1> -->
     <ul id="employee-list"></ul>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
