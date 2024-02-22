@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,8 +110,11 @@ nav {
         }
 
         body {
-  background-color:white;
-  transition: background-color 0.5s ease, color 0.5s ease;
+            background-image: url('/static/project_images/Profile.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #000; 
 }
 
  .dark-mode {
@@ -282,7 +286,7 @@ nav {
   </style>
 </head>
 <body>
-  
+
 
   <nav>
     <h4 style="font-weight: 500;"><i class="bi bi-bank2"></i> &nbsp;Finance</h4>
@@ -411,69 +415,96 @@ nav {
   </div>
 </div>
 
-<!-- 
-<h1>Employee End Dates</h1> -->
-    <ul id="employee-list"></ul>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<script>
-  $(document).ready(function() {
-    $.ajax({
-        url: '/end_work_order/',  // URL of your backend endpoint
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // Iterate through the data received from the backend and add each employee's name and end date to the list
-            data.employees.forEach(function(employee) {
-                $('#employee-list').append('<li>' + employee.name + ' - ' + employee.end_date_of_work_order + '</li>');
-            });
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching employee data:', error);
-        }
-    });
-});
-
-</script>
+<br>
+<br>
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<script>
-  function toggleDarkMode() {
-      var element = document.body;
-      element.classList.toggle("dark-mode");
 
-      // Save the dark mode preference in local storage
-      var darkModeEnabled = element.classList.contains("dark-mode");
-      localStorage.setItem("darkMode", darkModeEnabled);
+<style>
+    /* body {
+        background-image: url('/static/project_images/Profile.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: #000; /* Text color */
+    
 
-      // Toggle the dark mode icon
-      var icon = document.getElementById("darkModeIcon");
-      if (darkModeEnabled) {
-          icon.classList.remove("bi-toggle2-off");
-          icon.classList.add("bi-toggle2-on");
-      } else {
-          icon.classList.remove("bi-toggle2-on");
-          icon.classList.add("bi-toggle2-off");
-      }
-  }
+    .container {
+        margin-top: 30px;
+    }
 
-  // Apply dark mode on page load if the preference is saved
-  document.addEventListener("DOMContentLoaded", function() {
-      var darkModeEnabled = localStorage.getItem("darkMode");
-      if (darkModeEnabled === "true") {
-          var element = document.body;
-          element.classList.add("dark-mode");
+    .heading-style {
+        font-size: 28px;
+        font-weight: bold;
+        color: rgb(22, 182, 57);
+        text-shadow: 2px 2px 4px rgba(241, 6, 6, 0.7);
+    }
 
-          // Change the icon to the moon if dark mode is enabled
-          var icon = document.getElementById("darkModeIcon");
-          icon.classList.remove("bi-toggle2-off");
-          icon.classList.add("bi-toggle2-on");
-      }
-  });
-</script>
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 0.5px 0 1px rgba(206, 8, 58, 0.23) inset, 0 1px 0 0 rgba(245, 2, 2, 0.66) inset,
+            0 4px 16px rgba(0, 68, 88, 0.12);
+    }
 
+    .card-body {
+        padding: 20px;
+        color: #0c0b0b;
+    }
+
+    .card img {
+        width: 25px;
+        margin-right: 10px;
+    }
+
+    .card a {
+        text-decoration: none;
+        color: #580cd1;
+    }
+
+    .card a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+
+
+<div class="container">
+    <div class="col">  
+<h4>Employee Contract Expiring List</h4><br>
+    </div>
+    <div class="row justify-content">
+        {% for employee in employees %}
+        <div class="col-xl-4 col-lg-6 mb-4">
+            <div class="card text-end">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="ms-3">
+                            <a href="{% url 'detail_employee' employee.id %}">
+                                <img src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png"
+                                    alt="icon">
+                                {{ employee.name }}
+                                <p style="font-family: 'Gabriola', cursive; color: rgb(0, 255, 149);"
+                                    class="text-muted mb-0">{{ employee.email }}</p>(End Date: {{ employee.end_date_of_work_order }})
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <center>No Employee Found</center>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+<script src="{% static 'js/script.js' %}"></script>
 
 </body>
 </html>

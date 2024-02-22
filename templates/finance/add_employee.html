@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +7,15 @@
     <title>Employee</title>
     <style>
 
+body {
+          
+}
 
-
+ .dark-mode {
+  background-color: black;
+  color: white;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
 
 .section-add {
     font-family: Arial, sans-serif;
@@ -186,5 +194,8 @@ button {
 
 </div>
 
+
+
+<script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

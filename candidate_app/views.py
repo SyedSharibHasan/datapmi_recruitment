@@ -847,11 +847,20 @@ def get_skills(request):
 
 
 ################## Finance team section
+from django.utils import timezone
+
 from .models import Employee
 
 @finance_login_required
 def finance_dashboard(request):
-    return render(request,'finance/finance_dashboard.html')
+    current_date = timezone.now().date()
+    # Define a threshold, e.g., 7 days before the end date
+    threshold_date = current_date + timedelta(days=7)
+    # Filter employees whose end_date_of_work_order is within the threshold
+    employees = Employee.objects.filter(end_date_of_work_order__gte=current_date, end_date_of_work_order__lte=threshold_date)[:4]
+
+    return render(request,'finance/finance_dashboard.html',context={'employees':employees})
+
 
 
 
@@ -936,25 +945,30 @@ def add_employee(request):
         
         employee.save()
 
-        workOrderEndDate = timezone.datetime.strptime(workOrderEndDate, '%Y-%m-%d').date()
+        workOrderEndDate_aware = timezone.make_aware(timezone.datetime.strptime(workOrderEndDate, '%Y-%m-%d'))
 
-        # Save the employee instance
-        employee = Employee.objects.create(name=name, email=email, mobile=mobile, workOrderEndDate=workOrderEndDate)
-
+    
+        
         finance_user_email = CustomUser.objects.get(role='Finance').email
-
+        
         # Calculate the notification date (15 days before end_date_of_work_order)
-        notification_date = employee.end_date_of_work_order - timedelta(days=15)
-
+        notification_date = workOrderEndDate_aware - timedelta(days=15)
+        
+        # Calculate the time remaining until the notification date (with time set to midnight)
+        notification_datetime = timezone.datetime.combine(notification_date, timezone.datetime.min.time())
+        
+        # Make notification_datetime timezone-aware
+        notification_datetime_aware = timezone.make_aware(notification_datetime)
+        
         # Calculate the time remaining until the notification date
-        time_until_notification = notification_date - timezone.now().date()
-
+        time_until_notification = notification_datetime_aware - timezone.now()
+        
         # Convert time remaining to seconds
         countdown_seconds = time_until_notification.total_seconds()
-
+        
         # Call the task with the calculated countdown
         send_notification.apply_async(args=[employee.pk, finance_user_email], countdown=countdown_seconds)
-
+        
         return redirect('finance_dashboard')
               
      return render(request,'finance/add_employee.html')
@@ -1056,6 +1070,13 @@ def detail_employee(request,pk):
     return render(request,'finance/detail_employee.html',context={'detail':employees})
 
 
+@finance_login_required
+def delete_employee(request,pk):
+    if request.method == 'POST':
+        employees = Employee.objects.get(id=pk)
+        employees.delete()
+        return redirect('all_employee')
+    return render(request,'finance/all_employee.html')
 
 
 ######## active and inactive employees
@@ -1091,8 +1112,6 @@ def end_work_order(request):
 
 
     
-
-
 
 
 
