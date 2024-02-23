@@ -59,6 +59,7 @@
         input {
     
     border: 3px solid #ced4da !important;
+    background-color: #ecf0f1 !important;
     
 }
 
@@ -75,6 +76,7 @@ label {
 <body>
 
 {% include 'sidebar.html' %}
+{% include 'base.html' %}
 
  
     <br>
@@ -118,14 +120,23 @@ label {
                         <span>{{i.project_director}}</span>
                     </td>
                   
-                <td>{{i.joining_date}}</td>
+                <td>{{i.created}}</td>
                 <td>  
+                    {% if request.user == i.user %}
                     <a href="{% url 'update_employee' i.pk %}"><button style="font-size: 10px;padding: 5px 8px;" title="Edit"
                         class="btn btn-outline-info my-1"><i class="bi bi-pencil"></i></button></a>&nbsp; 
+                        <a href="{% url 'delete_employee' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"
+                            class="btn btn-outline-primary"><i class="bi bi-trash"></i></button></a>&nbsp;
+
+                {% else %}
+                
+                <!-- User is not the creator, display a message or change style -->
+           
+                {% endif %}
+
+                    
                     <a href="{% url 'detail_employee' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"
                         class="btn btn-outline-primary"><i class="bi bi-search"></i></button></a>&nbsp;
-                        <a href="{% url 'delete_employee' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"
-                            class="btn btn-outline-primary"><i class="bi bi-search"></i></button></a>&nbsp;
 
                   </td>
             </tr>

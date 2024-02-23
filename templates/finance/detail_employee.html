@@ -82,6 +82,7 @@
 
     {% include 'navbar.html' %}
 
+
     <br>
     <br>
    
@@ -178,7 +179,7 @@
                         NDA:
                         <a href="{{ detail.upload_nda.url }}" target="_blank">Download</a>
                     {% else %}
-                        No uploaded.
+                        No Nda uploaded.
                     {% endif %}
                 </span>
             </div>
@@ -195,9 +196,36 @@
                 </span>
             </div>
 
+            <div class="field">
+                <span>Last updated on:</span> {{ detail.created }}
+            </div>
+            
+
+            {% if request.user == detail.user %}
+            <div class="field">
+            <span>Administrator:</span> {{request.user}}
+        </div>
+            {% else %}
+            <div class="field">
+                            <span>Administrator:</span> {{detail.user}}
+                        </div>
+
+            {% endif %}
+
   
-            <a href="{% url 'update_employee' detail.pk %}"><div class="button-edit">
+           
+<center>
+    {% if user.role == 'Finance' %}
+    {% if request.user == detail.user %}
+            <a href="{% url 'update_employee' detail.id %}"><div class="button-edit">
                 <button class="btn btn-outline-info">Edit &nbsp;<i class="bi bi-pencil"></i></button></div></a> </center>
+
+                {% else %}
+                
+                <!-- User is not the creator, display a message or change style -->
+                <p class="not-allowed-message">You do not have permission to edit this candidate.</p>
+                {% endif %}
+                {% endif %}
 
 
         </div>

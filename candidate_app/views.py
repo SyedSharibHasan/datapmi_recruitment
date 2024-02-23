@@ -863,7 +863,7 @@ def finance_dashboard(request):
 
 
 
-
+from django.urls import reverse
 from celery import shared_task
 from django.core.mail import EmailMessage
 from django.conf import settings
@@ -875,10 +875,12 @@ def send_notification(employee_id,finance_user_email):  # Default delay is 180 s
         employee = Employee.objects.get(pk=employee_id)
         
         subject = 'Employee Contract Expiring'
-        message = f'A new employee with email {employee.email} contract has been expiring with in 15 days.'
+
+
+        message = f'An employee with email {employee.email} contract has been expiring within 15 days.'
+
         from_email = settings.EMAIL_HOST_USER
         recipient_list =  [finance_user_email]
-
         email_message = EmailMessage(subject, message, from_email, recipient_list)
         email_message.send()
 
@@ -892,6 +894,7 @@ def send_notification(employee_id,finance_user_email):  # Default delay is 180 s
         return f'An error occurred: {str(e)}'
         
 
+from django.core.exceptions import ValidationError
 
 @finance_login_required
 def add_employee(request):
@@ -909,14 +912,52 @@ def add_employee(request):
         fees=request.POST.get('fees')
         active_inactive = request.POST.get('active_inactive')
         employeeStatus=request.POST.get('employeeStatus')
-        joiningDate=request.POST.get('joiningDate')
-        lastWorkingDate=request.POST.get('lastWorkingDate')
-        workOrderStartDate=request.POST.get('workOrderStartDate')
-        workOrderEndDate=request.POST.get('workOrderEndDate')
         woDetail=request.POST.get('woDetail')
         uploadWorkOrder=request.FILES.get('uploadWorkOrder')
         uploadNDA=request.FILES.get('uploadNDA')
         uploadResume=request.FILES.get('uploadResume')
+
+        joiningDate_str = request.POST.get('joiningDate')
+        lastWorkingDate_str = request.POST.get('lastWorkingDate')
+        workOrderStartDate_str = request.POST.get('workOrderStartDate')
+        workOrderEndDate_str = request.POST.get('workOrderEndDate')
+
+        # Convert joiningDate to a date object if it's not None
+        if joiningDate_str:
+            try:
+                joiningDate = datetime.datetime.strptime(joiningDate_str, '%Y-%m-%d').date()
+            except ValueError:
+                raise ValidationError('Invalid joining date format. Date must be in YYYY-MM-DD format.')
+        else:
+            joiningDate = None
+
+        if lastWorkingDate_str:
+            try:
+                lastWorkingDate = datetime.datetime.strptime(lastWorkingDate_str, '%Y-%m-%d').date()
+            except ValueError:
+                raise ValidationError('Invalid last working date format. Date must be in YYYY-MM-DD format.')
+        else:
+            lastWorkingDate = None
+
+        # Convert workOrderStartDate to a date object if it's not None
+        if workOrderStartDate_str:
+            try:
+                workOrderStartDate = datetime.datetime.strptime(workOrderStartDate_str, '%Y-%m-%d').date()
+            except ValueError:
+                raise ValidationError('Invalid work order start date format. Date must be in YYYY-MM-DD format.')
+        else:
+            workOrderStartDate = None
+
+        # Convert workOrderEndDate to a date object if it's not None
+        if workOrderEndDate_str:
+            try:
+                workOrderEndDate = datetime.datetime.strptime(workOrderEndDate_str, '%Y-%m-%d').date()
+            except ValueError:
+                raise ValidationError('Invalid work order end date format. Date must be in YYYY-MM-DD format.')
+        else:
+            workOrderEndDate = None
+
+
 
         if Employee.objects.filter(email=email).exists():
                 return HttpResponse({'Employee with current Email address already exists'})
@@ -941,33 +982,40 @@ def add_employee(request):
                             work_order_detail=woDetail,
                             upload_work_order=uploadWorkOrder,
                             upload_nda=uploadNDA,
-                            upload_resume=uploadResume)
+                            upload_resume=uploadResume
+
+                            )
         
         employee.save()
 
-        workOrderEndDate_aware = timezone.make_aware(timezone.datetime.strptime(workOrderEndDate, '%Y-%m-%d'))
-
-    
+        if workOrderEndDate:
+            workOrderEndDate_aware = timezone.make_aware(timezone.datetime.combine(workOrderEndDate, datetime.time()))
+            
+           
         
-        finance_user_email = CustomUser.objects.get(role='Finance').email
         
-        # Calculate the notification date (15 days before end_date_of_work_order)
-        notification_date = workOrderEndDate_aware - timedelta(days=15)
-        
-        # Calculate the time remaining until the notification date (with time set to midnight)
-        notification_datetime = timezone.datetime.combine(notification_date, timezone.datetime.min.time())
-        
-        # Make notification_datetime timezone-aware
-        notification_datetime_aware = timezone.make_aware(notification_datetime)
-        
-        # Calculate the time remaining until the notification date
-        time_until_notification = notification_datetime_aware - timezone.now()
-        
-        # Convert time remaining to seconds
-        countdown_seconds = time_until_notification.total_seconds()
-        
-        # Call the task with the calculated countdown
-        send_notification.apply_async(args=[employee.pk, finance_user_email], countdown=countdown_seconds)
+            finance_user = request.user.email
+            
+            # Calculate the notification date (15 days before end_date_of_work_order)
+            notification_date = workOrderEndDate_aware - timedelta(days=15)
+            
+            # Calculate the time remaining until the notification date (with time set to midnight)
+            notification_datetime = timezone.datetime.combine(notification_date, datetime.time.min)
+            
+            # Make notification_datetime timezone-aware
+            notification_datetime_aware = timezone.make_aware(notification_datetime)
+            
+            # Calculate the time remaining until the notification date
+            time_until_notification = notification_datetime_aware - timezone.now()
+            
+            # Convert time remaining to seconds
+            countdown_seconds = time_until_notification.total_seconds()
+            
+            # Call the task with the calculated countdown
+            send_notification.apply_async(args=[employee.pk, finance_user], countdown=countdown_seconds)
+        else:
+            # Handle the case where workOrderEndDate is None (no calculation or notification needed)
+            pass
         
         return redirect('finance_dashboard')
               
@@ -1011,14 +1059,20 @@ class Updateemployee(LoginRequiredMixin,UpdateView):
         employee.fees = request.POST.get("fees")
         employee.active_inactive = request.POST.get("active_inactive")
         employee.employee_status = request.POST.get("employeeStatus")
-        employee.joining_date = request.POST.get("joiningDate")
-        employee.last_working_date = request.POST.get("lastWorkingDate")
-        employee.start_date_of_work_order = request.POST.get("workOrderStartDate")
-        employee.end_date_of_work_order = request.POST.get("workOrderEndDate")
         employee.work_order_detail = request.POST.get("woDetail")
         
-        # new_resume = request.FILES.get('new_resume')
-        # keep_resume = request.POST.get('keep_resume')
+        def parse_date(date_str):
+                if date_str:
+                    try:
+                        return datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+                    except ValueError:
+                        raise ValidationError('Invalid date format. Date must be in YYYY-MM-DD format.')
+                return None
+        
+        employee.joining_date = parse_date(request.POST.get("joiningDate"))
+        employee.last_working_date = parse_date(request.POST.get("lastWorkingDate"))
+        employee.start_date_of_work_order = parse_date(request.POST.get("workOrderStartDate"))
+        employee.end_date_of_work_order = parse_date(request.POST.get("workOrderEndDate"))
 
         employee_pk = employee.pk
 
@@ -1026,6 +1080,32 @@ class Updateemployee(LoginRequiredMixin,UpdateView):
             return HttpResponse({'Employee with current Email address already exists'})
         
         employee.save()
+
+        if employee.end_date_of_work_order:
+            workOrderEndDate_aware = timezone.make_aware(timezone.datetime.combine(employee.end_date_of_work_order, datetime.time()))
+            
+            finance_user_email = request.user.email
+            
+            # Calculate the notification date (15 days before end_date_of_work_order)
+            notification_date = workOrderEndDate_aware - timedelta(days=15)
+            
+            # Calculate the time remaining until the notification date (with time set to midnight)
+            notification_datetime = timezone.datetime.combine(notification_date, datetime.time.min)
+            
+            # Make notification_datetime timezone-aware
+            notification_datetime_aware = timezone.make_aware(notification_datetime)
+            
+            # Calculate the time remaining until the notification date
+            time_until_notification = notification_datetime_aware - timezone.now()
+            
+            # Convert time remaining to seconds
+            countdown_seconds = time_until_notification.total_seconds()
+            
+            # Call the task with the calculated countdown
+            send_notification.apply_async(args=[employee.pk, finance_user_email], countdown=countdown_seconds)
+        else:
+            # Handle the case where workOrderEndDate is None (no calculation or notification needed)
+            pass
         
         try:
 
@@ -1059,7 +1139,7 @@ class Updateemployee(LoginRequiredMixin,UpdateView):
 
 @finance_login_required
 def all_employee(request):
-    employees = Employee.objects.all().order_by('-joining_date')
+    employees = Employee.objects.all().order_by('-created')
     return render(request,'finance/all_employee.html',context={'employees':employees})
 
 
@@ -1076,10 +1156,11 @@ def delete_employee(request,pk):
         employees = Employee.objects.get(id=pk)
         employees.delete()
         return redirect('all_employee')
-    return render(request,'finance/all_employee.html')
+    return render(request,'finance/delete_employee.html')
 
 
 ######## active and inactive employees
+@finance_login_required
 def active_inactive(request,action):
     if action == 'active':
         heading = 'On Contract'
@@ -1096,6 +1177,7 @@ def active_inactive(request,action):
 from django.db.models import F
 from datetime import date,timedelta
 ########### display 5 employee have contract end date is approaching
+@finance_login_required
 def end_work_order(request):
     today = date.today()
     employees = Employee.objects.annotate(

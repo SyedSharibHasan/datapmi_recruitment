@@ -296,36 +296,28 @@
 
             <div class="md:w-1/2 mt-5 md:mt-0">
                 <div class="text-center"> 
-                    {% if user %}
-                    {% if user.first_name or user.last_name or user.email or user.contact %}
+             
+                    {% if user.is_superuser %}
+                    <img src="/static/project_images/DataPMI.gif" alt="" class="mx-auto">
+                {% elif user.first_name or user.last_name or user.email or user.contact %}
                     <div style="width: 150px; height: 150px; border-radius: 50%;" class="mx-auto">
-                        <img id="zoom" class="w-full h-full"
-                            src="{% if user.image %}{{ user.image.url }}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}">
+                        <img id="zoom" class="w-full h-full" src="{% if user.image %}{{ user.image.url }}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}">
                     </div>
                     <p class="text-lg text-green-500 mb-1">{{ user.role  }}  <i class="bi bi-patch-check-fill"></i></p>
                     <p class="text-lg mb-1">Name: {{ user.first_name }} {{ user.last_name }}</p>
                     <p class="text-lg mb-1">Email: {{ user.email }}</p>
                     <p class="text-lg mb-1">Mobile: {{ user.contact }}</p>
-
-                    <button style="background-color: red;color: white;padding: 10px;border-radius: 20px;" class="myBtn"
-                        id="myBtn">Remove Account</button>
-                    {% else %}
-                    <img src="/static/project_images/DataPMI.gif"
-                        alt="" class="mx-auto">
-                     
-                    {% endif %}
-                    {% else %}
-                    <img src="/static/project_images/DataPMI.gif" class="mx-auto">
-                   
-                    {% endif %}
+                    <button style="background-color: red;color: white;padding: 10px;border-radius: 20px;" class="myBtn" id="myBtn">Remove Account</button>
+                {% else %}
+                    <img src="/static/project_images/DataPMI.gif" alt="" class="mx-auto">
+                {% endif %}
+                
+                    
                 </div>
             </div>
 
-
         </div>
     </div>
-
-
 
 
 

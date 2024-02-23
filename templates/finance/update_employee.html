@@ -85,6 +85,7 @@ opacity: 1 !important;
 </head>
 <body>
 {% include 'navbar.html' %}
+{% include 'base.html' %}
 
     <div class="section-add">  
 
@@ -95,13 +96,13 @@ opacity: 1 !important;
         <br>
         <br>
             <label for="name">Name:</label>
-        <input value="{{employee.name}}" type="text" id="name" name="name" placeholder="Enter your name">
+        <input value="{{employee.name}}" type="text" id="name" name="name" placeholder="Enter your name" required>
 
         <label for="email">Email:</label>
-        <input value="{{employee.email}}" type="email" id="email" name="email" placeholder="Enter your email">
+        <input value="{{employee.email}}" type="email" id="email" name="email" placeholder="Enter your email" required>
 
         <label for="mobile">Mobile Number:</label>
-        <input value="{{employee.mobile}}" type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number">
+        <input value="{{employee.mobile}}" type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required>
 
         <label for="alternate">Alternate Number:</label>
         <input value="{{employee.alt_mobile}}" type="tel" id="alternate" name="alternate" placeholder="Enter alternate number">
@@ -141,16 +142,16 @@ opacity: 1 !important;
              
                    
 <label for="joiningDate">Joining Date:</label>
-<input class="date" value="{{employee.joining_date|date:'Y-m-d' }}" id="joiningDate" name="joiningDate" required>
+<input class="date" value="{{employee.joining_date|date:'Y-m-d' }}" id="joiningDate" name="joiningDate" >
 
 <label for="lastWorkingDate">Last Working Date:</label>
-<input class="date" value="{{employee.last_working_date|date:'Y-m-d'}}" id="lastWorkingDate" name="lastWorkingDate" required>
+<input class="date" value="{{employee.last_working_date|date:'Y-m-d'}}" id="lastWorkingDate" name="lastWorkingDate" >
 
 <label for="workOrderStartDate">Start Date of Work Order:</label>
-<input class="date" value="{{employee.start_date_of_work_order|date:'Y-m-d'}}" id="workOrderStartDate" name="workOrderStartDate" required>
+<input class="date" value="{{employee.start_date_of_work_order|date:'Y-m-d'}}" id="workOrderStartDate" name="workOrderStartDate" >
 
 <label for="workOrderEndDate">End Date of Work Order:</label>
-<input class="date" value="{{employee.end_date_of_work_order|date:'Y-m-d'}}" id="workOrderEndDate" name="workOrderEndDate" required>
+<input class="date" value="{{employee.end_date_of_work_order|date:'Y-m-d'}}" id="workOrderEndDate" name="workOrderEndDate">
 
 
 <!-- slow loading causes due to this jquery handle later -->

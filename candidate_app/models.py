@@ -98,13 +98,13 @@ class Employee(models.Model):
     upload_nda = models.FileField(upload_to='nda/', null=True, blank=True)
     upload_resume = models.FileField(upload_to='employeeresume/', null=True, blank=True)
     active_inactive = models.CharField(max_length=20, null=True, blank=True)
-    joining_date = models.DateTimeField(auto_now=True, null=True)
+    created = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.email
 
     class Meta:
-        ordering = ["-joining_date"]
+        ordering = ["-created"]
 
 
 

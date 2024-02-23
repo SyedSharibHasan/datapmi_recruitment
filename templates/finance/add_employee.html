@@ -94,7 +94,7 @@ button {
 <body>
 
     {% include 'navbar.html' %}
-
+    {% include 'base.html' %}
     
   
 <div class="section-add">
@@ -106,13 +106,13 @@ button {
         <br>
         <br>
             <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter your name">
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email">
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
         <label for="mobile">Mobile Number:</label>
-        <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number">
+        <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required>
 
         <label for="alternate">Alternate Number:</label>
         <input type="tel" id="alternate" name="alternate" placeholder="Enter alternate number">
@@ -154,18 +154,17 @@ button {
     <div class="form-section">
         <br><br>
         <label for="joiningDate">Joining Date:</label>
-        <input type="date" id="joiningDate" name="joiningDate" required>
+        <input type="date" id="joiningDate" name="joiningDate" >
 
         <label for="lastWorkingDate">Last Working Date:</label>
-        <input type="date" id="joiningDate" name="lastWorkingDate" required>
+        <input type="date" id="joiningDate" name="lastWorkingDate" >
 
         <label for="workOrderStartDate">Start Date of Work Order:</label>
-        <input type="date" id="workOrderStartDate" name="workOrderStartDate" required>
+        <input type="date" id="workOrderStartDate" name="workOrderStartDate" >
 
         <label for="workOrderEndDate">End Date of Work Order:</label>
-        <input type="date" id="workOrderEndDate" name="workOrderEndDate" required>
+        <input type="date" id="workOrderEndDate" name="workOrderEndDate" >
 
-        
         <label for="woDetail">Work Order Detail:</label>
         <textarea id="woDetail" name="woDetail" rows="4" placeholder="Enter work order details"></textarea>
 
@@ -196,6 +195,5 @@ button {
 
 
 
-<script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
