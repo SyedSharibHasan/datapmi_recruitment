@@ -315,7 +315,7 @@
 
         <label for="skillsInput">Skills</label>
         <input type="text" id="skillsInput" placeholder="Type skills" oninput="filterSkills()">
-        <button type="button" id="addButton">Add</button>
+    
         <ul id="skillList" class="skill-container"></ul>
         <div id="selectedSkills" class="skill-container">
           {% for skill in candidate.skills.all %}
@@ -419,7 +419,7 @@
         }
       </script>
 
-
+<center><button class="btn btn-dark" type="button" id="addButton">Add New</button></center>
 
             <!-- Notice Period -->
             <div class="form-group">

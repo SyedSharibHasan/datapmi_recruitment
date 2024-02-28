@@ -89,9 +89,10 @@ def verify_otp(request):
             )
             user.save()
             login(request, user)
+   
             return redirect('login_default')
         else:
-            messages.error(request, 'Invalid OTP Register Again !')
+            messages.error(request, 'Invalid OTP Register Again !')    
             return redirect('signup')
     else:
         email = request.session.get('email')

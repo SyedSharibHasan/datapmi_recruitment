@@ -1,226 +1,267 @@
 {% load static %}
+
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-KpOqU7gZ1R8qROiS1z3Pxm6ofuV3LlBOsPFvG9b0L4ZLTOEzVZ4AMdTEFVzjI5zj" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha384-KpOqU7gZ1R8qROiS1z3Pxm6ofuV3LlBOsPFvG9b0L4ZLTOEzVZ4AMdTEFVzjI5zj" crossorigin="anonymous">
   <title>Personal Account</title>
 
 
-<style>
-  /* body {
+  <style>
+    /* body {
     background-image: url('https://4kwallpapers.com/images/wallpapers/blue-background-2732x2732-10208.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
   } */
-  
-
-  @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-  font-family: "Nunito", sans-serif;
-}
 
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #a4bdb7;
-  background-image: url('/static/project_images/Profile.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
+    @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap");
+
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: "Nunito", sans-serif;
+    }
 
 
-.box {
-  width: 600px;
-  height: fit-content;
-  border-radius: 20px;
-  padding: 10px;
-  text-align: center;
-  background: #ededed;
-}
-
-.box1 {
-  margin-top: 10px;
-}
-
-
-.image img {
-  height: auto;
-  width: 170px;
-  border-radius: 50%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 5px;
-}
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #a4bdb7;
+      background-image: url('/static/project_images/Profile.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
 
+    .box {
+      width: 90%;
+      max-width: 600px; /* Limiting maximum width */
+      height: fit-content;
+      border-radius: 20px;
+      padding: 10px;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.5);
+    }
 
-button {
-  width: 130px;
-  height: 40px;
-  border-radius: 10px;
-  
-}
-
-.button {
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
-  margin: 20px 30px 0px;
-  font-size: 12px;
-}
+    .box1 {
+      margin-top: 10px;
+    }
 
 
-.button .connect {
-  background-color: #cc1010;
-  color: #ededed;
-  border: none;
-  border-radius: 10px;
-}
+    .image img {
+      height: auto;
+      width: 170px;
+      border-radius: 50%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 5px;
+    }
 
-button.connect:hover {
-  letter-spacing: 1px;
-  transition: 0.5s;
-}
-button.message:hover {
-  letter-spacing: 1px;
-  transition: 0.5s;
-  background: rgba(88, 164, 151, 0.5);
-}
+    .text p {
+      margin-bottom: 12px; /* Add space between paragraphs */
+    }
 
 
-button.view-modal {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.5);
-        }
+    button {
+      width: 130px;
+      height: 40px;
+      border-radius: 10px;
+      margin-top: 10px; /* Add margin between buttons */
+      background-color: #56afd4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      transition-duration: 0.4s;
+      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.5);
 
-        button.view-modal:hover {
-            background-color: white;
-            color: #3498db;
-            box-shadow: 0 8px 16px rgba(52, 152, 219, 0.8);
-        }
+    }
 
-   
+    .button {
+      display: flex;
+      justify-content: space-around;
+      flex-direction: row;
+      margin: 20px 30px 0px;
+      font-size: 12px;
+    }
+
+     .button a {
+      flex: 1; /* Take equal space */
+      margin: 0 5px; /* Add margin between buttons */
+    }
 
 
-/* Responsiveness:Start */
-@media screen and (max-width: 480px) {
-    .box{
+    .button .connect {
+      background-color: #cc1010;
+      color: #ededed;
+      border: none;
+      border-radius: 10px;
+    }
+
+    button.connect:hover {
+      letter-spacing: 1px;
+      transition: 0.5s;
+    }
+
+    button.message:hover {
+      letter-spacing: 1px;
+      transition: 0.5s;
+      background: rgba(88, 164, 151, 0.5);
+    }
+
+
+    button.view-modal {
+      background-color: #56afd4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.5);
+    }
+
+    button.view-modal:hover {
+      background-color: white;
+      color: #3498db;
+      box-shadow: 0 8px 16px rgba(52, 152, 219, 0.8);
+    }
+
+    .dark-toggle {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .dark-toggle button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    /* Responsiveness:Start */
+    @media screen and (max-width: 480px) {
+      .box {
         width: 100vw;
         border-radius: 0px;
-    }
-    .button{
+      }
+
+      .button {
         display: flex;
         flex-direction: column;
-    }
-    .button button{
+      }
+
+      .button button {
         width: 250px;
-    }
-    button.connect{
+      }
+
+      button.connect {
         margin-top: 10px;
-    }
-    .content2{
+      }
+
+      .content2 {
         padding: 0px 20px;
-    }
-    .content2 img{
+      }
+
+      .content2 img {
         width: 60px;
         height: 60px;
+      }
     }
-}
 
-#zoom {
-  transition: transform 0.5s ease; /* Add a smooth transition effect over 0.5 seconds */
-}
+    #zoom {
+      transition: transform 0.5s ease;
+      /* Add a smooth transition effect over 0.5 seconds */
+    }
 
-#zoom:hover {
-  cursor: pointer;
-  transform: scale(1.4); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  border-radius: 1%;
-  transition: .4s;
-}
-
-
-
-
-</style>
+    #zoom:hover {
+      cursor: pointer;
+      transform: scale(1.4);
+      /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+      border-radius: 1%;
+      transition: .4s;
+    }
+  </style>
 
 </head>
+
 <body>
-  
 
-{% include 'sidebar.html' %}
-{% include 'base.html' %}
 
-<br>
-<br>
-<br>
-<br>
- 
+  {% include 'sidebar.html' %}
+  {% include 'base.html' %}
 
-    <section>
-      
-        <div class="box1 box">
-          <div class="content">
-            <div class="image">
-              <button class="btn btn-light">
-              <i title="dark mode" style="font-size: 30px;" onclick="toggleDarkMode()"  id="darkModeIcon"  class="bi bi-toggle2-off"></i></button>
-              <br>
-              <br>
-        
-              <center>
-              <div style="width: 150px; height: 150px; border-radius: 50%;">
-                  <img id="zoom" style="width: 100%; height: 100%;"
-                      src="{% if user.image %}{{ request.user.image.url }}{% else %}/static/project_images/Noprofile.png{% endif %}"  >
-              </div></center>
-         
-         
-              
+  <br>
+  <br>
+  <br>
+  <br>
+
+
+  <section>
+
+    <div class="box1 box">
+      <div class="content">
+        <div class="image">
+          <center>
+            <div style="width: 150px; height: 150px; border-radius: 50%;">
+              <img id="zoom" style="width: 100%; height: 100%;"
+                src="{% if user.image %}{{ request.user.image.url }}{% else %}/static/project_images/Noprofile.png{% endif %}">
             </div>
+          </center>
+        </div>
+
+        <div class="text">
+          <p style="color:blue">{{request.user.role}} <i style="color: green;" class="bi bi-patch-check-fill"></i></p>
+          <p style="color:blue">Username : {{request.user.username}}</p>
+          <p style="color:blue" class="name">Full Name : {{request.user.first_name}} {{request.user.last_name}}</p>
+          <p style="color:blue">Email : {{request.user.email}}</p>
+          <p style="color:blue">Mobile : {{request.user.contact}}</p>
+        </div>
+
+        <div class="button">
+          <div>
             <a href="{% url 'edit_account' request.user.id %}">
-            <button title="Make changes" class="view-modal"><i  class="bi bi-pencil-square"></i></button></a>
-              
-            <div class="text">
-              <p style="color:blue">{{request.user.role}} <i style="color: green;" class="bi bi-patch-check-fill"></i></p>
-              <p  style="color:blue">Username : {{request.user.username}}</p>
-              <p  style="color:blue" class="name">Full Name : {{request.user.first_name}} {{request.user.last_name}}</p>
-             <p  style="color:blue">Email : {{request.user.email}}</p>
-             <p  style="color:blue">Mobile : {{request.user.contact}}</p>
-            </div>
-
-            <div class="button">
-              <div>
-                <a href="{% url 'manage_account' action='delete' %}"><button class="connect" type="button">Manage Account</button></a>
-              </div>
-            </div>
+              <button title="Make changes" class="view-modal"><i class="bi bi-pencil-square"></i> Edit</button>
+            </a>
+            
+            <a href="{% url 'manage_account' action='delete' %}">
+              <button class="connect" type="button">Manage Account</button>
+            </a>
           </div>
-        </div>   
-      </section>
-      
-   
+        </div>
+
+        <div class="dark-toggle">
+          <button class="btn btn-light" onclick="toggleDarkMode()">
+            <i title="Dark Mode" style="font-size: 20px;" id="darkModeIcon" class="bi bi-toggle2-off"></i> Dark Mode
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
 </body>
+
 </html>
-
-
-
-
