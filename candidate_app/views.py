@@ -875,10 +875,9 @@ def send_notification(employee_id,finance_user_email):  # Default delay is 180 s
         # Retrieve the employee instance
         employee = Employee.objects.get(pk=employee_id)
         
-        subject = 'Employee Contract Expiring'
+        subject = ' Reminder: Contract Expiry Notification for Employee Engagement'
 
-
-        message = f'An employee with email {employee.email} contract has been expiring within 15 days.'
+        message = f'Dear Finance Team,\n\nI hope this email finds you well.\n\nI am writing to bring to your attention an important matter regarding one of our valued employees. The contract for {employee.name}, associated with {employee.client_name}, is scheduled to expire on {employee.end_date_of_work_order}. As per our records, the email address linked to this employee is {employee.email}.\n\nThank you for your cooperation and attention to this matter.\n\nBest regards,\n\n DataPMI TEAM'
 
         from_email = settings.EMAIL_HOST_USER
         recipient_list =  [finance_user_email]
@@ -991,12 +990,10 @@ def add_employee(request):
 
         if workOrderEndDate:
             workOrderEndDate_aware = timezone.make_aware(timezone.datetime.combine(workOrderEndDate, datetime.time()))
-            
-           
-        
+                
         
             finance_user = request.user.email
-            
+
             # Calculate the notification date (15 days before end_date_of_work_order)
             notification_date = workOrderEndDate_aware - timedelta(days=15)
             

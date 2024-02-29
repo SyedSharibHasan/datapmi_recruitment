@@ -27,7 +27,7 @@
         }
 
         .container {
-            width: 80%;
+            width: 100%;
             margin: 20px auto;
         }
 
@@ -42,7 +42,7 @@
         }
 
         th, td {
-            padding: 12px 15px;
+            padding: 10px 15px;
             text-align: left;
             border-bottom: 1px solid green;
         }
@@ -96,6 +96,8 @@ label {
                 <th>Client Location</th>
                 <th>Contact</th>
                 <th>Project Director</th>
+          
+                <th>End Date Of Work Order</th>
                 <th>Last Updated</th>
                 <th>View</th>
             </tr>
@@ -119,6 +121,10 @@ label {
                
                     <td>
                         <span>{{i.project_director}}</span>
+                    </td>
+
+                    <td>
+                        <span>{{i.end_date_of_work_order }}</span>
                     </td>
                   
                 <td>{{i.created}}</td>

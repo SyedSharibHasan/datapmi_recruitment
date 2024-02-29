@@ -94,7 +94,7 @@ def send_recovery_link(email, link):
     # Or use: user_name = user.username  # For username
 
     subject = 'Password Reset Confirmation'
-    message = f"Hi {user_name},\n\nA password reset for your account was requested.\n\nPlease click the link below to reset your password:\n\n{link}\n\nPlease note that this link is valid for      5 minutes. After that, you will need to resubmit the request for a password reset.\n\nIf you did not request this password reset, please ignore this email.\n\nBest regards,\nYour Application Team"
+    message = f"Hi {user_name},\n\nA password reset for your account was requested.\n\nPlease click the link below to reset your password:\n\n{link}\n\nPlease note that this link is valid for 5 minutes. After that, you will need to resubmit the request for a password reset.\n\nIf you did not request this password reset, please ignore this email.\n\nBest regards,\nYour Application Team"
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
 
@@ -108,14 +108,14 @@ def send_recovery_link(email, link):
 
 
 
-def send_notification(self, email, name):
-    subject = 'Contract Ending Notification'
-    message = f'The contract of {name} is ending in 15 days.'
-    from_email = settings.EMAIL_HOST_USER
-    recipient_list = [email]
+# def send_notification(self, email, name):
+#     subject = 'Contract Ending Notification'
+#     message = f'The contract of {name} is ending in 15 days.'
+#     from_email = settings.EMAIL_HOST_USER
+#     recipient_list = [email]
 
-    email_message = EmailMessage(subject, message, from_email, recipient_list)
-    email_message.send()
+#     email_message = EmailMessage(subject, message, from_email, recipient_list)
+#     email_message.send()
 
 
 
