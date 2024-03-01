@@ -246,10 +246,14 @@ def admin(request):
 def user_control(request,pk):
     users = CustomUser.objects.exclude(username=request.user.username)
     user = get_object_or_404(CustomUser, pk=pk)
+   
+    recruit_count = Candidate.objects.filter(user=user).count()
+    finance_count = Employee.objects.filter(user=user).count()
+
     if request.method == 'POST' and request.POST.get('action') == 'delete':
         user.delete()
         return redirect('admin')
-    return render(request,'admin.html',context={'user':user,'users':users})
+    return render(request,'admin.html',context={'user':user,'users':users,'recruit_count':recruit_count,'finance_count':finance_count})
 
 
 

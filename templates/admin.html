@@ -307,6 +307,12 @@
                     <p class="text-lg mb-1">Name: {{ user.first_name }} {{ user.last_name }}</p>
                     <p class="text-lg mb-1">Email: {{ user.email }}</p>
                     <p class="text-lg mb-1">Mobile: {{ user.contact }}</p>
+                    {% if recruit_count %}
+                    <p class="text-lg mb-1">Total Candidates:  {{recruit_count}}</p>
+                    {% elif finance_count %}
+                    <p class="text-lg mb-1">Total Employees:  {{finance_count}}</p>
+                    {% endif %}
+             
                     <button style="background-color: red;color: white;padding: 10px;border-radius: 20px;" class="myBtn" id="myBtn">Remove Account</button>
                 {% else %}
                     <img src="/static/project_images/DataPMI.gif" alt="" class="mx-auto">
@@ -602,3 +608,5 @@
 </body>
 
 </html>
+
+

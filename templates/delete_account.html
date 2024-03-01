@@ -186,52 +186,15 @@
 </head>
 
 <body>
-  
+
   {% include 'navbar.html' %}
   {% include 'base.html' %}
 
   <div class="container">
     <div class="row">
       <div class="col-md-6 mx-auto">
-        <div class="form-group">
-          <h6 style="color: #dc3545;">Delete Account <i class="bi bi-person"></i></h6>
-          <form action="{% url 'manage_account' action='delete' %}" id="delete-form" method="post">
-            {% csrf_token %}
-            <input placeholder="Enter Your Password To Confirm" type="password" class="form-control" name="password"
-              required>
-            <button type="submit" class="form-control">Submit</button>
-          </form>
-        </div>
-<br>
 
 
-<script>
-
-  document.getElementById('delete-form').addEventListener('submit', function (event) {
-    event.preventDefault();
-    fetch('{% url "manage_account" action="delete" %}', {
-      method: 'POST',
-      body: new FormData(document.getElementById('delete-form'))
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data); // Log the response data to the console
-        if (data.error) {
-          // Display an error notification
-          const errorNotification = document.createElement('div');
-          errorNotification.classList.add('alert', 'alert-danger');
-          errorNotification.textContent = data.error;
-          document.getElementById('delete-form').prepend(errorNotification);
-        } else if (data.incorrect_password) {
-          // Display a notification if the password is incorrect
-          alert('Incorrect password. Please try again.');
-        } else {
-          // Account deleted successfully, redirect to home page
-          window.location.replace('{% url "login_default"  %}');
-        }
-      });
-  });
-</script>
         <div class="form-group">
           <form action="{% url 'manage_account' action='change' %}" method="post">
             <p>Change Password &nbsp; <i class="bi bi-key-fill"></i></p>
@@ -242,9 +205,51 @@
             <input type="submit" class="form-control" value="Submit">
           </form>
         </div>
+
+        <div class="form-group">
+          <h6 style="color: #dc3545;">Delete Account <i class="bi bi-person"></i></h6>
+          <form action="{% url 'manage_account' action='delete' %}" id="delete-form" method="post">
+            {% csrf_token %}
+            <input placeholder="Enter Your Password To Confirm" type="password" class="form-control" name="password"
+              required>
+            <button type="submit" class="form-control">Submit</button>
+          </form>
+        </div>
+        <br>
+
+
+        <script>
+
+          document.getElementById('delete-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            fetch('{% url "manage_account" action="delete" %}', {
+              method: 'POST',
+              body: new FormData(document.getElementById('delete-form'))
+            })
+              .then(response => response.json())
+              .then(data => {
+                console.log(data); // Log the response data to the console
+                if (data.error) {
+                  // Display an error notification
+                  const errorNotification = document.createElement('div');
+                  errorNotification.classList.add('alert', 'alert-danger');
+                  errorNotification.textContent = data.error;
+                  document.getElementById('delete-form').prepend(errorNotification);
+                } else if (data.incorrect_password) {
+                  // Display a notification if the password is incorrect
+                  alert('Incorrect password. Please try again.');
+                } else {
+                  // Account deleted successfully, redirect to home page
+                  window.location.replace('{% url "login_default"  %}');
+                }
+              });
+          });
+        </script>
       </div>
     </div>
   </div>
+
+
 
 </body>
 
