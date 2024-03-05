@@ -123,10 +123,6 @@ def send_otp_email(email, otp):
     email_message = EmailMultiAlternatives(subject, text_message, from_email, recipient_list)
     email_message.attach_alternative(html_message, "text/html")
 
-    image_path = 'candidate_app/static/project_images/datapmiemail.png'
-    with open(image_path, 'rb') as image_file:
-        email_message.attach('datapmiemail.png', image_file.read(), 'image/png')
-
     email_message.send()
 
 

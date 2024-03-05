@@ -144,13 +144,7 @@ nav {
   cursor: pointer;
 
 }
-/* 
-.container {
-  border:0px solid black;
-  border-radius: 10px;
-  padding: 170px ;
-  background-color: rgb(132, 90, 199) ;
-} */
+
 
         @media (max-width:1350px) {
             nav {
@@ -301,7 +295,7 @@ nav {
         <button class="dropdown-toggle menu-item" id="dropdownToggle">
             <span class="item-icon">
                 {% if user.image %}
-                <img src="{{user.image.url}}" / width="25px">
+                <img style="border-radius: 50%;" src="{{user.image.url}}" / width=36px">
                 {% else %}
                 <img src="/static/project_images/Noprofile.png" width="25px">
                 {% endif %}

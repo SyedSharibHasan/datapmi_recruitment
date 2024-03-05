@@ -300,7 +300,7 @@
                     {% if user.is_superuser %}
                     <img src="/static/project_images/DataPMI.gif" alt="" class="mx-auto">
                 {% elif user.first_name or user.last_name or user.email or user.contact %}
-                    <div style="width: /static/project_images/DataPMI.gif/static/project_images/DataPMI.gifpx; height: 150px; border-radius: 50%;" class="mx-auto">
+                    <div style="width:50%" class="mx-auto">
                         <img id="zoom" class="w-full h-full" src="{% if user.image %}{{ user.image.url }}{% else %}https://cdn-icons-png.flaticon.com/512/149/149071.png{% endif %}">
                     </div>
                     <p class="text-lg text-green-500 mb-1">{{ user.role  }}  <i class="bi bi-patch-check-fill"></i></p>

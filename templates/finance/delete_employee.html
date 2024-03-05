@@ -6,30 +6,26 @@
     <title>Delete Candidate</title>
 
     <style>
-
-        .section {
+        body {
             font-family: Arial, sans-serif; 
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background: url('/static/project_images/delete_candidate.jpg');
+            background: url('/static/project_images/Profile.jpg');
             background-repeat: no-repeat;
-            
-     
+            background-size: cover;
         }
 
-        .modal {
-            background-color: rgba(255, 255, 255, 0.3);
-            border: 1px solid black;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(11, 146, 51, 0.1);
-            padding: 20px;
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-      
-        }
+        .containers {
+    width: 500px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 50px;
+    text-align: center;
+}
+
 
         h1 {
             color: #333;
@@ -73,6 +69,19 @@
         .cancel-button:hover {
             background-color: #bbb;
         }
+
+
+        @media (max-width: 1200px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 500px;
+  }
+}
+
+        @media (min-width: 992px) {
+  .container {
+    max-width: 500px;
+  }
+}
     </style>
 </head>
 
@@ -83,10 +92,9 @@
         
 
     {% include 'navbar.html' %}
-    <div class="section">
 
-<div >
     
+    <div class="containers">
     <h1>Delete Employee</h1>
     <p>Are you sure you want to delete this Employee? </p>
 
