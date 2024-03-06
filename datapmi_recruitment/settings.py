@@ -102,22 +102,6 @@ WSGI_APPLICATION = 'datapmi_recruitment.wsgi.application'
 # }
 
 
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'syed',
-#         'USER': 'root',
-#         'PASSWORD': 'Strong_Password123!',  
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#         'OPTIONS': {
-#             'autocommit': True,
-#         },
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
@@ -131,8 +115,6 @@ DATABASES = {
         },
     }
 }
-
-
 
 
 

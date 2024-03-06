@@ -90,7 +90,13 @@ def verify_otp(request):
             user.save()
             login(request, user)
    
-            return redirect('login_default')
+            if role == 'Recruiter':
+                return redirect('user')  # Redirect to the 'user' page
+            elif role == 'Finance':
+                return redirect('finance_dashboard')  # Redirect to the 'finance_dashboard' page
+            else:
+                # Handle other roles or scenarios
+                return HttpResponse("Your Selected Role does not satisfying our application. Contact Datapmi Team")
         else:
             messages.error(request, 'Invalid OTP Register Again !')    
             return redirect('signup')
