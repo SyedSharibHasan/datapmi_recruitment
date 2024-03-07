@@ -887,7 +887,7 @@ def send_notification(employee_id,finance_user_email):  # Default delay is 180 s
         
         subject = ' Reminder: Contract Expiry Notification for Employee Engagement'
 
-        message = f'Dear Finance Team,\n\nI hope this email finds you well.\n\nI am writing to bring to your attention an important matter regarding one of our valued employees. The contract for {employee.name}, associated with {employee.client_name}, is scheduled to expire on {employee.end_date_of_work_order}. As per our records, the email address linked to this employee is {employee.email}.\n\nThank you for your cooperation and attention to this matter.\n\nBest regards,\n\n DataPMI TEAM'
+        message = f'Dear Finance Team,\n\nI hope this email finds you well.\n\nI am writing to bring to your attention an important matter regarding one of our valued employees. The contract for {employee.name}, associated with {employee.client_name}, is scheduled to expire on {employee.end_date_of_work_order}. As per our records, the email address linked to this employee is {employee.email}.\n\nThank you for your cooperation and attention to this matter.\n\nBest regards,\n\n DataPMI Talent Track TEAM'
 
         from_email = settings.EMAIL_HOST_USER
         recipient_list =  [finance_user_email]
