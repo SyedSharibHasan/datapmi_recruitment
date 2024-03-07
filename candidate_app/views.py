@@ -1198,7 +1198,51 @@ def end_work_order(request):
 
 
 
+############### excel sheet data adding
+import pandas as pd
+from django.shortcuts import render 
+import os
+from django.core.files.storage import FileSystemStorage
 
+
+
+import os
+
+def Import_Excel_pandas(request):
+    if request.method == 'POST' and request.FILES['myfile']:      
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        # uploaded_file_url = fs.url(filename)
+        
+        # Get the full path of the uploaded file
+        full_file_path = os.path.join(fs.location, filename)
+
+       
+        
+        empexceldata = pd.read_excel(full_file_path)    
+        dbframe = empexceldata
+        for dbframe in dbframe.itertuples():
+            obj = Candidate.objects.create(
+                user=request.user,
+                email=dbframe.email,
+                phone=dbframe.phone,
+                client_name=dbframe.client_name,
+                first_name=dbframe.first_name,
+                last_name=dbframe.last_name,
+                mode_of_work=dbframe.mode_of_work,
+                gender=dbframe.gender,
+                college=dbframe.college,
+                experience=dbframe.experience,
+                relevent_experience=dbframe.relevent_experience,
+                location=dbframe.location,
+                updated_by=dbframe.updated_by
+            )
+
+            obj.save()
+        
+        return redirect('list')  
+    return render(request, 'excel.html', {})
 
 
     

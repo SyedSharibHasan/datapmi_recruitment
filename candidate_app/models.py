@@ -75,7 +75,7 @@ class Candidate(models.Model):
 
 
 ##### Finance team
-    
+     
 class Employee(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=150, null=True, blank=True)
