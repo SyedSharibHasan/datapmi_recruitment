@@ -108,6 +108,7 @@ def verify_otp(request):
     return render(request, 'otp_verification.html', {'email': email})
 
 
+
 ########## login + password recovery 
 @csrf_exempt
 def signin(request,action):
@@ -165,7 +166,6 @@ from django.core.signing import BadSignature
 
 def reset_password(request, token):
     try:
-        # Verify the token
         user_id = Signer().unsign(token)
         user = CustomUser.objects.get(id=user_id)
 
@@ -207,6 +207,7 @@ def superuser_login_required(view_func):
         else:
             return HttpResponse("Access denied. You must be a superuser.")
     return _wrapped_view
+
 
 
 ########  for only fianance
@@ -270,27 +271,145 @@ def user(request):
 
 
 
+########## my candidates with manual creation and upload from excel 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-
-############  this is only for personal crud operations
-
-class ListCandidate(LoginRequiredMixin,ListView):
-    model = Candidate
-    fields = "__all__"
-    template_name = 'mycandidates.html'
-    context_object_name = "list"
-    login_url = 'login_default'
-
-    @method_decorator(recruiter_login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+import pandas as pd
+from django.shortcuts import render 
+import os
+from django.core.files.storage import FileSystemStorage
+import pyexcel
 
 
-    def get_queryset(self):
-        # Filter the queryset based on the logged-in user
-        queryset = super().get_queryset().filter(user=self.request.user)
-        return queryset
+def process_excel_file(full_file_path):
+    empexceldata = None
+    file_extension = os.path.splitext(full_file_path)[1].lower()
+    
+    if file_extension in ['.xlsx', '.xls','.xltx','.xlt']:
+        empexceldata = pd.read_excel(full_file_path)
+    elif file_extension == '.ods':
+        odsdata = pyexcel.get_records(file_name=full_file_path)
+        df = pd.DataFrame(odsdata)
+        excel_data = BytesIO()
+        df.to_excel(excel_data, index=False)
+        excel_data.seek(0)  # Move the pointer to the beginning of the BytesIO object
+        empexceldata = pd.read_excel(excel_data)
+    else:
+        HttpResponse('Select correct format')
+
+    return empexceldata
+
+
+
+from io import BytesIO
+
+
+@recruiter_login_required
+def mycandidates(request):
+    candidates = Candidate.objects.all()
+    if request.method == 'POST' and request.FILES['myfile']:      
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        full_file_path = os.path.join(fs.location, filename)
+        empexceldata = process_excel_file(full_file_path)
+        if empexceldata is not None:
+            for index, row in empexceldata.iterrows():
+                email = row.get('Email')
+                if email and Candidate.objects.filter(email=email).exists():
+                    continue
+            
+                mode_of_work = row.loc['Mode of Work'] if 'Mode of Work' in row else (row.loc['mode of work'] if 'mode of work' in row else (row.loc['Mode of work'] if 'Mode of work' in row else row.loc['MODE OF WORK']))
+                client_name = row.loc['Client Name'] if 'Client Name' in row else (row.loc['client name'] if 'client name' in row else (row.loc['Client name'] if 'Client name' in row else row.loc['CLIENT NAME']))
+                first_name = row.loc['First Name'] if 'First Name' in row else (row.loc['first name'] if 'first name' in row else (row.loc['First name'] if 'First name' in row else row.loc['FIRST NAME']))
+                last_name = row.loc['Last Name'] if 'Last Name' in row else (row.loc['last name'] if 'last name' in row else (row.loc['Last name'] if 'Last name' in row else row.loc['LAST NAME']))
+                graduation_year = row.loc['Graduation year'] if 'Graduation year' in row else (row.loc['Graduation Year'] if 'Graduation Year' in row else (row.loc['graduation year'] if 'graduation year' in row else row.loc['GRADUATION YEAR']))
+                current_company = row.loc['Current company'] if 'Current company' in row else (row.loc['Current Company'] if 'Current Company' in row else (row.loc['current company'] if 'current company' in row else row.loc['CURRENT COMPANY']))
+                total_experience = (
+                    row.loc['Total Experience'] if 'Total Experience' in row else
+                    (row.loc['total experience'] if 'total experience' in row else
+                    (row.loc['Total experience'] if 'Total experience' in row else
+                    row.loc['TOTAL EXPERIENCE'] if 'TOTAL EXPERIENCE' in row else None))
+                )
+                
+                relevent_experience = (
+                    row.loc['Relevant Experience'] if 'Relevant Experience' in row else
+                    (row.loc['relevant experience'] if 'relevant experience' in row else
+                    (row.loc['Relevant experience'] if 'Relevant experience' in row else
+                    row.loc['RELEVANT EXPERIENCE'] if 'RELEVANT EXPERIENCE' in row else None))
+                )
+
+                notice_period = (
+                    row.loc['Notice Period'] if 'Notice Period' in row else
+                    (row.loc['notice period'] if 'notice period' in row else
+                    (row.loc['Notice period'] if 'Notice period' in row else
+                    row.loc['NOTICE PERIOD'] if 'NOTICE PERIOD' in row else None))
+                )
+
+                current_ctc = (
+                    row.loc['Current CTC'] if 'Current CTC' in row else
+                    (row.loc['current ctc'] if 'current ctc' in row else
+                    (row.loc['Current ctc'] if 'Current ctc' in row else
+                    row.loc['CURRENT CTC'] if 'CURRENT CTC' in row else None))
+                )
+
+                expected_ctc = (
+                    row.loc['Expected CTC'] if 'Expected CTC' in row else
+                    (row.loc['expected ctc'] if 'expected ctc' in row else
+                    (row.loc['Expected ctc'] if 'Expected ctc' in row else
+                    row.loc['EXPECTED CTC'] if 'EXPECTED CTC' in row else None))
+                )
+                if row.Resume and isinstance(row.Resume, str) and os.path.exists(row.Resume):
+                    # Extracting file name from the path
+                    resume_file_path = row.Resume
+                    resume_file_name = os.path.basename(resume_file_path)
+
+                    # Creating FileSystemStorage object
+                    fs = FileSystemStorage()
+
+                    # Saving the file to the desired location
+                    with open(resume_file_path, 'rb') as resume_file:
+                        saved_resume = fs.save(resume_file_name, resume_file)
+                else:
+                    # If there's no resume, set the saved_resume to None
+                    saved_resume = None             
+
+                obj = Candidate.objects.create(
+                    user=request.user,
+                    email=row.Email,
+                    designation=row.Designation,
+                    client_name=client_name,
+                    mode_of_work=mode_of_work,
+                    first_name=first_name,
+                    last_name=last_name,
+                    phone=row.Phone,
+                    gender=row.Gender,
+                    location=row.Location,
+                    college=row.College,
+                    qualification=row.Qualification,
+                    graduation_year=graduation_year,
+                    current_company=current_company,
+                    experience=total_experience,
+                    relevent_experience=relevent_experience,
+                    notice_period=notice_period,
+                    current_ctc=current_ctc,
+                    expected_ctc=expected_ctc,
+                    status=row.Status,
+                    resume = saved_resume
+                )
+
+                skill_names = row.Skills.split(',')  # Split comma-separated skills into a list
+
+                # Create or get Skill objects and store them in a list
+                skills = [Skill.objects.get_or_create(name=skill_name.strip(), user=request.user)[0] for skill_name in skill_names]
+
+                # Assign skills to the candidate object
+                obj.skills.add(*skills)
+                obj.save()
+
+            return redirect('list')
+
+    return render(request,'mycandidates.html',context={'list':candidates})
 
 
 
@@ -337,10 +456,9 @@ class Createcandidate(LoginRequiredMixin,CreateView):
 
             if Candidate.objects.filter(email=email).exists():
                 return HttpResponse({'Candidate with current Email address already exists'})
-            
-            
+                 
             candidate = Candidate(
-                
+
                 designation=designation,
                 client_name=client_name,
                 mode_of_work=mode_of_work,
@@ -369,8 +487,6 @@ class Createcandidate(LoginRequiredMixin,CreateView):
             )
             candidate.save()
 
-            
-
             try:    
                 skill_names = request.POST.getlist("skills")
                 skills = [Skill.objects.get_or_create(name=skill_name, user=request.user)[0] for skill_name in skill_names]
@@ -385,7 +501,7 @@ class Createcandidate(LoginRequiredMixin,CreateView):
                 return render(request, self.template_name, {'error': 'Error: Could not save the candidate.'})
 
         
-        
+
     def form_valid(self, form):
         # Set the user before saving the form
         form.instance.user = self.request.user
@@ -693,14 +809,14 @@ def autocomplete_skills(request):
 
 
 ############## autocomplete for location filter
-def autocomplete_locations(request):
-    if 'term' in request.GET:
-        term = request.GET.get('term')
-        locations = Candidate.objects.filter(location__icontains=term).values('location')
-        suggestions = list(locations.values_list('location', flat=True))
-        return JsonResponse({'suggestions': suggestions}, safe=False)
+# def autocomplete_locations(request):
+#     if 'term' in request.GET:
+#         term = request.GET.get('term')
+#         locations = Candidate.objects.filter(location__icontains=term).values('location')
+#         suggestions = list(locations.values_list('location', flat=True))
+#         return JsonResponse({'suggestions': suggestions}, safe=False)
 
-    return JsonResponse({'suggestions': []})
+#     return JsonResponse({'suggestions': []})
 
 
 @recruiter_login_required
@@ -800,7 +916,6 @@ def list_of_candidates(request, status):
 
 
 from django.contrib.auth import update_session_auth_hash
-
 ############### delete user account and change password function
 @login_required(login_url='login_default')
 def manage_account(request,action):
@@ -876,22 +991,25 @@ def finance_dashboard(request):
 
 from django.urls import reverse
 from celery import shared_task
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 ############# email sending to user before 15 days of end work date
 @shared_task
 def send_notification(employee_id,finance_user_email):  # Default delay is 180 seconds (3 minutes)
-    try:
-        # Retrieve the employee instance
+    try:    
         employee = Employee.objects.get(pk=employee_id)
-        
-        subject = ' Reminder: Contract Expiry Notification for Employee Engagement'
-
-        message = f'Dear Finance Team,\n\nI hope this email finds you well.\n\nI am writing to bring to your attention an important matter regarding one of our valued employees. The contract for {employee.name}, associated with {employee.client_name}, is scheduled to expire on {employee.end_date_of_work_order}. As per our records, the email address linked to this employee is {employee.email}.\n\nThank you for your cooperation and attention to this matter.\n\nBest regards,\n\n DataPMI Talent Track TEAM'
+        subject = f'Remainder: Contract Expiry Notification for {employee.name}'
+        context = {'employee': employee}
+        html_message = render_to_string('finance/expiry_mail.html',context)
+        text_message = strip_tags(html_message)
 
         from_email = settings.EMAIL_HOST_USER
         recipient_list =  [finance_user_email]
-        email_message = EmailMessage(subject, message, from_email, recipient_list)
+        email_message = EmailMultiAlternatives(subject, text_message, from_email, recipient_list)
+        email_message.attach_alternative(html_message, "text/html")
         email_message.send()
 
         return f'Notification email sent for employee {employee.name}'
@@ -903,7 +1021,7 @@ def send_notification(employee_id,finance_user_email):  # Default delay is 180 s
     except Exception as e:
         return f'An error occurred: {str(e)}'
         
-
+        
 from django.core.exceptions import ValidationError
 
 @finance_login_required
@@ -968,7 +1086,6 @@ def add_employee(request):
             workOrderEndDate = None
 
 
-
         if Employee.objects.filter(email=email).exists():
                 return HttpResponse({'Employee with current Email address already exists'})
 
@@ -993,7 +1110,6 @@ def add_employee(request):
                             upload_work_order=uploadWorkOrder,
                             upload_nda=uploadNDA,
                             upload_resume=uploadResume
-
                             )
         
         employee.save()
@@ -1198,54 +1314,12 @@ def end_work_order(request):
 
 
 
-############### excel sheet data adding
-import pandas as pd
-from django.shortcuts import render 
-import os
-from django.core.files.storage import FileSystemStorage
-
-
-
-import os
-
-def Import_Excel_pandas(request):
-    if request.method == 'POST' and request.FILES['myfile']:      
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        # uploaded_file_url = fs.url(filename)
-        
-        # Get the full path of the uploaded file
-        full_file_path = os.path.join(fs.location, filename)
-
-       
-        
-        empexceldata = pd.read_excel(full_file_path)    
-        dbframe = empexceldata
-        for dbframe in dbframe.itertuples():
-            obj = Candidate.objects.create(
-                user=request.user,
-                email=dbframe.email,
-                phone=dbframe.phone,
-                client_name=dbframe.client_name,
-                first_name=dbframe.first_name,
-                last_name=dbframe.last_name,
-                mode_of_work=dbframe.mode_of_work,
-                gender=dbframe.gender,
-                college=dbframe.college,
-                experience=dbframe.experience,
-                relevent_experience=dbframe.relevent_experience,
-                location=dbframe.location,
-                updated_by=dbframe.updated_by
-            )
-
-            obj.save()
-        
-        return redirect('list')  
-    return render(request, 'excel.html', {})
 
 
     
+
+
+
 
 
 

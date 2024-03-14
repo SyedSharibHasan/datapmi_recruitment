@@ -80,18 +80,21 @@ label {
     {% include 'base.html' %}
     
 
- 
-  
-    
+
 
 <br>
 <br>
 <br>
 <br>
 <center><a href="/create"><button class="btn btn-light">Create&nbsp; <i class="bi bi-person-plus"></i></button></a></center><br>
-<center><a href="/Import_Excel_pandas"><button class="btn btn-light">upload from excel&nbsp; <i class="bi bi-person-plus"></i></button></a></center>
+<center>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+                        <input type="file" name="myfile"  accept=".xlsx, .xls, .xltx, .xlt, .xlsm, .ods" required/>
+                        <button type="submit" class="btn btn-success">Submit Excel</button>       
+    </form></center>
 
-<br>
+<br>    
 <div class="container">
     <table class="table">
         <thead>
