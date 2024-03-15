@@ -279,13 +279,14 @@ from django.shortcuts import render
 import os
 from django.core.files.storage import FileSystemStorage
 import pyexcel
+from django.http import HttpResponseServerError
 
 
 def process_excel_file(full_file_path):
     empexceldata = None
     file_extension = os.path.splitext(full_file_path)[1].lower()
     
-    if file_extension in ['.xlsx', '.xls','.xltx','.xlt']:
+    if file_extension in ['.xlsx', '.xls','.xltx','.xlt','.xlsm']:
         empexceldata = pd.read_excel(full_file_path)
     elif file_extension == '.ods':
         odsdata = pyexcel.get_records(file_name=full_file_path)
@@ -295,7 +296,7 @@ def process_excel_file(full_file_path):
         excel_data.seek(0)  # Move the pointer to the beginning of the BytesIO object
         empexceldata = pd.read_excel(excel_data)
     else:
-        HttpResponse('Select correct format')
+        HttpResponse('Select correct format  Acceptable formats -- .xlsx,.xlx,.xltx,.xlt,.xlsm,.ods')
 
     return empexceldata
 
@@ -314,100 +315,107 @@ def mycandidates(request):
         full_file_path = os.path.join(fs.location, filename)
         empexceldata = process_excel_file(full_file_path)
         if empexceldata is not None:
-            for index, row in empexceldata.iterrows():
-                email = row.get('Email')
-                if email and Candidate.objects.filter(email=email).exists():
-                    continue
-            
-                mode_of_work = row.loc['Mode of Work'] if 'Mode of Work' in row else (row.loc['mode of work'] if 'mode of work' in row else (row.loc['Mode of work'] if 'Mode of work' in row else row.loc['MODE OF WORK']))
-                client_name = row.loc['Client Name'] if 'Client Name' in row else (row.loc['client name'] if 'client name' in row else (row.loc['Client name'] if 'Client name' in row else row.loc['CLIENT NAME']))
-                first_name = row.loc['First Name'] if 'First Name' in row else (row.loc['first name'] if 'first name' in row else (row.loc['First name'] if 'First name' in row else row.loc['FIRST NAME']))
-                last_name = row.loc['Last Name'] if 'Last Name' in row else (row.loc['last name'] if 'last name' in row else (row.loc['Last name'] if 'Last name' in row else row.loc['LAST NAME']))
-                graduation_year = row.loc['Graduation year'] if 'Graduation year' in row else (row.loc['Graduation Year'] if 'Graduation Year' in row else (row.loc['graduation year'] if 'graduation year' in row else row.loc['GRADUATION YEAR']))
-                current_company = row.loc['Current company'] if 'Current company' in row else (row.loc['Current Company'] if 'Current Company' in row else (row.loc['current company'] if 'current company' in row else row.loc['CURRENT COMPANY']))
-                total_experience = (
-                    row.loc['Total Experience'] if 'Total Experience' in row else
-                    (row.loc['total experience'] if 'total experience' in row else
-                    (row.loc['Total experience'] if 'Total experience' in row else
-                    row.loc['TOTAL EXPERIENCE'] if 'TOTAL EXPERIENCE' in row else None))
-                )
+            try:
+                for index, row in empexceldata.iterrows():
+                    email = row.get('Email')
+                    if email and Candidate.objects.filter(email=email).exists():
+                        continue
                 
-                relevent_experience = (
-                    row.loc['Relevant Experience'] if 'Relevant Experience' in row else
-                    (row.loc['relevant experience'] if 'relevant experience' in row else
-                    (row.loc['Relevant experience'] if 'Relevant experience' in row else
-                    row.loc['RELEVANT EXPERIENCE'] if 'RELEVANT EXPERIENCE' in row else None))
-                )
+                    mode_of_work = row.loc['Mode of Work'] if 'Mode of Work' in row else (row.loc['mode of work'] if 'mode of work' in row else (row.loc['Mode of work'] if 'Mode of work' in row else row.loc['MODE OF WORK']))
+                    client_name = row.loc['Client Name'] if 'Client Name' in row else (row.loc['client name'] if 'client name' in row else (row.loc['Client name'] if 'Client name' in row else row.loc['CLIENT NAME']))
+                    first_name = row.loc['First Name'] if 'First Name' in row else (row.loc['first name'] if 'first name' in row else (row.loc['First name'] if 'First name' in row else row.loc['FIRST NAME']))
+                    last_name = row.loc['Last Name'] if 'Last Name' in row else (row.loc['last name'] if 'last name' in row else (row.loc['Last name'] if 'Last name' in row else row.loc['LAST NAME']))
+                    graduation_year = row.loc['Graduation year'] if 'Graduation year' in row else (row.loc['Graduation Year'] if 'Graduation Year' in row else (row.loc['graduation year'] if 'graduation year' in row else row.loc['GRADUATION YEAR']))
+                    current_company = row.loc['Current company'] if 'Current company' in row else (row.loc['Current Company'] if 'Current Company' in row else (row.loc['current company'] if 'current company' in row else row.loc['CURRENT COMPANY']))
+                    total_experience = (
+                        row.loc['Total Experience'] if 'Total Experience' in row else
+                        (row.loc['total experience'] if 'total experience' in row else
+                        (row.loc['Total experience'] if 'Total experience' in row else
+                        row.loc['TOTAL EXPERIENCE'] if 'TOTAL EXPERIENCE' in row else None))
+                    )
+                    
+                    relevent_experience = (
+                        row.loc['Relevant Experience'] if 'Relevant Experience' in row else
+                        (row.loc['relevant experience'] if 'relevant experience' in row else
+                        (row.loc['Relevant experience'] if 'Relevant experience' in row else
+                        row.loc['RELEVANT EXPERIENCE'] if 'RELEVANT EXPERIENCE' in row else None))
+                    )
 
-                notice_period = (
-                    row.loc['Notice Period'] if 'Notice Period' in row else
-                    (row.loc['notice period'] if 'notice period' in row else
-                    (row.loc['Notice period'] if 'Notice period' in row else
-                    row.loc['NOTICE PERIOD'] if 'NOTICE PERIOD' in row else None))
-                )
+                    notice_period = (
+                        row.loc['Notice Period'] if 'Notice Period' in row else
+                        (row.loc['notice period'] if 'notice period' in row else
+                        (row.loc['Notice period'] if 'Notice period' in row else
+                        row.loc['NOTICE PERIOD'] if 'NOTICE PERIOD' in row else None))
+                    )
 
-                current_ctc = (
-                    row.loc['Current CTC'] if 'Current CTC' in row else
-                    (row.loc['current ctc'] if 'current ctc' in row else
-                    (row.loc['Current ctc'] if 'Current ctc' in row else
-                    row.loc['CURRENT CTC'] if 'CURRENT CTC' in row else None))
-                )
+                    current_ctc = (
+                        row.loc['Current CTC'] if 'Current CTC' in row else
+                        (row.loc['current ctc'] if 'current ctc' in row else
+                        (row.loc['Current ctc'] if 'Current ctc' in row else
+                        row.loc['CURRENT CTC'] if 'CURRENT CTC' in row else None))
+                    )
 
-                expected_ctc = (
-                    row.loc['Expected CTC'] if 'Expected CTC' in row else
-                    (row.loc['expected ctc'] if 'expected ctc' in row else
-                    (row.loc['Expected ctc'] if 'Expected ctc' in row else
-                    row.loc['EXPECTED CTC'] if 'EXPECTED CTC' in row else None))
-                )
-                if row.Resume and isinstance(row.Resume, str) and os.path.exists(row.Resume):
-                    # Extracting file name from the path
-                    resume_file_path = row.Resume
-                    resume_file_name = os.path.basename(resume_file_path)
+                    expected_ctc = (
+                        row.loc['Expected CTC'] if 'Expected CTC' in row else
+                        (row.loc['expected ctc'] if 'expected ctc' in row else
+                        (row.loc['Expected ctc'] if 'Expected ctc' in row else
+                        row.loc['EXPECTED CTC'] if 'EXPECTED CTC' in row else None))
+                    )
+                    if row.Resume and isinstance(row.Resume, str) and os.path.exists(row.Resume):
+                        # Extracting file name from the path
+                        resume_file_path = row.Resume
+                        resume_file_name = os.path.basename(resume_file_path)
 
-                    # Creating FileSystemStorage object
-                    fs = FileSystemStorage()
+                        # Creating FileSystemStorage object
+                        fs = FileSystemStorage()
 
-                    # Saving the file to the desired location
-                    with open(resume_file_path, 'rb') as resume_file:
-                        saved_resume = fs.save(resume_file_name, resume_file)
-                else:
-                    # If there's no resume, set the saved_resume to None
-                    saved_resume = None             
+                        # Saving the file to the desired location
+                        with open(resume_file_path, 'rb') as resume_file:
+                            saved_resume = fs.save(resume_file_name, resume_file)
+                    else:
+                        # If there's no resume, set the saved_resume to None
+                        saved_resume = None             
 
-                obj = Candidate.objects.create(
-                    user=request.user,
-                    email=row.Email,
-                    designation=row.Designation,
-                    client_name=client_name,
-                    mode_of_work=mode_of_work,
-                    first_name=first_name,
-                    last_name=last_name,
-                    phone=row.Phone,
-                    gender=row.Gender,
-                    location=row.Location,
-                    college=row.College,
-                    qualification=row.Qualification,
-                    graduation_year=graduation_year,
-                    current_company=current_company,
-                    experience=total_experience,
-                    relevent_experience=relevent_experience,
-                    notice_period=notice_period,
-                    current_ctc=current_ctc,
-                    expected_ctc=expected_ctc,
-                    status=row.Status,
-                    resume = saved_resume
-                )
+                    obj = Candidate.objects.create(
+                        user=request.user,
+                        email=row.Email,
+                        designation=row.Designation,
+                        client_name=client_name,
+                        mode_of_work=mode_of_work,
+                        first_name=first_name,
+                        last_name=last_name,
+                        phone=row.Phone,
+                        gender=row.Gender,
+                        location=row.Location,
+                        college=row.College,
+                        qualification=row.Qualification,
+                        graduation_year=graduation_year,
+                        current_company=current_company,
+                        experience=total_experience,
+                        relevent_experience=relevent_experience,
+                        notice_period=notice_period,
+                        current_ctc=current_ctc,
+                        expected_ctc=expected_ctc,
+                        status=row.Status,
+                        resume = saved_resume
+                    )
 
-                skill_names = row.Skills.split(',')  # Split comma-separated skills into a list
+                    skill_names = row.Skills.split(',')  # Split comma-separated skills into a list
 
-                # Create or get Skill objects and store them in a list
-                skills = [Skill.objects.get_or_create(name=skill_name.strip(), user=request.user)[0] for skill_name in skill_names]
+                    # Create or get Skill objects and store them in a list
+                    skills = [Skill.objects.get_or_create(name=skill_name.strip(), user=request.user)[0] for skill_name in skill_names]
 
-                # Assign skills to the candidate object
-                obj.skills.add(*skills)
-                obj.save()
+                    # Assign skills to the candidate object
+                    obj.skills.add(*skills)
+                    obj.save()
 
+            except AttributeError as e:
+                return HttpResponseServerError("AttributeError: " + str(e))
+                    
             return redirect('list')
+        else:
+            return HttpResponse("Unsupported file format. Please upload an Excel file. Acceptable Formats -- .xlt,.xls,.xlsx,.xlts,.xltx,.ods,.xlsm")
+
 
     return render(request,'mycandidates.html',context={'list':candidates})
 
