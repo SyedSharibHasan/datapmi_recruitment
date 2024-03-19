@@ -145,7 +145,7 @@ def signin(request,action):
                 user.save()
 
                 # Create the reset link with the token      ######## local host should be change after hosting for redirecting
-                reset_link = f"http://127.0.0.1:8000/reset_password/{token}/"
+                reset_link = f"http://122.165.80.8:8080/reset_password/{token}/"
 
                 # Send recovery link
                 send_recovery_link(email, reset_link)
@@ -434,7 +434,7 @@ class Createcandidate(LoginRequiredMixin,CreateView):
     def get(self, request):
         return render(request, self.template_name)      
 
-    def post(self, request):
+    def post(self, reqauest):
         if request.method == "POST":
             
             designation = request.POST.get("designation")

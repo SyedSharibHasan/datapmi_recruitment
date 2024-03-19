@@ -64,6 +64,7 @@ class Candidate(models.Model):
     def __str__(self):
         return self.email
 
+
     class Meta:
         ordering = ["-updated_on"]
 

@@ -26,7 +26,7 @@ SECRET_KEY = SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['122.165.80.8','127.0.0.1']
 
 
 # Application definition
@@ -68,6 +68,9 @@ MIDDLEWARE = [
 
 
 
+CSRF_TRUSTED_ORIGINS = ['http://122.165.80.8:8080']
+
+
 
 ROOT_URLCONF = 'datapmi_recruitment.urls'
 
@@ -82,11 +85,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                
+               
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'datapmi_recruitment.wsgi.application'
 
@@ -105,9 +109,9 @@ WSGI_APPLICATION = 'datapmi_recruitment.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
-        'NAME': 'syed',
-        'USER': 'root',
-        'PASSWORD': 'Strong_password123!',  
+        'NAME': 'recruitment',
+        'USER': 'user',
+        'PASSWORD': '',  
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
@@ -169,8 +173,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 AUTH_USER_MODEL = 'candidate_app.CustomUser'
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
@@ -179,10 +183,4 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 from datetime import timedelta
 
 CELERY_BEAT_SCHEDULE = {}
-
-
-
-
-
-
 
