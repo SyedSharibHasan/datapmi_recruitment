@@ -290,11 +290,7 @@ def process_excel_file(full_file_path):
         empexceldata = pd.read_excel(full_file_path)
     elif file_extension == '.ods':
         odsdata = pyexcel.get_records(file_name=full_file_path)
-        df = pd.DataFrame(odsdata)
-        excel_data = BytesIO()
-        df.to_excel(excel_data, index=False)
-        excel_data.seek(0)  # Move the pointer to the beginning of the BytesIO object
-        empexceldata = pd.read_excel(excel_data)
+        empexceldata = pd.DataFrame(odsdata)
     else:
         HttpResponse('Select correct format  Acceptable formats -- .xlsx,.xlx,.xltx,.xlt,.xlsm,.ods')
 
@@ -314,8 +310,11 @@ def mycandidates(request):
         filename = fs.save(myfile.name, myfile)
         full_file_path = os.path.join(fs.location, filename)
         empexceldata = process_excel_file(full_file_path)
-        if empexceldata is not None:
-            try:
+        try:
+            if empexceldata is not None:
+            
+                if empexceldata.empty:
+                    raise ValueError("No column names or row names found in the Excel file.")
                 for index, row in empexceldata.iterrows():
                     email = row.get('Email')
                     if email and Candidate.objects.filter(email=email).exists():
@@ -408,14 +407,17 @@ def mycandidates(request):
                     # Assign skills to the candidate object
                     obj.skills.add(*skills)
                     obj.save()
+            else:
+                return HttpResponse("Unsupported file format. Please upload an Excel file. Acceptable Formats -- .xlt,.xls,.xlsx,.xlts,.xltx,.ods,.xlsm")
 
-            except AttributeError as e:
-                return HttpResponseServerError("AttributeError: " + str(e))
-                    
-            return redirect('list')
-        else:
-            return HttpResponse("Unsupported file format. Please upload an Excel file. Acceptable Formats -- .xlt,.xls,.xlsx,.xlts,.xltx,.ods,.xlsm")
-
+        except KeyError as e:
+            return HttpResponseServerError("KeyError: One or more required columns are missing in the Excel file. Please ensure all required columns are present.")
+        except ValueError as e:
+            return HttpResponseServerError("ValueError: Unable to process the Excel file. Please ensure the file contains valid data.")
+        except AttributeError as e:
+            return HttpResponseServerError("AttributeError: " + str(e))
+                
+        return redirect('list')
 
     return render(request,'mycandidates.html',context={'list':candidates})
 

@@ -268,10 +268,21 @@
     color: var(--main-color); /* Use your desired color */
 }
 
+.mobile-toggle {
+    color: #ffffff; /* Set the color to white */
+    background-color: #000000; /* Set the background color to black */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add border radius */
+    padding: 5px 10px; /* Add padding */
+    font-size: 20px; /* Adjust font size */
+}
+
+
 /* Show the button on smaller screens */
 @media screen and (max-width: 480px) {
     .mobile-toggle {
         display: block;
+        color:aquamarine;
     }
 
     /* Hide the sidebar by default on smaller screens */
@@ -294,7 +305,7 @@
 
     <button class="mobile-toggle">&#9776;</button>
 <!-- Add this script at the end of your HTML body -->
-<script>
+<!-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         const sidebar = document.querySelector('.sidebar');
         const mobileToggle = document.querySelector('.mobile-toggle');
@@ -318,7 +329,36 @@
             }
         });
     });
+</script> -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebar = document.querySelector('.sidebar');
+        const mobileToggle = document.querySelector('.mobile-toggle');
+
+        // Function to open sidebar
+        function openSidebar() {
+            sidebar.classList.add('open');
+        }
+
+        // Function to close sidebar
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+        }
+
+        // Event listener for the mobile toggle button
+        mobileToggle.addEventListener('click', function () {
+            if (sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+            // Hide the toggle button after it's clicked
+            mobileToggle.style.display = 'none';
+        });
+    });
 </script>
+
 
 
     <nav class="sidebar close">
@@ -392,7 +432,7 @@
                     </a>
                 </li>
 
-                <li class="mode">
+                <li onclick="window.location.reload()" class="mode">
                     <div class="sun-moon">
                         <i class='bx bx-moon icon moon'></i>
                         <i class='bx bx-sun icon sun'></i>

@@ -28,7 +28,7 @@
     <style>
         
       body {
-        background-image: url('/static/project_images/Filter.jpg');
+        background-image: url('/static/project_images/Profile.jpg');
         background-size: cover;
         background-repeat: no-repeat;
       }
@@ -83,6 +83,7 @@
     
 
   {% include 'navbar.html' %}
+  {% include 'base.html' %}
     
 
 
@@ -173,18 +174,6 @@
               <!-- Location -->
               <div>
                 <i style="color:red" class="bi bi-geo-alt-fill"></i> <input class="search_skill" id="search_location" name="location_search" type="search" placeholder="Kochi, Kerala">
-                  <!-- <script>
-                      $(function () {
-                          $("#search_location").autocomplete({
-                              source: function (request, response) {
-                                  $.getJSON("/autocomplete-locations/", { term: request.term }, function (data) {
-                                      response(data.suggestions);
-                                  });
-                              },
-                              minLength: 1
-                          });
-                      });
-                  </script> -->
               </div>
 
               <br>  

@@ -22,6 +22,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            width: 100vw; /* Set the width to full viewport width */
         }
 
         .container {
@@ -56,32 +57,34 @@
         }
 
         input {
-    
-    border: 3px solid #ced4da !important;
-    background-color: #ecf0f1 !important;
-    
-}
+            border: 3px solid #ced4da !important;
+            background-color: #ecf0f1 !important;
+        }
 
-label {
-    color: white;
-    
-   
-}
+        label {
+            color: white;
+        }
 
+        /* Responsive styles */
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 60px 10px;
+            }
+            body {
+                background-size: auto 200%; /* Adjust background size to cover full height */
+                background-repeat: no-repeat;
+            }
+        }
     </style>
-    <title>Stylish Custom Table</title>
 </head>
 <body>
 
-    {% block content %}
-
+{% block content %}
   
-    {% include 'navbar.html' %}
-    {% include 'base.html' %}
+{% include 'navbar.html' %}
+{% include 'base.html' %}
     
-
-
-
 <br>
 <br>
 <br>
@@ -90,9 +93,10 @@ label {
 <center>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-                        <input type="file" name="myfile"  accept=".xlsx, .xls, .xltx, .xlt, .xlsm, .ods" required/>
-                        <button type="submit" class="btn btn-success">Submit Excel</button>       
-    </form></center>
+        <input type="file" name="myfile"  accept=".xlsx, .xls, .xltx, .xlt, .xlsm, .ods , .pdf" required/>
+        <button type="submit" class="btn btn-success">Submit Excel</button>       
+    </form>
+</center>
 
 <br>    
 <div class="container">
@@ -129,28 +133,27 @@ label {
                         {% for skill in i.skills.all %}
                         {{ skill.name }}
                         {% if not forloop.last %}, {% endif %}
-                        {% endfor %}</td>
+                        {% endfor %}
+                    </td>
                   
-                        <td>{{i.formatted_updated_on}}</td>
-                <td>  
-                    <!-- <button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle"><i class="fa fa-key"></i> </button> -->
-                    <a href="{% url 'detail' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"
-                        class="btn btn-outline-success"><i class="bi bi-search"></i></button></a>&nbsp;
+                    <td>{{i.formatted_updated_on}}</td>
+                    <td>  
+                        <a href="{% url 'detail' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"
+                            class="btn btn-outline-success"><i class="bi bi-search"></i></button></a>&nbsp;
 
-                    <a href="{% url 'update' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="Edit"
-                        class="btn btn-outline-info my-1"><i class="bi bi-pencil"></i></button></a>&nbsp; 
+                        <a href="{% url 'update' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="Edit"
+                            class="btn btn-outline-info my-1"><i class="bi bi-pencil"></i></button></a>&nbsp; 
                         {% if i.resume %}
-                        <a href="{{i.resume.url}}"><button style="font-size: 10px;padding: 5px 8px;" title="Resume"
-                            class="btn btn-outline-dark"><i class="bi bi-download"></i></button></a>&nbsp;
-                            {% endif %}
-                    <a href="{% url 'delete' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="Delete"
-                        class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></a>&nbsp;
-
-                  </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-       
+                            <a href="{{i.resume.url}}"><button style="font-size: 10px;padding: 5px 8px;" title="Resume"
+                                class="btn btn-outline-dark"><i class="bi bi-download"></i></button></a>&nbsp;
+                        {% endif %}
+                        <a href="{% url 'delete' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="Delete"
+                            class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button></a>&nbsp;
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
         <script>
             // Get all elements with class "snno"
@@ -160,7 +163,6 @@ label {
             snnoElements.forEach(function (element, index) {
               element.textContent = index + 1; // Assign the incrementing number (1-based index)
             });
-
 
             function toggleSidebar() {
               var sidebar = document.getElementById('sidebar');
@@ -174,46 +176,35 @@ label {
                 content.style.marginLeft = '250px';
               }
             }
-          </script>
-    </table>
- 
-</div>
+        </script>
+    </div>
 
-<script>
-    $(document).ready(function () {
-        $('.table').DataTable({
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
 
-            "columnDefs": [
-                { "orderable": false, "targets": 5 }
-            ],
-            language: {
-                'paginate': {
-                    'previous': '<span class="fa fa-chevron-left"></span>',
-                    'next': '<span class="fa fa-chevron-right"></span>'
-                },
-                //customize number of elements to be displayed
-                "lengthMenu": 'Display <select >' +
-                    '<option value="10">10</option>' +
-                    '<option value="20">20</option>' +
-                    '<option value="30">30</option>' +
-                    '<option value="40">40</option>' +
-                    '<option value="50">50</option>' +
-                    '<option value="-1">All</option>' +
-                    '</select> '
-            }
-        })
-    });
-</script>
+                "columnDefs": [
+                    { "orderable": false, "targets": 5 }
+                ],
+                language: {
+                    'paginate': {
+                        'previous': '<span class="fa fa-chevron-left"></span>',
+                        'next': '<span class="fa fa-chevron-right"></span>'
+                    },
+                    //customize number of elements to be displayed
+                    "lengthMenu": 'Display <select >' +
+                        '<option value="10">10</option>' +
+                        '<option value="20">20</option>' +
+                        '<option value="30">30</option>' +
+                        '<option value="40">40</option>' +
+                        '<option value="50">50</option>' +
+                        '<option value="-1">All</option>' +
+                        '</select> '
+                }
+            });
+        });
+    </script>
 
 {% endblock %}
-
-
-  
-  
-
 </body>
 </html>
-
-
-
-

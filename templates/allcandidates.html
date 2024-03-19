@@ -9,11 +9,11 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <title>All Candidates</title>
     <style>
-        
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
@@ -40,7 +40,8 @@
             overflow: hidden;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -57,17 +58,30 @@
 
 
         input {
-    
-    border: 3px solid #ced4da !important;
-    background-color: #ecf0f1 !important;
-}
 
-label {
-    color: white;
-    
-   
-}
+            border: 3px solid #ced4da !important;
+            background-color: #ecf0f1 !important;
+        }
 
+        label {
+            color: white;
+
+
+        }
+
+        /* Responsive styles */
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 60px 10px;
+            }
+
+            body {
+                background-size: auto 200%;
+                /* Adjust background size to cover full height */
+                background-repeat: no-repeat;
+            }
+        }
     </style>
 
 </head>
@@ -80,106 +94,106 @@ label {
     {% include 'base.html' %}
     <br>
     <br>
-<div class="container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Location</th>
-                <th>Designation</th>
-                <th>Contact</th>
-                <th>Skills</th>
-                <th>Last Updated</th>
-                <th>View</th>
-            </tr>
-        </thead>
-      
-        <tbody>
-            {% for i in all %}
-            <tr>
-                <td id="snno" ></td>
-                <td>{{i.first_name}} {{i.last_name}}</td>
-                <td>{{i.location}}</td>
-                <td>
-                    <span>{{i.designation}} </span><br>
-                    <span>{{i.client_name }} </span>
-                  </td>
-                <td>
-                    <span >{{i.email}}</span><br>
-                    <span >{{i.phone}}</span>
-                  </td>
-               
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Designation</th>
+                    <th>Contact</th>
+                    <th>Skills</th>
+                    <th>Last Updated</th>
+                    <th>View</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for i in all %}
+                <tr>
+                    <td id="snno"></td>
+                    <td>{{i.first_name}} {{i.last_name}}</td>
+                    <td>{{i.location}}</td>
+                    <td>
+                        <span>{{i.designation}} </span><br>
+                        <span>{{i.client_name }} </span>
+                    </td>
+                    <td>
+                        <span>{{i.email}}</span><br>
+                        <span>{{i.phone}}</span>
+                    </td>
+
                     <td>
                         {% for skill in i.skills.all %}
                         {{ skill.name }}
                         {% if not forloop.last %}, {% endif %}
                         {% endfor %}</td>
-                  
-                <td>{{i.formatted_updated_on}}</td>
-                <td>  
-                  
-                    <a href="{% url 'detail' i.id %}"><button style="font-size: 15px;padding: 5px 8px;" title="View"
-                        class="btn btn-outline-primary"><i class="bi bi-search"></i></button></a>&nbsp;
 
-                  </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-       
+                    <td>{{i.formatted_updated_on}}</td>
+                    <td>
 
-        <script>
-            // Get all elements with class "snno"
-            var snnoElements = document.querySelectorAll('#snno');
+                        <a href="{% url 'detail' i.id %}"><button style="font-size: 15px;padding: 5px 8px;" title="View"
+                                class="btn btn-outline-primary"><i class="bi bi-search"></i></button></a>&nbsp;
 
-            // Loop through the elements and assign incrementing numbers
-            snnoElements.forEach(function (element, index) {
-              element.textContent = index + 1; // Assign the incrementing number (1-based index)
-            });
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
 
 
-            function toggleSidebar() {
-              var sidebar = document.getElementById('sidebar');
-              var content = document.getElementById('content');
+            <script>
+                // Get all elements with class "snno"
+                var snnoElements = document.querySelectorAll('#snno');
 
-              if (sidebar.style.width === '250px') {
-                sidebar.style.width = '0';
-                content.style.marginLeft = '0';
-              } else {
-                sidebar.style.width = '250px';
-                content.style.marginLeft = '250px';
-              }
-            }
-          </script>
-    </table>
- 
-</div>
+                // Loop through the elements and assign incrementing numbers
+                snnoElements.forEach(function (element, index) {
+                    element.textContent = index + 1; // Assign the incrementing number (1-based index)
+                });
 
-<script>
-    $(document).ready(function () {
-        $('.table').DataTable({
 
-            "columnDefs": [
-                { "orderable": false, "targets": 5 }
-            ],
-            language: {
-                'paginate': {
-                    'previous': '<span class="fa fa-chevron-left"></span>',
-                    'next': '<span class="fa fa-chevron-right"></span>'
-                },
-                //customize number of elements to be displayed
-                "lengthMenu": 'Display <select >' +
-                    '<option value="10">10</option>' +
-                    '<option value="20">20</option>' +
-                    '<option value="30">30</option>' +
-                    '<option value="40">40</option>' +
-                    '<option value="50">50</option>' +
-                    '<option value="-1">All</option>' +
-                    '</select> '
-            }
-        })
-    });
-</script>
+                function toggleSidebar() {
+                    var sidebar = document.getElementById('sidebar');
+                    var content = document.getElementById('content');
+
+                    if (sidebar.style.width === '250px') {
+                        sidebar.style.width = '0';
+                        content.style.marginLeft = '0';
+                    } else {
+                        sidebar.style.width = '250px';
+                        content.style.marginLeft = '250px';
+                    }
+                }
+            </script>
+        </table>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+
+                "columnDefs": [
+                    { "orderable": false, "targets": 5 }
+                ],
+                language: {
+                    'paginate': {
+                        'previous': '<span class="fa fa-chevron-left"></span>',
+                        'next': '<span class="fa fa-chevron-right"></span>'
+                    },
+                    //customize number of elements to be displayed
+                    "lengthMenu": 'Display <select >' +
+                        '<option value="10">10</option>' +
+                        '<option value="20">20</option>' +
+                        '<option value="30">30</option>' +
+                        '<option value="40">40</option>' +
+                        '<option value="50">50</option>' +
+                        '<option value="-1">All</option>' +
+                        '</select> '
+                }
+            })
+        });
+    </script>
 
 </body>
 
