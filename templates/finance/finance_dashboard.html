@@ -1,23 +1,24 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard-Fiannce</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard-Fiannce</title>
 
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>  
-  <style>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        nav {
 
-nav {
-        
             width: 100%;
             top: 0;
             right: 0;
@@ -30,6 +31,7 @@ nav {
             transition: all 0.50s ease;
         }
 
+
         .logo {
             color: #FFF;
             font-size: 35px;
@@ -37,8 +39,16 @@ nav {
             cursor: pointer;
         }
 
+
+        .logo-text {
+            font-size: 3vw;
+            /* Adjust font size relative to viewport width */
+            font-weight: bold;
+        }
+
         .nav-list {
             display: flex;
+            align-items: center;
         }
 
         .nav-list a {
@@ -50,8 +60,22 @@ nav {
             transition: all 0.50s ease;
         }
 
+        .dark-mode .nav-list a {
+            margin: 0 5px;
+            padding: 5px 10px;
+            color: rgb(250, 5, 5);
+            font-size: 17px;
+            font-weight: 500;
+            transition: all 0.50s ease;
+        }
+
+        .dark-mode .text-muted {
+            color: #f70505 !important;
+        }
+
+
         .nav-list a:hover {
-            color: #00C9E0;
+            color: #0099e0;
         }
 
         .btn {
@@ -74,7 +98,7 @@ nav {
         #menu-icon {
             color: #FFF;
             font-size: 38px;
-            z-index: 10001;
+            z-index: 1000;
             cursor: pointer;
             display: none;
         }
@@ -114,36 +138,40 @@ nav {
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            color: #000; 
-}
+            color: #000;
+        }
 
- .dark-mode {
-  background-color: black;
-  color: white;
-  transition: background-color 0.5s ease, color 0.5s ease;
-}
+        .container {
+            margin-top: 110px;
+        }
 
-.dark-mode .nav-link {
-    color: white;
-  }
+        .dark-mode {
+            background-color: black;
+            color: white;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .dark-mode .nav-link {
+            color: white;
+        }
 
 
 
-#employee {
-  border: 1px solid black;
-  border-radius: 20px;
-  padding: 30px;
-  /* background-color: #3863db; */
-  }
+        #employee {
+            border: 1px solid black;
+            border-radius: 20px;
+            padding: 30px;
+            /* background-color: #3863db; */
+        }
 
-#employee:hover {
-  border: 1px solid black;
-  border-radius: 20px;
-  transform: scale(1.2);
-  transition: .4s;
-  cursor: pointer;
+        #employee:hover {
+            border: 1px solid black;
+            border-radius: 20px;
+            transform: scale(1.2);
+            transition: .4s;
+            cursor: pointer;
 
-}
+        }
 
 
         @media (max-width:1350px) {
@@ -214,282 +242,489 @@ nav {
                 font-size: 50px;
             }
         }
+
         .dropdown {
-    position: relative;
-    display: inline-block;
-}
+            position: relative;
+            display: inline-block;
+        }
 
-.dropdown-toggle {
-    background-color: #f1f1f1;
-    color: #333;
-    padding: .75rem 2.5rem;
-    border: none;
-    border-radius: .5rem;
-    cursor: pointer;
-    width: 400px;
-}
+        .dropdown-toggle {
+            background-color: #f1f1f1;
+            color: #333;
+            padding: .5rem 1.5rem;
+            border: none;
+            border-radius: .2rem;
+            cursor: pointer;
+            width: 200px;
+        }
 
-.dropdown-menu {
-    position: absolute;
-    top: 100%; /* Adjust as needed */
-    left: 0;
-    background-color: #f1f1f1;
-    border: 1px solid #ccc;
-    border-radius: 1rem;
-    padding: 0;
-    list-style: none;
-    display: none;
-}
-
-.dropdown-menu .menu-item:first-child {
-    border-radius: 1rem 1rem 0 0;
-}
-
-.dropdown-menu .menu-item:last-child {
-    border-radius: 0 0 1rem 1rem;
-}
-
-.menu-item {
-    width: 350px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 5rem;
-    background-color: white;
-    border: none;
-    font-size: 1.1rem;
-}
-
-.item-icon {
-    font-size: 1.5rem;
-}
-
-.item-txt {
-    width: 50%;
-    text-align: left;
-}
-
-.menu-item:hover {
-    cursor: pointer;
-    color: rgb(19, 98, 255);
-}
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            /* Adjust as needed */
+            left: 0%;
+            background-color: #f1f1f1;
+            /* background-color: #f1f1f1; */
+            border: 0px solid #ccc;
+            /* border-radius: 1rem; */
+            /* padding: 0; */
+            list-style: none;
+            display: none;
+        }
 
 
 
-  
-  </style>
+        .menu-item {
+            width: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: .5rem 2rem;
+            background-color: white;
+            border: none;
+            font-size: 1.1rem;
+        }
+
+        .item-icon {
+            font-size: 1rem;
+        }
+
+        .item-txt {
+            width: 50%;
+            text-align: left;
+        }
+
+        .menu-item:hover {
+            cursor: pointer;
+            color: rgb(19, 98, 255);
+        }
+
+
+
+        /* aaaaaaaaaaaaaaaaaaaaaa */
+
+        /* Add this media query for adjusting styles on smaller devices */
+        @media only screen and (max-width: 600px) {
+            nav {
+                padding: 10px 5%;
+                /* Adjust padding for smaller screens */
+            }
+
+            section {
+                padding: 0 5%;
+                /* Adjust padding for smaller screens */
+            }
+
+            .dropdown-toggle {
+                width: 0px;
+                /* Adjust width for smaller screens */
+            }
+
+            .item-txt {
+                width: 80%;
+                text-align: right;
+            }
+
+            .dropdown-menu {
+                /* border: solid black; */
+                /* border-radius: 1rem; */
+                /* padding: 0; */
+            }
+
+            .menu-item {
+                width: 150px;
+                /* Adjust width for smaller screens */
+                /* padding: .5rem 2rem; */
+            }
+
+            .card img {
+                width: 70px;
+                /* Adjust image width for smaller screens */
+            }
+
+            .container {
+                margin-top: 20px;
+                /* Adjust margin-top for smaller screens */
+            }
+
+            .heading-style {
+                font-size: 15px;
+                /* Adjust font-size for smaller screens */
+            }
+
+            /* Add more adjustments as needed */
+
+            .logo-text {
+                font-size: 2.5px;
+                /* Adjust font size for smaller screens */
+            }
+
+            .text-muted {
+                color: #080808 !important;
+            }
+
+            p {
+                margin-top: 25px;
+                margin-bottom: 1rem;
+            }
+
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                font-size: 1.2rem;
+                font-weight: 400;
+                line-height: 1.6;
+                /* color: black; */
+                text-align: left;
+            }
+        }
+
+        /* qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq */
+
+        /* Default styles */
+        .container,
+        .card {
+            background-color: transparent;
+            /* Transparent background */
+            opacity: 0.8;
+            /* Set opacity level */
+        }
+
+        .dark-mode .container {
+            color: white;
+        }
+        
+        .card:hover {
+
+            transform: scale(1.2);
+            transition: .4s;
+            cursor: pointer;
+        }
+        
+
+
+        @media (prefers-color-scheme: dark) {
+
+            .container,
+            .card {
+                opacity: 0.9;
+                /* Adjust opacity for dark mode */
+            }
+        }
+    </style>
 </head>
+
 <body>
 
 
-  <nav>
-    <h4 style="font-weight: 500;"><i class="bi bi-bank2"></i> &nbsp;Finance</h4>
-    <div class="bx bx-menu" id="menu-icon"></div>
-    <ul class="nav-list">
-        <li><a href=""><span style="font-size: xxx-large; font-weight: bold;">D A T A P M I</span></a></li>
-    </ul>
-    
-   
-    <div class="dropdown" id="dropdownMenu">
-        <button class="dropdown-toggle menu-item" id="dropdownToggle">
-            <span class="item-icon">
-                {% if user.image %}
-                <img style="border-radius: 50%;" src="{{user.image.url}}" / width=36px">
-                {% else %}
-                <img src="/static/project_images/Noprofile.png" width="25px">
-                {% endif %}
-            </span>
-            <span class="item-txt">
-                {{request.user}}
-            </span>
-        </button>
-        <ul class="dropdown-menu" id="dropdownMenuContent">
-            <li class="menu-item">
-                <span class="item-icon">
-                    <i class='bx bxs-dashboard'></i>
-                </span>
-                <span class="item-txt">
-                    Dashboard
-                </span>
-            </li>
-
-            <a href="{% url 'signout' %}">
-            <li style="color: red;" class="menu-item">
-                <span class="item-icon">
-                    <i class='bx bx-log-out'></i>
-                </span>
-                <span class="item-txt">
-                   Logout
-                </span>
-            </li></a>
-
-            <a href="{% url 'profile' %}">
-            <li class="menu-item">
-                <span class="item-icon">
-                    <i class='bx bx-cog'></i>
-                </span>
-                <span class="item-txt">
-                    Settings
-                </span>
-            </li></a>
-
+    <nav>
+        <h4 style="font-weight: 500;"><i class="bi bi-bank2"></i> &nbsp;Finance</h4>
+        <!-- <div class="bx bx-menu" id="menu-icon"></div> -->
+        <!-- <ul class="nav-list">
+            <li><a href=""><span style="font-size: xxx-large; font-weight: bold;">D A T A P M I</span></a></li>
+        </ul> -->
+        <ul class="nav-list">
+            <li><a href=""><span class="logo-text">D A T A P M I</span></a></li>
         </ul>
+
+
+
+        <div class="dropdown" id="dropdownMenu">
+            <button class="dropdown-toggle menu-item" id="dropdownToggle">
+                <span class="item-icon">
+                    {% if user.image %}
+                    <img style="border-radius: 50%;" src="{{user.image.url}}" / width=36px">
+                    {% else %}
+                    <img src="/static/project_images/Noprofile.png" width="25px">
+                    {% endif %}
+                </span>
+                <span class="item-txt">
+                    {{request.user}}
+                </span>
+            </button>
+            <ul class="dropdown-menu" id="dropdownMenuContent">
+                <li class="menu-item">
+                    <span class="item-icon">
+                        <i class='bx bxs-dashboard'></i>
+                    </span>
+                    <span class="item-txt">
+                        Dashboard
+                    </span>
+                </li>
+
+                <a href="{% url 'signout' %}">
+                    <li style="color: red;" class="menu-item">
+                        <span class="item-icon">
+                            <i class='bx bx-log-out'></i>
+                        </span>
+                        <span class="item-txt">
+                            Logout
+                        </span>
+                    </li>
+                </a>
+
+                <a href="{% url 'profile' %}">
+                    <li class="menu-item">
+                        <span class="item-icon">
+                            <i class='bx bx-cog'></i>
+                        </span>
+                        <span class="item-txt">
+                            Settings
+                        </span>
+                    </li>
+                </a>
+
+            </ul>
+        </div>
+
+        </div>
+    </nav>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var dropdownToggle = document.getElementById('dropdownToggle');
+            var dropdownMenuContent = document.getElementById('dropdownMenuContent');
+
+            dropdownToggle.addEventListener('click', function () {
+                dropdownMenuContent.classList.toggle('show');
+            });
+
+            window.addEventListener('click', function (event) {
+                if (!dropdownToggle.contains(event.target) && !dropdownMenuContent.contains(event.target)) {
+                    dropdownMenuContent.classList.remove('show');
+                }
+            });
+        });
+    </script>
+
+    <br>
+    <br>
+    <br>
+
+
+    <!-- <div class="container">
+        <div class="row">
+
+
+            <div id="employee" class="col">
+                All Employees<br>
+                <a href="/all_employee">
+                    <img src="https://cdn-icons-png.flaticon.com/512/9271/9271306.png" width="180rem"
+                        alt="All Employees"> </a>
+            </div> &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+
+
+
+            <div id="employee" class="col">
+                Active Employees<br>
+                <a href="{% url 'active_inactive' action='active' %}">
+                    <img src="https://cdn-icons-png.flaticon.com/256/9512/9512680.png" width="180rem"
+                        alt="Active Employees"></a>
+            </div>&nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+
+
+            <div id="employee" class="col">
+
+                Inactive Employees
+                <a href="{% url 'active_inactive' action='inactive' %}">
+                    <img src="https://www.iconpacks.net/icons/1/free-remove-user-icon-303-thumb.png" width="170rem"
+                        alt="Inactive Employees"></a>
+            </div>&nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+
+
+            <div id="employee" class="col">
+                Add Employee<br>
+                <a href="/add_employee">
+                    <img src="https://cdn-icons-png.freepik.com/512/6799/6799093.png" width="180rem"
+                        alt="Add Employees"></a>
+            </div>&nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+
+        </div>
     </div>
 
-  </div>
-</nav>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var dropdownToggle = document.getElementById('dropdownToggle');
-    var dropdownMenuContent = document.getElementById('dropdownMenuContent');
 
-    dropdownToggle.addEventListener('click', function() {
-        dropdownMenuContent.classList.toggle('show');
-    });
+    <br>
+    <br>
 
-    window.addEventListener('click', function(event) {
-        if (!dropdownToggle.contains(event.target) && !dropdownMenuContent.contains(event.target)) {
-            dropdownMenuContent.classList.remove('show');
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <style>
+        .container {
+            margin-top: 30px;
         }
-    });
-});
-</script>
 
-<br>
-<br>
-<br>
+        .heading-style {
+            font-size: 28px;
+            font-weight: bold;
+            color: rgb(22, 182, 57);
+            text-shadow: 2px 2px 4px rgba(241, 6, 6, 0.7);
+        }
 
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 0.5px 0 1px rgba(206, 8, 58, 0.23) inset, 0 1px 0 0 rgba(245, 2, 2, 0.66) inset,
+                0 4px 16px rgba(0, 68, 88, 0.12);
+        }
 
-  <div class="container">
-    <div class="row">
+        .card-body {
+            padding: 20px;
+            color: #0c0b0b;
+        }
 
- 
-      <div id="employee"class="col">
-        All Employees<br>
-        <a href="/all_employee">
-        <img  src="https://cdn-icons-png.flaticon.com/512/9271/9271306.png" width="180rem"> </a>
-      </div> &nbsp;
-      &nbsp;
-      &nbsp;
-      &nbsp;
-     
+        .card img {
+            width: 25px;
+            margin-right: 10px;
+        }
 
+        .card a {
+            text-decoration: none;
+            color: #580cd1;
+        }
 
-<div id="employee" class="col">
-  Active Employees<br>
-  <a href="{% url 'active_inactive' action='active' %}">
-<img  src="https://cdn-icons-png.flaticon.com/256/9512/9512680.png" width="180rem"></a>
-</div>&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-
-
-  <div id="employee"  class="col">
-   
-    Inactive Employees
-    <a href="{% url 'active_inactive' action='inactive' %}">
-<img src="https://www.iconpacks.net/icons/1/free-remove-user-icon-303-thumb.png" width="170rem"></a>
-</div>&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-
-
-<div id="employee" class="col">
-  Add Employee<br>
-  <a href="/add_employee">
-  <img  src="https://cdn-icons-png.freepik.com/512/6799/6799093.png" width="180rem"></a>
-</div>&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-
-  </div>
-</div>
-
-
-<br>
-<br>
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
-<style>
-    .container {
-        margin-top: 30px;
-    }
-
-    .heading-style {
-        font-size: 28px;
-        font-weight: bold;
-        color: rgb(22, 182, 57);
-        text-shadow: 2px 2px 4px rgba(241, 6, 6, 0.7);
-    }
-
-    .card {
-        border-radius: 10px;
-        box-shadow: 0 0.5px 0 1px rgba(206, 8, 58, 0.23) inset, 0 1px 0 0 rgba(245, 2, 2, 0.66) inset,
-            0 4px 16px rgba(0, 68, 88, 0.12);
-    }
-
-    .card-body {
-        padding: 20px;
-        color: #0c0b0b;
-    }
-
-    .card img {
-        width: 25px;
-        margin-right: 10px;
-    }
-
-    .card a {
-        text-decoration: none;
-        color: #580cd1;
-    }
-
-    .card a:hover {
-        text-decoration: underline;
-    }
-</style>
+        .card a:hover {
+            text-decoration: underline;
+        }
+    </style>
 
 
 
-<div class="container">
-    <div class="col">  
-<h4>Contract Expiring with in 7 days</h4><br>
-    </div>
-    <div class="row justify-content">
-        {% for employee in employees %}
-        <div class="col-xl-4 col-lg-6 mb-4">
-            <div class="card text-end">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="ms-3">
-                            <a href="{% url 'detail_employee' employee.id %}">
-                                <img src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png"
-                                    alt="icon">
-                                {{ employee.name }}
-                                <p style="font-family: 'Gabriola', cursive; color: rgb(0, 255, 149);"
-                                    class="text-muted mb-0">{{ employee.email }}</p>(End Date: {{ employee.end_date_of_work_order }})
-                            </a>
+    <div class="container">
+        <div class="col">
+            <h4>Contract Expiring with in 7 days</h4><br>
+        </div>
+        <div class="row justify-content">
+            {% for employee in employees %}
+            <div class="col-xl-4 col-lg-6 mb-4">
+                <div class="card text-end">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                                <a href="{% url 'detail_employee' employee.id %}">
+                                    <img src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png"
+                                        alt="icon">
+                                    {{ employee.name }}
+                                    <p style="font-family: 'Gabriola', cursive; color: rgb(0, 255, 149);"
+                                        class="text-muted mb-0">{{ employee.email }}</p>(End Date: {{
+                                    employee.end_date_of_work_order }})
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {% empty %}
+            <div class="col-12">
+                <center>No Employee Found</center>
+            </div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <div class="col-12">
-            <center>No Employee Found</center>
-        </div>
-        {% endfor %}
     </div>
-</div>
 
 
 
-<script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script> -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="heading-style">All Employees</h4>
+                        <a href="/all_employee">
+                            <img src="https://cdn-icons-png.flaticon.com/512/9271/9271306.png" width="180rem"
+                                alt="All Employees">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="heading-style">Active Employees</h4>
+                        <a href="{% url 'active_inactive' action='active' %}">
+                            <img src="https://cdn-icons-png.flaticon.com/256/9512/9512680.png" width="180rem"
+                                alt="Active Employees">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="heading-style">Inactive Employees</h4>
+                        <a href="{% url 'active_inactive' action='inactive' %}">
+                            <img src="https://www.iconpacks.net/icons/1/free-remove-user-icon-303-thumb.png"
+                                width="170rem" alt="Inactive Employees">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="heading-style">Add Employee</h4>
+                        <a href="/add_employee">
+                            <img src="https://cdn-icons-png.freepik.com/512/6799/6799093.png" width="180rem"
+                                alt="Add Employees">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="container">
+        <div class="col">
+            <h4>Contract Expiring Within 7 Days</h4><br>
+        </div>
+        <div class="row justify-content">
+            {% for employee in employees %}
+            <div class="col-xl-4 col-lg-6 mb-4">
+                <div class="card text-end">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                                <a href="{% url 'detail_employee' employee.id %}">
+                                    <img src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png"
+                                        alt="icon" width="20px">
+                                    {{ employee.name }}
+                                    <p style="font-family: 'Gabriola', cursive; color: #00ff95;"
+                                        class="text-muted mb-0">{{ employee.email }}</p>(End Date:
+                                    {{employee.end_date_of_work_order}} )
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <center>No Employee Found</center>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
 
 </body>
+
 </html>

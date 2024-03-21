@@ -35,7 +35,7 @@
 			box-sizing: border-box;
 		}
 
-	
+
 
 		html,
 		body {
@@ -49,7 +49,7 @@
 			overflow: hidden;
 			display: flex;
 			justify-content: center;
-		
+
 		}
 
 		button,
@@ -141,7 +141,7 @@
 			margin: 0 32px;
 		}
 
-	
+
 
 		.search-wrapper {
 			border-radius: 20px;
@@ -305,8 +305,8 @@
 		.projects-status {
 			display: flex;
 		}
-		px;
-			margin-bottom: 40%
+
+
 		.item-status {
 			display: flex;
 			flex-direction: column;
@@ -752,6 +752,11 @@
 			}
 		}
 
+		.custom-btn {
+			background-color: blue;
+			color: white;
+		}
+
 		@media screen and (max-width: 880px) {
 			.messages-section {
 				transform: translateX(100%);
@@ -771,6 +776,12 @@
 				display: flex;
 			}
 		}
+
+		.custom-btn {
+			background-color: blue;
+			color: white;
+		}
+
 
 		@media screen and (max-width: 720px) {
 
@@ -798,15 +809,21 @@
 			}
 		}
 
+		.custom-btn {
+			background-color: blue;
+			color: white;
+		}
+
+
 		@media screen and (max-width: 520px) {
 
-			
+
 
 			.projects-section {
 				overflow: auto;
-				
+
 				margin-bottom: 50px;
-				
+
 			}
 
 			.project-boxes {
@@ -915,6 +932,62 @@
 				top: 10px;
 			}
 		}
+
+		.custom-btn {
+			background-color: blue;
+			color: white;
+		}
+
+
+
+		.profile-link {
+			text-decoration: none;
+			/* Remove underline from the link */
+		}
+
+		.profile-btn {
+			background-color: #3c9ee5;
+			/* Set background color */
+			color: white;
+			/* Set text color */
+			border: none;
+			/* Remove border */
+			border-radius: 5px;
+			/* Add border radius for rounded corners */
+			padding: 5px 10px;
+			/* Add padding */
+			cursor: pointer;
+			/* Change cursor to pointer on hover */
+			display: flex;
+			/* Display contents horizontally */
+			align-items: center;
+			/* Center vertically */
+		}
+
+		.profile-btn:hover {
+			background-color: #3083ba;
+			/* Darken background color on hover */
+		}
+
+		.profile-btn img {
+			width: 30px;
+			/* Set image width */
+			height: 30px;
+			/* Set image height */
+			border-radius: 50%;
+			/* Make the image round */
+			margin-right: 5px;
+			/* Add spacing between image and text */
+		}
+
+		.profile-name {
+			font-weight: bold;
+			/* Make the text bold */
+			text-transform: capitalize;
+			/* Capitalize the text */
+			text-decoration: none;
+			/* Remove underline from the text */
+		}
 	</style>
 
 
@@ -925,7 +998,7 @@
 
 	{% include 'sidebar.html' %}
 	{% include 'base.html' %}
-	
+
 
 	<section class="home">
 		<div class="app-container">
@@ -933,29 +1006,34 @@
 				<div class="app-header-left">
 					<span class="app-icon"></span>
 					<p class="app-name">D A T A P M I</p>
-				
+
 				</div>
 				<div class="app-header-right">
-					<a href="/create"> <button class="add-btn" title="Add New Candidate">
+					<a href="/create">
+						<button class="add-btn custom-btn" title="Add New Candidate">
 							<svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 								viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
 								stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
 								<line x1="12" y1="5" x2="12" y2="19" />
 								<line x1="5" y1="12" x2="19" y2="12" />
 							</svg>
-						</button></a>
-				
-					<a href="/profile">
+						</button>
+					</a>
+
+
+					<a href="/profile" class="profile-link">
 						<button class="profile-btn">
 							{% if user.image %}
-							<img src="{{user.image.url}}" />
+							<img src="{{user.image.url}}" alt="Profile Image" />
 							{% else %}
-							<img src="/static/project_images/Noprofile.png">
+							<img src="/static/project_images/Noprofile.png" alt="No Profile Image" />
 							{% endif %}
-							<span style="color:#3c9ee5">{{user}}</span>
-						</button></a>
+							<span class="profile-name">{{ user }}</span>
+						</button>
+					</a>
+
 				</div>
-				
+
 			</div>
 
 			<marquee>
@@ -964,7 +1042,7 @@
 
 
 			<div class="projects-section">
-		
+
 				<div class="project-boxes jsGridView">
 					<div class="project-box-wrapper">
 						<div class="project-box" style="background-color: #b9b4e7;">
@@ -1098,7 +1176,7 @@
 							</div>
 						</div>
 						<br>
-								
+
 					</div>
 					<div class="project-box-wrapper">
 						<div class="project-box" style="background-color: #ffd3e2;">
@@ -1182,7 +1260,7 @@
 											</div>
 											<span id="saved_candidates" class="status-number"></span>
 											<script>
-												
+
 												fetch('/savedcandidates')
 													.then(response => response.json())
 													.then(data => {
@@ -1192,10 +1270,10 @@
 													.catch(error => {
 														console.error('Error fetching candidate count:', error);
 													});
-	
+
 											</script>
 										</button>
-									
+
 									</div>
 								</a>
 								<div class="col">
@@ -1263,7 +1341,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 
 	</section>
 
@@ -1373,7 +1451,7 @@
 
 	</script>
 
-	
+
 
 </body>
 

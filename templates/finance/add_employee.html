@@ -1,199 +1,220 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee</title>
     <style>
+        .dark-mode {
+            background-color: black;
+            color: white;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
 
-body {
-          
-}
+        .section-add {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 40px;
+            background-color: #f4f4f4;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
 
- .dark-mode {
-  background-color: black;
-  color: white;
-  transition: background-color 0.5s ease, color 0.5s ease;
-}
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            background-color: #fff;
+            padding: 60px;
+            /* Increased padding */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 150px;
+        }
 
-.section-add {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 40px; 
-    background-color: #f4f4f4;
-    transition: background-color 0.5s ease, color 0.5s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
+        .form-container .form-section {
+            width: 100%;
+            margin-bottom: 20px;
+            /* Increased margin */
+        }
 
-.form-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    background-color: #fff;
-    padding: 60px; /* Increased padding */
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
-    width: 100%;
-    box-sizing: border-box;
-}
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+            /* Increased margin */
+            font-weight: bold;
+            color: #333333;
+        }
 
-.form-container .form-section {
-    width: 100%;
-    margin-bottom: 20px; /* Increased margin */
-}
+        .form-container input,
+        .form-container textarea,
+        .form-container select {
+            width: 100%;
+            padding: 15px;
+            /* Increased padding */
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
 
-.form-container label {
-    display: block;
-    margin-bottom: 10px; /* Increased margin */
-    font-weight: bold;
-    color: #333333;
-}
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 15px;
+            /* Increased padding */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            /* Increased margin */
+        }
 
-.form-container input,
-.form-container textarea,
-.form-container select {
-    width: 100%;
-    padding: 15px; /* Increased padding */
-    margin-bottom: 20px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-}
+        @media screen and (min-width: 768px) {
+            .form-container .form-section {
+                width: 48%;
+            }
+        }
 
-button {
-    background-color: #4caf50;
-    color: #fff;
-    padding: 15px; /* Increased padding */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 20px; /* Increased margin */
-}
+        @media screen and (max-width: 767px) {
+            .form-container {
+                padding: 20px;
+                /* Reduced padding */
+            }
 
-@media screen and (min-width: 768px) {
-    .form-container .form-section {
-        width: 48%;
-    }
-}
+            .form-container .form-section {
+                width: 100%;
+                /* Full width for mobile */
+            }
 
-
-
-
+            body {
+                padding: 0;
+                margin: 0;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     {% include 'navbar.html' %}
     {% include 'base.html' %}
-    
-  
-<div class="section-add">
-      
-    <form  action="{% url 'add_employee' %}" method="post" enctype="multipart/form-data"> 
-        {% csrf_token %}
-<div class="form-container">
-    <div class="form-section">
-        <br>
-        <br>
-            <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter your name" required>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-        <label for="mobile">Mobile Number:</label>
-        <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required>
+    <div class="section-add">
 
-        <label for="alternate">Alternate Number:</label>
-        <input type="tel" id="alternate" name="alternate" placeholder="Enter alternate number">
+        <form action="{% url 'add_employee' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-container">
+                <div class="form-section">
+                    <br>
+                    <br>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
 
-        <label for="position">Position:</label>
-        <input type="text" id="position" name="position" placeholder="Enter your position">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-        <label for="clientName">Client Name:</label>
-        <input type="text" id="clientName" name="clientName" placeholder="Enter client name">
+                    <label for="mobile">Mobile Number:</label>
+                    <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required>
 
-        <label for="clientLocation">Client Location:</label>
-        <input type="text" id="clientLocation" name="clientLocation" placeholder="Enter client location">
+                    <label for="alternate">Alternate Number:</label>
+                    <input type="tel" id="alternate" name="alternate" placeholder="Enter alternate number">
 
-        <label for="projectDirector">Project Director:</label>
-        <input type="text" id="projectDirector" name="projectDirector" placeholder="Enter project director">
+                    <label for="position">Position:</label>
+                    <input type="text" id="position" name="position" placeholder="Enter your position">
 
-        <label for="projectPartner">Project Partner:</label>
-        <input type="text" id="projectPartner" name="projectPartner" placeholder="Enter project partner">
+                    <label for="clientName">Client Name:</label>
+                    <input type="text" id="clientName" name="clientName" placeholder="Enter client name">
 
-        <label for="fees">Fees:</label>
-        <input type="text" id="fees" name="fees" placeholder="Enter fees">
+                    <label for="clientLocation">Client Location:</label>
+                    <input type="text" id="clientLocation" name="clientLocation" placeholder="Enter client location">
 
-    
-        <label for="employeeStatus">Work Type:</label>
-        <select id="employeeStatus" name="employeeStatus">
-            <option value="">Select Status</option>
-            <option value="Permanent">Permanent</option>
-            <option value="Contractor">Contractor</option></select>
+                    <label for="projectDirector">Project Director:</label>
+                    <input type="text" id="projectDirector" name="projectDirector" placeholder="Enter project director">
 
-      
+                    <label for="projectPartner">Project Partner:</label>
+                    <input type="text" id="projectPartner" name="projectPartner" placeholder="Enter project partner">
+
+                    <label for="fees">Fees:</label>
+                    <input type="text" id="fees" name="fees" placeholder="Enter fees">
+
+
+                    <label for="employeeStatus">Work Type:</label>
+                    <select id="employeeStatus" name="employeeStatus">
+                        <option value="">Select Status</option>
+                        <option value="Permanent">Permanent</option>
+                        <option value="Contractor">Contractor</option>
+                    </select>
+
+
+                </div>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+
+
+
+
+                <div class="form-section">
+                    <br><br>
+                    <label for="joiningDate">Joining Date:</label>
+                    <input type="date" id="joiningDate" name="joiningDate">
+
+                    <label for="lastWorkingDate">Last Working Date:</label>
+                    <input type="date" id="joiningDate" name="lastWorkingDate">
+
+                    <label for="workOrderStartDate">Start Date of Work Order:</label>
+                    <input type="date" id="workOrderStartDate" name="workOrderStartDate">
+
+                    <label for="workOrderEndDate">End Date of Work Order:</label>
+                    <input type="date" id="workOrderEndDate" name="workOrderEndDate">
+
+                    <label for="woDetail">Work Order Detail:</label>
+                    <textarea id="woDetail" name="woDetail" rows="4" placeholder="Enter work order details"></textarea>
+
+                    <label for="uploadWorkOrder">Upload Work Order:</label>
+                    <input type="file" id="uploadWorkOrder" name="uploadWorkOrder">
+
+                    <label for="uploadNDA">Upload NDA:</label>
+                    <input type="file" id="uploadNDA" name="uploadNDA">
+
+                    <label for="uploadResume">Upload Resume:</label>
+                    <input type="file" id="uploadResume" name="uploadResume">
+
+                    <label for="active_inactive">Active Status: <span style="font-size: 11px;color: red;">Currently the
+                            employee is working or not</span></label>
+
+                    <select id="active_inactive" name="active_inactive">
+                        <option value="">Select Status</option>
+                        <option value="Active">Active</option>
+                        <option value="InActive">InActive</option>
+                    </select>
+
+                    <button class="button" type="submit">Submit</button>
+
+                </div>
+
+            </div>
+        </form>
+
     </div>
-  &nbsp;
-  &nbsp;
-  &nbsp;
-  
-  
-  
-  
-    <div class="form-section">
-        <br><br>
-        <label for="joiningDate">Joining Date:</label>
-        <input type="date" id="joiningDate" name="joiningDate" >
-
-        <label for="lastWorkingDate">Last Working Date:</label>
-        <input type="date" id="joiningDate" name="lastWorkingDate" >
-
-        <label for="workOrderStartDate">Start Date of Work Order:</label>
-        <input type="date" id="workOrderStartDate" name="workOrderStartDate" >
-
-        <label for="workOrderEndDate">End Date of Work Order:</label>
-        <input type="date" id="workOrderEndDate" name="workOrderEndDate" >
-
-        <label for="woDetail">Work Order Detail:</label>
-        <textarea id="woDetail" name="woDetail" rows="4" placeholder="Enter work order details"></textarea>
-
-        <label for="uploadWorkOrder">Upload Work Order:</label>
-        <input type="file" id="uploadWorkOrder" name="uploadWorkOrder" >
-
-        <label for="uploadNDA">Upload NDA:</label>
-        <input type="file" id="uploadNDA" name="uploadNDA" >
-
-        <label for="uploadResume">Upload Resume:</label>
-        <input type="file" id="uploadResume" name="uploadResume" >
-
-        <label for="active_inactive">Active Status:   <span style="font-size: 11px;color: red;">Currently the employee is working or not</span></label>
-      
-        <select id="active_inactive" name="active_inactive">
-            <option value="">Select Status</option>
-            <option value="Active">Active</option>
-            <option value="InActive">InActive</option></select>
-
-        <button class="button" type="submit">Submit</button>
-                
-    </div>
-  
-</div>
-</form>
-
-</div>
 
 
 
 </body>
+
 </html>

@@ -13,21 +13,21 @@
 
     <title>Active Inactive </title>
     <style>
-        
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background: url('/static/project_images/Profile.jpg');
+            background-image: url('/static/project_images/Profile.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            width: 100vw; /* Set the width to full viewport width */
         }
 
         .container {
             width: 80%;
-            margin: 20px auto;
+            margin: 150px auto;
         }
 
         table {
@@ -38,8 +38,10 @@
             box-shadow: 0 0 10px rgba(172, 29, 29, 0.1);
             border-radius: 8px;
             overflow: hidden;
+            background: transparent !;
         }
 
+       
         th, td {
             padding: 12px 15px;
             text-align: left;
@@ -57,145 +59,106 @@
 
 
         input {
-    
-    border: 3px solid #ced4da !important;
-    background-color: #ecf0f1 !important;
-    
-}
+            border: 3px solid #ced4da !important;
+            background-color: #ecf0f1 !important;
+        }
 
-label {
-    color: white;
-    
-   
-}
+        label {
+            color: white;
+        }
 
+        /* Responsive styles */
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 60px 10px;
+            }
+            body {
+                background-size: auto 200%; /* Adjust background size to cover full height */
+                background-repeat: no-repeat;
+            }
+        }
     </style>
 
 </head>
 
 <body>
 
-{% include 'navbar.html' %}
-{% include 'base.html' %}
+    {% include 'navbar.html' %}
+    {% include 'base.html' %}
 
- 
-    <br>
-    <br>
+    <div class="container">
+        <!-- <h4 style="color:black">{{heading}}</h4><br> -->
+        <div class="table-responsive">
+            <table id="employee-table" class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Client Name</th>
+                        <th>Client Location</th>
+                        <th>Contact</th>
+                        <th>Project Director</th>
+                        <th>Last Updated</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in employee_active %}
+                    <tr>
+                        <td class="snno"></td>
+                        <td>{{i.name}}</td>
+                        <td>{{i.client_name}}</td>
+                        <td>{{i.client_location}}</td>
+                        <td>{{i.email}}<br>{{i.mobile}}, {{i.alt_mobile}}</td>
+                        <td>{{i.project_director}}</td>
+                        <td>{{i.created}}</td>
+                        <td>
+                            {% if request.user == i.user %}
+                            <a href="{% url 'update_employee' i.pk %}"><button class="btn btn-outline-info btn-sm" title="Edit"><i class="bi bi-pencil"></i></button></a>
+                            <a href="{% url 'delete_employee' i.id %}"><button class="btn btn-outline-primary btn-sm" title="Delete"><i class="bi bi-trash"></i></button></a>
+                            {% endif %}
+                            <a href="{% url 'detail_employee' i.id %}"><button class="btn btn-outline-primary btn-sm" title="View"><i class="bi bi-search"></i></button></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    
-<div class="container">
-
-<h4 style="color:black">{{heading}}</h4><br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Client Name</th>
-                <th>Client Location</th>
-                <th>Contact</th>
-                <th>Project Director</th>
-                <th>Last Updated</th>
-                <th>View</th>
-            </tr>
-        </thead>
-      
-        <tbody>
-            {% for i in employee_active %}
-            <tr>
-                <td id="snno" ></td>
-                <td>{{i.name}}</td>
-                <td>{{i.client_name}}</td>
-                <td>
-                    <span>{{i.client_location}} </span><br>
-                   
-                  </td>
-                <td>
-                    <span >{{i.email}}</span><br>
-                    <span >{{i.mobile}}</span>,
-                    <span >{{i.alt_mobile}}</span>
-                  </td>
-               
-                    <td>
-                        <span>{{i.project_director}}</span>
-                    </td>
-                  
-                <td>{{i.created}}</td>
-                <td>  
-                    {% if request.user == i.user %}
-                    <a href="{% url 'update_employee' i.pk %}"><button style="font-size: 10px;padding: 5px 8px;" title="Edit"
-                        class="btn btn-outline-info my-1"><i class="bi bi-pencil"></i></button></a>&nbsp; 
-                        <a href="{% url 'delete_employee' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"
-                            class="btn btn-outline-primary"><i class="bi bi-trash"></i></button></a>&nbsp;
-
-                {% else %}
-                
-                <!-- User is not the creator, display a message or change style -->
-           
-                {% endif %}
-
-                    
-                    <a href="{% url 'detail_employee' i.id %}"><button style="font-size: 10px;padding: 5px 8px;" title="View"
-                        class="btn btn-outline-primary"><i class="bi bi-search"></i></button></a>&nbsp;
-
-                  </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-       
-
-        <script>
-            // Get all elements with class "snno"
-            var snnoElements = document.querySelectorAll('#snno');
-
-            // Loop through the elements and assign incrementing numbers
-            snnoElements.forEach(function (element, index) {
-              element.textContent = index + 1; // Assign the incrementing number (1-based index)
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTable
+            $('#employee-table').DataTable({
+                "columnDefs": [
+                    { "orderable": false, "targets": 7 } // Disable sorting on the last column
+                ],
+                language: {
+                    'paginate': {
+                        'previous': '<span class="fa fa-chevron-left"></span>',
+                        'next': '<span class="fa fa-chevron-right"></span>'
+                    },
+                    // Customize number of elements to be displayed
+                    "lengthMenu": 'Display <select>' +
+                        '<option value="10">10</option>' +
+                        '<option value="20">20</option>' +
+                        '<option value="30">30</option>' +
+                        '<option value="40">40</option>' +
+                        '<option value="50">50</option>' +
+                        '<option value="-1">All</option>' +
+                        '</select> '
+                }
             });
 
-
-            function toggleSidebar() {
-              var sidebar = document.getElementById('sidebar');
-              var content = document.getElementById('content');
-
-              if (sidebar.style.width === '250px') {
-                sidebar.style.width = '0';
-                content.style.marginLeft = '0';
-              } else {
-                sidebar.style.width = '250px';
-                content.style.marginLeft = '250px';
-              }
-            }
-          </script>
-    </table>
- 
-</div>
-
-<script>
-    $(document).ready(function () {
-        $('.table').DataTable({
-
-            "columnDefs": [
-                { "orderable": false, "targets": 5 }
-            ],
-            language: {
-                'paginate': {
-                    'previous': '<span class="fa fa-chevron-left"></span>',
-                    'next': '<span class="fa fa-chevron-right"></span>'
-                },
-                //customize number of elements to be displayed
-                "lengthMenu": 'Display <select >' +
-                    '<option value="10">10</option>' +
-                    '<option value="20">20</option>' +
-                    '<option value="30">30</option>' +
-                    '<option value="40">40</option>' +
-                    '<option value="50">50</option>' +
-                    '<option value="-1">All</option>' +
-                    '</select> '
-            }
-        })
-    });
-</script>
+            // Assign incrementing numbers to elements with class "snno"
+            $('.snno').each(function (index) {
+                $(this).text(index + 1);
+            });
+        });
+    </script>
 
 </body>
 

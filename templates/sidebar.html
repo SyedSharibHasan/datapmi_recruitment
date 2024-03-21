@@ -64,7 +64,7 @@
             }
 
             .sidebar .icon {
-                min-width: 60px;
+                min-width: 30px;
                 border-radius: 6px;
                 height: 100%;
                 display: flex;
@@ -226,8 +226,8 @@
             }
 
             .menu-bar .mode .sun-moon {
-                height: 50px;
-                width: 60px;
+                height: 160px;
+                width: 50px;
             }
 
             .mode .sun-moon i {
@@ -279,7 +279,7 @@
 
 
 /* Show the button on smaller screens */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 300px) {
     .mobile-toggle {
         display: block;
         color:aquamarine;
@@ -394,14 +394,14 @@
                     <li class="nav-link">
                         <a href="/list">
                             <i class='bx bx-user icon'></i>
-                            <span class="text nav-text">My candidates</span>
+                            <span class="text nav-text">My Candidates</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
                         <a href="/all">
                             <i class='bx bx-group icon'></i>
-                            <span class="text nav-text">All candidates</span>
+                            <span class="text nav-text">All Candidates</span>
                         </a>
                     </li>
 
@@ -431,13 +431,14 @@
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
-
+<br>
+<br>
                 <li onclick="window.location.reload()" class="mode">
                     <div class="sun-moon">
                         <i class='bx bx-moon icon moon'></i>
                         <i class='bx bx-sun icon sun'></i>
                     </div>
-                    <span class="mode-text text">Dark mode</span>
+                    <span class="text nav-text">Dark Mode</span>
 
                     <div class="toggle-switch">
                         <span class="switch"></span>
