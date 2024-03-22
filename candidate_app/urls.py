@@ -44,8 +44,6 @@ urlpatterns = [
     path("end_work_order/", end_work_order, name='end_work_order'),
     path('export_selected_to_excel/',export_selected_to_excel,name='export_selected_to_excel'),
   
-    
-
     ### these 3 url's should be kept last 
     path("signout/", signout, name='signout'),
     path('<str:action>/',signin,name='login'),

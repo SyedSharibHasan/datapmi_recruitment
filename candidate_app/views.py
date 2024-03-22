@@ -1031,7 +1031,8 @@ def send_notification(employee_id,finance_user_email):  # Default delay is 180 s
     except Exception as e:
         return f'An error occurred: {str(e)}'
         
-        
+
+
 from django.core.exceptions import ValidationError
 
 @finance_login_required
@@ -1342,7 +1343,7 @@ def export_selected_to_excel(request):
     ws = wb.active
     ws.title = "Candidates"
 
-    headers = ["Name", "Email", "Phone", "Alt Phone", "Position", "Client Name", "Client Location", "Project Director", "Project Partner", "Fees", "Work Type", "Work Order Detail","Resume URL","Active Status","Joining Date","Last Working Date ","Start Date of Work Order","End Date Work Order"]
+    headers = ["Name", "Email", "Phone", "Alt Phone", "Position", "Client Name", "Client Location", "Project Director", "Project Partner", "Fees", "Work Type", "Work Order Detail","Resume URL","Work Order","NDA","Active Status","Joining Date","Last Working Date ","Start Date of Work Order","End Date Work Order"]
     ws.append(headers)
 
     candidate_ids = request.GET.get('ids', '').split(',')
@@ -1352,15 +1353,17 @@ def export_selected_to_excel(request):
 
         MEDIA_URL = 'http://122.165.80.8:8080/media/'
 
-        # Example local file path
-        local_path = f'/home/renjith/datapmi_recruitment/media/employeeresume/{candidate.upload_resume}'
+        local_path_resume = f'/home/renjith/datapmi_recruitment/media/employeeresume/{candidate.upload_resume}'
+        local_path_work_order = f'/home/renjith/datapmi_recruitment/media/work_order/{candidate.upload_work_order}'
+        nda = f'/home/renjith/datapmi_recruitment/media/nda/{candidate.upload_nda}'
 
-        # Extract the relative path from the MEDIA_ROOT
-        relative_path = local_path.replace('/home/renjith/datapmi_recruitment/media/employeeresume/', '')
+        relative_path = local_path_resume.replace('/home/renjith/datapmi_recruitment/media/employeeresume/', '')
+        relative_path_work_order = local_path_work_order.replace('/home/renjith/datapmi_recruitment/media/work_order/', '')
+        relative_path_nda = nda.replace('/home/renjith/datapmi_recruitment/media/nda/', '')
 
-        # Combine MEDIA_URL and relative_path to get the URL
         resume_url = urljoin(MEDIA_URL, relative_path) if candidate.upload_resume else ''
-
+        work_order_url = urljoin(MEDIA_URL, relative_path_work_order) if candidate.upload_work_order else ''
+        nda_url = urljoin(MEDIA_URL, relative_path_nda) if candidate.upload_nda else ''
 
         row = [
             candidate.name,
@@ -1376,6 +1379,8 @@ def export_selected_to_excel(request):
             candidate.employee_status,
             candidate.work_order_detail,
             resume_url,
+            work_order_url,
+            nda_url,
             candidate.active_inactive,
             candidate.joining_date,
             candidate.last_working_date,
