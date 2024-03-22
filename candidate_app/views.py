@@ -1325,6 +1325,74 @@ def end_work_order(request):
 
 
 
+################# export to excel
+import os
+from openpyxl import Workbook
+from django.urls import reverse
+import urllib.parse
+from django.conf import settings
+from openpyxl.worksheet.hyperlink import Hyperlink
+from django.http import HttpResponse
+
+
+def export_selected_to_excel(request):
+    resume_folder = os.path.expanduser("~/resume")
+    if not os.path.exists(resume_folder):
+        os.makedirs(resume_folder)
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Candidates"
+
+    # Add headers
+    headers = ["Name", "Email", "Phone", "Alt Phone", "Position", "Client Name", "Client Location", "Project Director", "Project Partner", "Fees", "Work Type", "Work Order Detail","Resume URL","Active Status","Joining Date","Last Working Date ","Start Date of Work Order","End Date Work Order",]
+    ws.append(headers)
+
+    candidate_ids = request.GET.get('ids', '').split(',')
+    candidates = Employee.objects.filter(pk__in=candidate_ids)
+
+    for row_num, candidate in enumerate(candidates, start=2):
+        # Construct the resume file path
+        resume_path = candidate.upload_resume.path if candidate.upload_resume else ''
+        
+        # Download and save the resume file if it exists
+        if resume_path:
+            filename = os.path.basename(resume_path)
+            new_resume_path = os.path.join(resume_folder, filename)
+            with open(new_resume_path, 'wb') as f:
+                with open(resume_path, 'rb') as resume_file:
+                    f.write(resume_file.read())
+            resume_path = new_resume_path
+      
+        row = [
+            candidate.name,
+            candidate.email,
+            candidate.mobile,
+            candidate.alt_mobile,
+            candidate.position,
+            candidate.client_name,
+            candidate.client_location,
+            candidate.project_director,
+            candidate.project_partner,
+            candidate.fees,
+            candidate.employee_status,
+            candidate.work_order_detail,
+            resume_path,
+            candidate.active_inactive,
+            candidate.joining_date,
+            candidate.last_working_date,
+            candidate.start_date_of_work_order,
+            candidate.end_date_of_work_order,
+           
+        ]
+        
+        ws.append(row)
+
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="candidates.xlsx"'
+    wb.save(response)
+    return response
+
 
     
 

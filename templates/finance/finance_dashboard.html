@@ -17,18 +17,15 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        nav {
-
-            width: 100%;
+        .fixed-navbar {
+            position: fixed;
             top: 0;
             right: 0;
+            width: 100%;
             z-index: 1000;
-            display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 30px 12%;
-            background: transparent;
-            transition: all 0.50s ease;
         }
 
 
@@ -348,7 +345,7 @@
             }
 
             .heading-style {
-                font-size: 15px;
+                font-size: 13px;
                 /* Adjust font-size for smaller screens */
             }
 
@@ -376,6 +373,7 @@
                 /* color: black; */
                 text-align: left;
             }
+
         }
 
         /* qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq */
@@ -392,14 +390,14 @@
         .dark-mode .container {
             color: white;
         }
-        
+
         .card:hover {
 
             transform: scale(1.2);
             transition: .4s;
             cursor: pointer;
         }
-        
+
 
 
         @media (prefers-color-scheme: dark) {
@@ -410,18 +408,16 @@
                 /* Adjust opacity for dark mode */
             }
         }
+
     </style>
 </head>
 
 <body>
 
 
-    <nav>
+    <nav id="nav" class="navbar fixed-navbar">
         <h4 style="font-weight: 500;"><i class="bi bi-bank2"></i> &nbsp;Finance</h4>
-        <!-- <div class="bx bx-menu" id="menu-icon"></div> -->
-        <!-- <ul class="nav-list">
-            <li><a href=""><span style="font-size: xxx-large; font-weight: bold;">D A T A P M I</span></a></li>
-        </ul> -->
+
         <ul class="nav-list">
             <li><a href=""><span class="logo-text">D A T A P M I</span></a></li>
         </ul>
@@ -478,6 +474,9 @@
 
         </div>
     </nav>
+
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var dropdownToggle = document.getElementById('dropdownToggle');
@@ -498,143 +497,8 @@
     <br>
     <br>
     <br>
-
-
-    <!-- <div class="container">
-        <div class="row">
-
-
-            <div id="employee" class="col">
-                All Employees<br>
-                <a href="/all_employee">
-                    <img src="https://cdn-icons-png.flaticon.com/512/9271/9271306.png" width="180rem"
-                        alt="All Employees"> </a>
-            </div> &nbsp;
-            &nbsp;
-            &nbsp;
-            &nbsp;
-
-
-
-            <div id="employee" class="col">
-                Active Employees<br>
-                <a href="{% url 'active_inactive' action='active' %}">
-                    <img src="https://cdn-icons-png.flaticon.com/256/9512/9512680.png" width="180rem"
-                        alt="Active Employees"></a>
-            </div>&nbsp;
-            &nbsp;
-            &nbsp;
-            &nbsp;
-
-
-            <div id="employee" class="col">
-
-                Inactive Employees
-                <a href="{% url 'active_inactive' action='inactive' %}">
-                    <img src="https://www.iconpacks.net/icons/1/free-remove-user-icon-303-thumb.png" width="170rem"
-                        alt="Inactive Employees"></a>
-            </div>&nbsp;
-            &nbsp;
-            &nbsp;
-            &nbsp;
-
-
-            <div id="employee" class="col">
-                Add Employee<br>
-                <a href="/add_employee">
-                    <img src="https://cdn-icons-png.freepik.com/512/6799/6799093.png" width="180rem"
-                        alt="Add Employees"></a>
-            </div>&nbsp;
-            &nbsp;
-            &nbsp;
-            &nbsp;
-
-        </div>
-    </div>
-
-
     <br>
     <br>
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
-    <style>
-        .container {
-            margin-top: 30px;
-        }
-
-        .heading-style {
-            font-size: 28px;
-            font-weight: bold;
-            color: rgb(22, 182, 57);
-            text-shadow: 2px 2px 4px rgba(241, 6, 6, 0.7);
-        }
-
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 0.5px 0 1px rgba(206, 8, 58, 0.23) inset, 0 1px 0 0 rgba(245, 2, 2, 0.66) inset,
-                0 4px 16px rgba(0, 68, 88, 0.12);
-        }
-
-        .card-body {
-            padding: 20px;
-            color: #0c0b0b;
-        }
-
-        .card img {
-            width: 25px;
-            margin-right: 10px;
-        }
-
-        .card a {
-            text-decoration: none;
-            color: #580cd1;
-        }
-
-        .card a:hover {
-            text-decoration: underline;
-        }
-    </style>
-
-
-
-    <div class="container">
-        <div class="col">
-            <h4>Contract Expiring with in 7 days</h4><br>
-        </div>
-        <div class="row justify-content">
-            {% for employee in employees %}
-            <div class="col-xl-4 col-lg-6 mb-4">
-                <div class="card text-end">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                                <a href="{% url 'detail_employee' employee.id %}">
-                                    <img src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png"
-                                        alt="icon">
-                                    {{ employee.name }}
-                                    <p style="font-family: 'Gabriola', cursive; color: rgb(0, 255, 149);"
-                                        class="text-muted mb-0">{{ employee.email }}</p>(End Date: {{
-                                    employee.end_date_of_work_order }})
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col-12">
-                <center>No Employee Found</center>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-
-
-
-    <script src="{% static 'js/script.js' %}"></script> -->
 
     <div class="container">
         <div class="row">
@@ -643,7 +507,7 @@
                     <div class="card-body">
                         <h4 class="heading-style">All Employees</h4>
                         <a href="/all_employee">
-                            <img src="https://cdn-icons-png.flaticon.com/512/9271/9271306.png" width="180rem"
+                            <img src="https://cdn-icons-png.flaticon.com/512/9271/9271306.png" width="190rem"
                                 alt="All Employees">
                         </a>
                     </div>
@@ -655,7 +519,7 @@
                     <div class="card-body">
                         <h4 class="heading-style">Active Employees</h4>
                         <a href="{% url 'active_inactive' action='active' %}">
-                            <img src="https://cdn-icons-png.flaticon.com/256/9512/9512680.png" width="180rem"
+                            <img src="https://cdn-icons-png.flaticon.com/256/9512/9512680.png" width="190rem"
                                 alt="Active Employees">
                         </a>
                     </div>
@@ -668,7 +532,7 @@
                         <h4 class="heading-style">Inactive Employees</h4>
                         <a href="{% url 'active_inactive' action='inactive' %}">
                             <img src="https://www.iconpacks.net/icons/1/free-remove-user-icon-303-thumb.png"
-                                width="170rem" alt="Inactive Employees">
+                                width="190rem" alt="Inactive Employees">
                         </a>
                     </div>
                 </div>
@@ -679,7 +543,7 @@
                     <div class="card-body">
                         <h4 class="heading-style">Add Employee</h4>
                         <a href="/add_employee">
-                            <img src="https://cdn-icons-png.freepik.com/512/6799/6799093.png" width="180rem"
+                            <img src="https://cdn-icons-png.freepik.com/512/6799/6799093.png" width="190rem"
                                 alt="Add Employees">
                         </a>
                     </div>

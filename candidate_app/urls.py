@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,mycandidates,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,account,autocomplete_username,Filter,autocomplete_skills,all_filter,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates,verify_otp,reset_password,get_skills,admin,user_control,finance_dashboard,add_employee,all_employee,detail_employee,Updateemployee,end_work_order,active_inactive,delete_employee
+from .views import signup,signin,user,mycandidates,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,account,autocomplete_username,Filter,autocomplete_skills,all_filter,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates,verify_otp,reset_password,get_skills,admin,user_control,finance_dashboard,add_employee,all_employee,detail_employee,Updateemployee,end_work_order,active_inactive,delete_employee,export_selected_to_excel
 from . import views
 
 
@@ -20,7 +20,6 @@ urlpatterns = [
     path('filter/', Filter.as_view(), name='filter'),
     path('autocomplete-username/', autocomplete_username, name='autocomplete_username'),
     path('autocomplete-skills/', autocomplete_skills, name='autocomplete_skills'),
-    # path('autocomplete-locations/', autocomplete_locations, name='autocomplete_locations'),
     path('all_filter/', all_filter, name='all_filter'),
     path('mycandidates_count', mycandidates_count, name='mycandidates_count'),
     path('selected_candidates', selected_candidates, name='selected_candidates'),
@@ -43,7 +42,7 @@ urlpatterns = [
     path("detail_employee/<int:pk>/", detail_employee, name='detail_employee'),
     path("delete_employee/<int:pk>/", delete_employee, name='delete_employee'),
     path("end_work_order/", end_work_order, name='end_work_order'),
-    #    path('Import_Excel_pandas/',Import_Excel_pandas,name='Import_Excel_pandas'),
+    path('export_selected_to_excel/',export_selected_to_excel,name='export_selected_to_excel'),
     
 
     ### these 3 url's should be kept last 
@@ -52,7 +51,6 @@ urlpatterns = [
     path('', views.signin, {'action': 'login'}, name='login_default'), 
 
  
-
 ]
 
 
