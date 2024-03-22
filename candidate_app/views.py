@@ -1333,33 +1333,35 @@ import urllib.parse
 from django.conf import settings
 from openpyxl.worksheet.hyperlink import Hyperlink
 from django.http import HttpResponse
+from urllib.parse import urljoin
 
 
 def export_selected_to_excel(request):
-
 
     wb = Workbook()
     ws = wb.active
     ws.title = "Candidates"
 
-    headers = ["Name", "Email", "Phone", "Alt Phone", "Position", "Client Name", "Client Location", "Project Director", "Project Partner", "Fees", "Work Type", "Work Order Detail","Resume URL","Active Status","Joining Date","Last Working Date ","Start Date of Work Order","End Date Work Order",]
+    headers = ["Name", "Email", "Phone", "Alt Phone", "Position", "Client Name", "Client Location", "Project Director", "Project Partner", "Fees", "Work Type", "Work Order Detail","Resume URL","Active Status","Joining Date","Last Working Date ","Start Date of Work Order","End Date Work Order"]
     ws.append(headers)
 
     candidate_ids = request.GET.get('ids', '').split(',')
     candidates = Employee.objects.filter(pk__in=candidate_ids)
 
     for row_num, candidate in enumerate(candidates, start=2):
-        resume_path = candidate.upload_resume.path if candidate.upload_resume else ''
-        
-        # Download and save the resume file if it exists
-        # if resume_path:
-        #     filename = os.path.basename(resume_path)
-        #     new_resume_path = os.path.join(resume_folder, filename)
-        #     with open(new_resume_path, 'wb') as f:
-        #         with open(resume_path, 'rb') as resume_file:
-        #             f.write(resume_file.read())
-        #     resume_path = new_resume_path
-      
+
+        MEDIA_URL = 'http://122.165.80.8:8080/media/'
+
+        # Example local file path
+        local_path = f'/home/renjith/datapmi_recruitment/media/employeeresume/{candidate.upload_resume}'
+
+        # Extract the relative path from the MEDIA_ROOT
+        relative_path = local_path.replace('/home/renjith/datapmi_recruitment/media/employeeresume/', '')
+
+        # Combine MEDIA_URL and relative_path to get the URL
+        resume_url = urljoin(MEDIA_URL, relative_path) if candidate.upload_resume else ''
+
+
         row = [
             candidate.name,
             candidate.email,
@@ -1373,28 +1375,20 @@ def export_selected_to_excel(request):
             candidate.fees,
             candidate.employee_status,
             candidate.work_order_detail,
-            resume_path,
+            resume_url,
             candidate.active_inactive,
             candidate.joining_date,
             candidate.last_working_date,
             candidate.start_date_of_work_order,
             candidate.end_date_of_work_order,
-           
         ]
-
+        
         ws.append(row)
 
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="Employees.xlsx"'
     wb.save(response)
     return response
-
-
-    
-
-
-
-
 
 
 

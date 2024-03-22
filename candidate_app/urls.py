@@ -43,6 +43,7 @@ urlpatterns = [
     path("delete_employee/<int:pk>/", delete_employee, name='delete_employee'),
     path("end_work_order/", end_work_order, name='end_work_order'),
     path('export_selected_to_excel/',export_selected_to_excel,name='export_selected_to_excel'),
+  
     
 
     ### these 3 url's should be kept last 
