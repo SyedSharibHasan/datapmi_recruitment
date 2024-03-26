@@ -264,7 +264,6 @@ def user_control(request,pk):
 
 
 
-
 @recruiter_login_required
 def user(request):
     return render(request,'user.html')
@@ -1126,6 +1125,8 @@ def add_employee(request):
         employee.save()
 
         if workOrderEndDate:
+
+        
             workOrderEndDate_aware = timezone.make_aware(timezone.datetime.combine(workOrderEndDate, datetime.time()))
                 
         
@@ -1134,20 +1135,20 @@ def add_employee(request):
             # Calculate the notification date (15 days before end_date_of_work_order)
             notification_date = workOrderEndDate_aware - timedelta(days=15)
             
-            # Calculate the time remaining until the notification date (with time set to midnight)
-            notification_datetime = timezone.datetime.combine(notification_date, datetime.time.min)
+            # # Calculate the time remaining until the notification date (with time set to midnight)
+            # notification_datetime = timezone.datetime.combine(notification_date, datetime.time.min)
             
-            # Make notification_datetime timezone-aware
-            notification_datetime_aware = timezone.make_aware(notification_datetime)
+            # # Make notification_datetime timezone-aware
+            # notification_datetime_aware = timezone.make_aware(notification_datetime)
             
-            # Calculate the time remaining until the notification date
-            time_until_notification = notification_datetime_aware - timezone.now()
+            # # Calculate the time remaining until the notification date
+            # time_until_notification = notification_datetime_aware - timezone.now()
             
-            # Convert time remaining to seconds
-            countdown_seconds = time_until_notification.total_seconds()
+            # # Convert time remaining to seconds
+            # countdown_seconds = time_until_notification.total_seconds()
             
             # Call the task with the calculated countdown
-            send_notification.apply_async(args=[employee.pk, finance_user], countdown=countdown_seconds)
+            send_notification.apply_async(args=[employee.pk, finance_user], eta=notification_date)
         else:
             # Handle the case where workOrderEndDate is None (no calculation or notification needed)
             pass
@@ -1195,6 +1196,8 @@ class Updateemployee(LoginRequiredMixin,UpdateView):
         employee.active_inactive = request.POST.get("active_inactive")
         employee.employee_status = request.POST.get("employeeStatus")
         employee.work_order_detail = request.POST.get("woDetail")
+
+        employee.save()
         
         def parse_date(date_str):
                 if date_str:
@@ -1214,9 +1217,18 @@ class Updateemployee(LoginRequiredMixin,UpdateView):
         if Employee.objects.exclude(pk=employee_pk).filter(email=employee.email).exists():
             return HttpResponse({'Employee with current Email address already exists'})
         
-        employee.save()
+        
 
-        if employee.end_date_of_work_order:
+        employees = Employee.objects.get(pk=employee_pk)
+        current_employee_enddate = employees.end_date_of_work_order
+
+        if current_employee_enddate == employee.end_date_of_work_order:
+            pass
+
+        elif employee.end_date_of_work_order == None:
+            pass
+
+        else :
             workOrderEndDate_aware = timezone.make_aware(timezone.datetime.combine(employee.end_date_of_work_order, datetime.time()))
             
             finance_user_email = request.user.email
@@ -1224,23 +1236,23 @@ class Updateemployee(LoginRequiredMixin,UpdateView):
             # Calculate the notification date (15 days before end_date_of_work_order)
             notification_date = workOrderEndDate_aware - timedelta(days=15)
             
-            # Calculate the time remaining until the notification date (with time set to midnight)
-            notification_datetime = timezone.datetime.combine(notification_date, datetime.time.min)
+            # # Calculate the time remaining until the notification date (with time set to midnight)
+            # notification_datetime = timezone.datetime.combine(notification_date, datetime.time.min)
             
-            # Make notification_datetime timezone-aware
-            notification_datetime_aware = timezone.make_aware(notification_datetime)
+            # # Make notification_datetime timezone-aware
+            # notification_datetime_aware = timezone.make_aware(notification_datetime)
             
-            # Calculate the time remaining until the notification date
-            time_until_notification = notification_datetime_aware - timezone.now()
+            # # Calculate the time remaining until the notification date
+            # time_until_notification = notification_datetime_aware - timezone.now()
             
-            # Convert time remaining to seconds
-            countdown_seconds = time_until_notification.total_seconds()
+            # # Convert time remaining to seconds
+            # countdown_seconds = time_until_notification.total_seconds()
             
             # Call the task with the calculated countdown
-            send_notification.apply_async(args=[employee.pk, finance_user_email], countdown=countdown_seconds)
-        else:
-            # Handle the case where workOrderEndDate is None (no calculation or notification needed)
-            pass
+            send_notification.apply_async(args=[employee.pk, finance_user_email], eta=notification_date)
+        # else:
+        #     # Handle the case where workOrderEndDate is None (no calculation or notification needed)
+        #     pass
         
         try:
 
