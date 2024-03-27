@@ -24,12 +24,13 @@
       background-repeat: no-repeat;
     }
 
-    #employee {
+    .container {
+      background-color: rgba(255, 255, 255, 0.5); /* Transparent white background */
+      border: 2px solid #ffffff;
+      border-radius: 10px; /* Adjusted border radius */
+      padding: 40px; /* Adjusted padding */
       margin-top: 100px;
-      border: 2px solid  #ffffff ;
-      border-radius: 50px;
-      padding: 80px ;
-     
+      max-width: 400px; /* Reduced max-width */
     }
 
     button {
@@ -37,7 +38,6 @@
       height: 40px;
       border-radius: 10px;
       margin-top: 10px;
-      /* Add margin between buttons */
       background-color: #56afd4;
       color: white;
       border: none;
@@ -71,7 +71,6 @@
     .dark-toggle {
       display: flex;
       justify-content: center;
-
       margin-top: 20px;
     }
 
@@ -87,13 +86,11 @@
 
     .dark-toggle button i {
       vertical-align: middle;
-      /* Align the icon vertically */
     }
 
     #zoom {
       border-radius: 50%;
       transition: transform 0.5s ease;
-      /* Add a smooth transition effect over 0.5 seconds */
     }
 
     #zoom:hover {
@@ -114,18 +111,16 @@
     }
 
     .text {
-    
-    font-size: 14px;
-  
-}
+      font-size: 14px;
+    }
 
-.text p {
-    margin: 5; /* Remove default paragraph margin */
-}
+    .text p {
+      margin: 5; /* Remove default paragraph margin */
+    }
 
-.text  {
-    font-weight: bold;
-}
+    .text {
+      font-weight: bold;
+    }
 
   </style>
 
@@ -138,28 +133,29 @@
   {% include 'navbar.html' %}
   {% include 'base.html' %}
 
- 
+
   <div class="container">
     <div class="row">
 
       <div class="col"></div>
 
-      <div id="employee" class="col">
-        <p style="font-weight: bold; font-size: 35px; font-family: 'Brush Script MT';">{{request.user.role}} <i style="color: green;" class="bi bi-patch-check-fill"></i></p><br>
+      <div class="col">
+        <p style="font-weight: bold; font-size: 35px; font-family: 'Brush Script MT';">{{request.user.role}} <i
+            style="color: green;" class="bi bi-patch-check-fill"></i></p><br>
         <div style="width: 150px; height: 150px; border-radius: 50%;">
           <img id="zoom" style="width: 100%; height: 100%;"
             src="{% if user.image %}{{ request.user.image.url }}{% else %}/static/project_images/Noprofile.png{% endif %}">
         </div>
-        
 
-          <div class="text">
-            <br>
-            <p>Username : {{request.user.username}}</p>
-            <p class="name">Full Name : {{request.user.first_name}} {{request.user.last_name}}</p>
-            <p>Email : {{request.user.email}}</p>
-            <p>Mobile : {{request.user.contact}}</p>
+
+        <div class="text">
+          <br>
+          <p>Username : {{request.user.username}}</p>
+          <p class="name">Full Name : {{request.user.first_name}} {{request.user.last_name}}</p>
+          <p>Email : {{request.user.email}}</p>
+          <p>Mobile : {{request.user.contact}}</p>
         </div>
-        
+
         <div class="button">
           <div>
             <a href="{% url 'edit_account' request.user.id %}">

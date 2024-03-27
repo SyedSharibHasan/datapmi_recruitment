@@ -948,37 +948,36 @@ def manage_account(request,action):
     
     if action == 'emails':
         if request.method == 'POST':
-            email = request.POST.get('email')
+            emails = request.POST.get('email')
           
-            email_exists = CustomUser.objects.filter(email=email).first()
+            email_exists = CustomUser.objects.filter(email=emails).first()
             
-            if email:
-                if not email.endswith('@datapmi.com'):
+            if emails:
+                if not emails.endswith('@datapmi.com'):
                     return HttpResponse('Email format is not valid')
 
             if email_exists:
                 return HttpResponse('Email already exists')
             
-            otp = generate_otp()
-            send_otp_email(email, otp)
+            otps = generate_otp()
+            send_otp_email(emails, otps)
 
-            request.session['email'] = email
-            request.session['otp'] = otp
+            request.session['emails'] = emails
+            request.session['otps'] = otps
           
-
             return redirect('email_change_otp')
 
     return render(request, 'delete_account.html')
 
 
 def email_change_otp(request):
-    get_email = request.session.get('email')
+    get_email = request.session.get('emails')
     if not get_email:
         return HttpResponse('Email not found in session')
     
     if request.method == 'POST':
-        otp = request.POST.get('otp')
-        stored_otp = request.session.get('otp')
+        otp = request.POST.get('otps')
+        stored_otp = request.session.get('otps')
 
         if otp == stored_otp: 
             user = request.user
