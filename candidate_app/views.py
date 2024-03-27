@@ -1048,6 +1048,8 @@ from celery_once import QueueOnce
 
 
 
+
+
 ############# email sending to user before 15 days of end work date
 @shared_task(base=QueueOnce)
 def send_notification(employee_id,finance_user_email):  # Default delay is 180 seconds (3 minutes)
@@ -1191,7 +1193,9 @@ def add_employee(request):
             # countdown_seconds = time_until_notification.total_seconds()
             
             # Call the task with the calculated countdown
-            send_notification.apply_async(args=[employee.pk, finance_user], eta=notification_date)
+            task_id = f'send_notification_{employee.pk}_{notification_date.strftime("%Y%m%d%H%M%S")}'
+
+            send_notification.apply_async(args=[employee.pk, finance_user], eta=notification_date, task_id=task_id, expires=notification_date)
         else:
             # Handle the case where workOrderEndDate is None (no calculation or notification needed)
             pass
