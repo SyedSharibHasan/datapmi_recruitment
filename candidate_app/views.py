@@ -1039,7 +1039,7 @@ def finance_dashboard(request):
 
 
 from django.urls import reverse
-from celery import shared_task,current_app
+from celery import shared_task,Celery
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -1048,7 +1048,7 @@ from celery_once import QueueOnce
 
 
 
-redis_client = current_app.backend.client
+
 
 ############# email sending to user before 15 days of end work date
 @shared_task
@@ -1193,17 +1193,7 @@ def add_employee(request):
             # countdown_seconds = time_until_notification.total_seconds()
             
             # Call the task with the calculated countdown
-            task_id = f'send_notification_{employee.pk}_{notification_date.strftime("%Y%m%d%H%M%S")}'
-
-            # Check if the task_id is already scheduled in Redis
-            if redis_client.exists(task_id):
-                return f'Task with task_id {task_id} is already scheduled'
-            else:
-                # If task_id is not scheduled, schedule the task and set its key in Redis with an expiry time
-                send_notification.apply_async(args=[employee.pk, finance_user], eta=notification_date, task_id=task_id)
-                # Set the task_id in Redis with an expiry time equal to the task's ETA
-                redis_client.setex(task_id, int(notification_date.timestamp() - timezone.now().timestamp()), 1)
-                
+            send_notification.apply_async(args=[employee.pk, finance_user], eta=notification_date)
         else:
             # Handle the case where workOrderEndDate is None (no calculation or notification needed)
             pass
