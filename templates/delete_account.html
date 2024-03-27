@@ -1,112 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Manage Account</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-  <style>
-    body {
-      background-image: url('/static/project_images/Profile.jpg');
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-
-    #form1 {
-      height: 67px;
-
-    }
-  </style>
-
-</head>
-<body>
-  {% include 'navbar.html' %}
-  {% include 'base.html' %}
-
-  <br>
-  <br>
-  <br>
-  <br>
-
-  <div class="container">
-    <div class="row">
-
-      <div class="col-6">
-        <h6 style="color: red;">Delete Account <i style="font-size: 25px;" class="bi bi-person"></i></h6>
-
-        <form action="{% url 'manage_account' action='delete' %}" id="delete-form">
-          {% csrf_token %}
-          <div class="md-form">
-           Enter your password to confirm:
-            <input placeholder="password" type="password" id="form1" class="form-control" name="password" required>
-            <button style="color: blue;" type="submit" class="form-control">Submit</button>
-
-          </div>
-        </form>
-
-        <script>
-
-          document.getElementById('delete-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-            fetch('{% url "manage_account" action="delete" %}', {
-              method: 'POST',
-              body: new FormData(document.getElementById('delete-form'))
-            })
-              .then(response => response.json())
-              .then(data => {
-                console.log(data); // Log the response data to the console
-                if (data.error) {
-                  // Display an error notification
-                  const errorNotification = document.createElement('div');
-                  errorNotification.classList.add('alert', 'alert-danger');
-                  errorNotification.textContent = data.error;
-                  document.getElementById('delete-form').prepend(errorNotification);
-                } else if (data.incorrect_password) {
-                  // Display a notification if the password is incorrect
-                  alert('Incorrect password. Please try again.');
-                } else {
-                  // Account deleted successfully, redirect to home page
-                  window.location.replace('{% url "login_default"  %}');
-                }
-              });
-          });
-        </script>
-      </div>
-
-      <div class="col-6">
-        <form action="{% url 'manage_account' action='change' %}" method="post">
-         <p style="color: red; position: relative;"> Change Password &nbsp; <i style="font-size: 25px; position: absolute; top: -6.5px;" class="bi bi-key-fill"></i></p>
-          {% csrf_token %}
-          <div class="form-group">
-            
-            <input class="form-control" name="old_password" type="password" placeholder="Enter current password" required>
-            <input name="new_password" class="form-control" type="password" placeholder="Enter new password">
-            <input style="color:blue" type="submit" class="form-control" value="Submit">
-          </div>
-
-        </form>
-      </div>
-
-
-
-
-    </div>
-
-  </div>
-
-
-</body>
-
-</html> -->
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -182,6 +73,9 @@
         /* Mobile screens ke liye template ki maximum breadth ko adjust karein */
       }
     }
+
+
+   
   </style>
 </head>
 
@@ -205,6 +99,20 @@
             <input type="submit" class="form-control" value="Submit">
           </form>
         </div>
+        <br>
+
+
+        <div class="form-group">
+          <h6 style="color: #dc3545;">Change Email Address <i class="bi bi-envelope-at"></i></h6>
+          <form action="{% url 'manage_account' action='emails' %}" method="post">
+            {% csrf_token %}
+            <input placeholder="Enter New Email" type="email" class="form-control" name="email"
+              required>
+              <input type="submit" class="form-control" value="Submit">
+          </form>
+        </div>
+        <br>
+
 
         <div class="form-group">
           <h6 style="color: #dc3545;">Delete Account <i class="bi bi-person"></i></h6>
@@ -245,6 +153,7 @@
               });
           });
         </script>
+
       </div>
     </div>
   </div>

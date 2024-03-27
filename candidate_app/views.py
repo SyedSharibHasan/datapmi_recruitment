@@ -225,7 +225,7 @@ def finance_login_required(view_func):
     return _wrapped_view
 
 
-### for recruiter
+#### for recruiter
 def recruiter_login_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -690,22 +690,13 @@ class Edit_account(LoginRequiredMixin,View):
         user.username = request.POST.get("username")
         user.first_name = request.POST.get("first_name")
         user.last_name = request.POST.get("last_name")
-        user.email = request.POST.get("email")
         user.contact = request.POST.get("contact")
 
 
         user_pk = user.pk
         if CustomUser.objects.exclude(pk=user_pk).filter(username=user.username).exists():
             return HttpResponse({'User with current Username already exists'})
-        
-        if CustomUser.objects.exclude(pk=user_pk).filter(email=user.email).exists():
-            return HttpResponse({'User with current Email address already exists'})
-
-        if user.email:
-            if not user.email.endswith('@datapmi.com'):
-                return HttpResponse('Email format is not valid')
-
-        # Handle the image file
+     
         if 'image' in request.FILES:
             user.image = request.FILES['image']
 
@@ -933,13 +924,12 @@ def manage_account(request,action):
             password = request.POST.get('password')
             user = authenticate(username=request.user.username, password=password)
             if user is not None:
-                # Password is correct, delete the account
-                user.delete()
-                
+                user.delete() 
                 return JsonResponse({})
             else:
                 # Password is incorrect, return an error message
                 return JsonResponse({'incorrect_password': True})
+            
     if action == 'change':
         if request.method == 'POST':
             password = request.POST.get('old_password')
@@ -955,8 +945,59 @@ def manage_account(request,action):
             else:
                 # Password is incorrect, return an error message
                 return HttpResponse('Invalid password')
+    
+    if action == 'emails':
+        if request.method == 'POST':
+            email = request.POST.get('email')
+          
+            email_exists = CustomUser.objects.filter(email=email).first()
+            
+            if email:
+                if not email.endswith('@datapmi.com'):
+                    return HttpResponse('Email format is not valid')
+
+            if email_exists:
+                return HttpResponse('Email already exists')
+            
+            otp = generate_otp()
+            send_otp_email(email, otp)
+
+            request.session['email'] = email
+            request.session['otp'] = otp
+          
+
+            return redirect('email_change_otp')
 
     return render(request, 'delete_account.html')
+
+
+def email_change_otp(request):
+    get_email = request.session.get('email')
+    if not get_email:
+        return HttpResponse('Email not found in session')
+    
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        stored_otp = request.session.get('otp')
+
+        if otp == stored_otp: 
+            user = request.user
+            if user:
+                user.email = get_email
+                user.save()  # Save the changes to the user's email
+                return redirect('profile')  # Redirect to profile page after successful email change
+            else:
+                return HttpResponse('User not found')  # Handle case where user is not found
+        else:
+            return HttpResponse('Invalid OTP')  # Handle case where OTP entered is incorrect
+
+    return render(request, 'email_change_otp.html', {'email': get_email})
+
+
+
+
+
+          
 
 
 
@@ -1004,9 +1045,12 @@ from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from celery_once import QueueOnce
+
+
 
 ############# email sending to user before 15 days of end work date
-@shared_task
+@shared_task(base=QueueOnce)
 def send_notification(employee_id,finance_user_email):  # Default delay is 180 seconds (3 minutes)
     try:    
         employee = Employee.objects.get(pk=employee_id)

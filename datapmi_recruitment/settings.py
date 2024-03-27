@@ -172,6 +172,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 AUTH_USER_MODEL = 'candidate_app.CustomUser'
 
+CELERY_ONCE = {
+      'backend': 'celery_once.backends.Redis',
+      'settings': {
+        'url': 'redis://127.0.0.1:6379/0',
+        'default_timeout': 60 * 60
+      }
+    }
+
 
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
@@ -182,5 +190,7 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 
 from datetime import timedelta
 
-CELERY_BEAT_SCHEDULE = {}
+CELERY_BEAT_SCHEDULE = {
+
+}
 

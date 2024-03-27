@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup,signin,user,mycandidates,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,account,autocomplete_username,Filter,autocomplete_skills,all_filter,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates,verify_otp,reset_password,get_skills,admin,user_control,finance_dashboard,add_employee,all_employee,detail_employee,Updateemployee,end_work_order,active_inactive,delete_employee,export_selected_to_excel
+from .views import signup,signin,user,mycandidates,Createcandidate,Detailcandidate,delete_candidate,Updatecandidate,signout,Allcandidates,account,autocomplete_username,Filter,autocomplete_skills,all_filter,mycandidates_count,selected_candidates,rejected_candidates,inprogress_candidates,list_of_candidates,Edit_account,manage_account,totalcandidates_count,saved_candidates,verify_otp,reset_password,get_skills,admin,user_control,finance_dashboard,add_employee,all_employee,detail_employee,Updateemployee,end_work_order,active_inactive,delete_employee,export_selected_to_excel,email_change_otp
 from . import views
 
 
@@ -27,11 +27,13 @@ urlpatterns = [
     path('inprogress_candidates', inprogress_candidates, name='inprogress_candidates'),
     path('allcandidates_count', totalcandidates_count, name='allcandidates_count'),
     path('savedcandidates', saved_candidates, name='savedcandidates'),
+    path('email_change_otp/', email_change_otp, name='email_change_otp'),
     path('list_of_candidates/<str:status>/', list_of_candidates, name='list_of_candidates'),
     path('manage_account/<str:action>/', views.manage_account, name='manage_account'),
     path('verify_otp/', views.verify_otp, name='verify_otp'), 
     path('reset_password/<str:token>/', views.reset_password, name='reset_password'),
     path('get_skills_api/', get_skills, name='get_skills_api'),
+  
 
     ### finance team
     path("active_inactive/<str:action>/", active_inactive, name='active_inactive'),
@@ -49,7 +51,6 @@ urlpatterns = [
     path('<str:action>/',signin,name='login'),
     path('', views.signin, {'action': 'login'}, name='login_default'), 
 
- 
 ]
 
 

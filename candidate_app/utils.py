@@ -17,7 +17,7 @@ from django.utils.html import strip_tags
 
 
 def send_otp_email(email, otp):
-    subject = 'OTP Verification for DataPMI Recruiter Registration'
+    subject = 'OTP Verification for DataPMI Registration'
     html_message = render_to_string('otp_email.html', {'otp': otp})
     text_message = strip_tags(html_message)
 
@@ -28,7 +28,6 @@ def send_otp_email(email, otp):
     email_message.attach_alternative(html_message, "text/html")
 
     email_message.send()
-
 
 
     
