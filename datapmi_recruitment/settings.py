@@ -181,9 +181,10 @@ AUTH_USER_MODEL = 'candidate_app.CustomUser'
 #     }
 
 
-# CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
-# CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'  
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+# CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 200 * 24 * 60 * 60} 
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+# CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'  
 CELERY_RESULT_BACKEND = 'rpc://'  
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
@@ -192,6 +193,7 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 
 
 CELERY_BEAT_SCHEDULE = {}
+
 
 
 
