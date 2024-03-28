@@ -357,7 +357,59 @@ body {
   <div class="form_wrapper">
     <div class="form_container">
       <div class="title_container">
-        <h2>DataPMI Registration Form</h2>
+        <h2>DataPMI Registration Form</h2><!-- HTML -->
+		<div id="popup-container">
+		  <i id="help-icon" title="help desk" style="color: rgb(190, 55, 55); font-size: 25px;" class="bi bi-question-circle"></i>
+		</div>
+		
+		<!-- CSS -->
+		<style>
+		  #popup-container {
+			position: relative;
+			display: inline-block;
+		  }
+		  
+		  #popup-content {
+			width: 360px;
+			display: none;
+			position: absolute;
+			
+			left: 50%;
+			transform: translateX(-50%);
+			background-color: #f9f9f9;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+			z-index: 1;
+		  }
+		</style>
+		
+		<!-- JavaScript -->
+		<script>
+		  // Get the help icon and popup content
+		  const helpIcon = document.getElementById('help-icon');
+		  const popupContent = document.createElement('div');
+		  popupContent.id = 'popup-content';
+		  popupContent.innerHTML = 'Keep in mind that your username and password are essential credentials for logging into your account. Its important to provide both accurately every time you sign in to maintain account security.';
+		
+		  // Append the popup content to the popup container
+		  const popupContainer = document.getElementById('popup-container');
+		  popupContainer.appendChild(popupContent);
+		
+		  // Show the popup content when clicking on the help icon
+		  helpIcon.addEventListener('click', function() {
+			popupContent.style.display = 'block';
+		  });
+		
+		  // Hide the popup content when clicking outside of it
+		  document.addEventListener('click', function(event) {
+			if (!popupContainer.contains(event.target)) {
+			  popupContent.style.display = 'none';
+			}
+		  });
+		</script>
+		
       </div>
       <div class="row clearfix">
         <div class="">
@@ -435,7 +487,7 @@ body {
 
               <div class="input_field checkbox_option">
                 <input type="checkbox" id="cb1" required>
-            <label for="cb1">I declare the given information are correct</label>
+            <label for="cb1">I declare the above information are correct</label>
               </div>
 			 
              
