@@ -98,27 +98,21 @@ WSGI_APPLICATION = 'datapmi_recruitment.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'recruitment',
+        'USER': 'user',
+        'PASSWORD': '',  
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'autocommit': True,
+        },
     }
 }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'mysql.connector.django',
-#         'NAME': 'recruitment',
-#         'USER': 'user',
-#         'PASSWORD': '',  
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#         'OPTIONS': {
-#             'autocommit': True,
-#         },
-#     }
-# }
 
 
 
@@ -172,25 +166,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 AUTH_USER_MODEL = 'candidate_app.CustomUser'
 
-CELERY_ONCE = {
-      'backend': 'celery_once.backends.Redis',
-      'settings': {
-        'url': 'redis://127.0.0.1:6379/0',
-        'default_timeout': 60 * 60
-      }
-    }
 
 
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 200 * 24 * 60 * 60} 
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'  
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
 
-from datetime import timedelta
 
-CELERY_BEAT_SCHEDULE = {
-
-}
-
+CELERY_BEAT_SCHEDULE = {}

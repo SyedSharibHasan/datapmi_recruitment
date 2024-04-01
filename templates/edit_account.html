@@ -1,46 +1,59 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Account</title>
-  <link rel="stylesheet" href="./style.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel='stylesheet' href='https://foliotek.github.io/Croppie/croppie.css'>
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Document</title>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
 
-
-
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+body {
+      background-color: rgba(0, 0, 0, 0.5);
+      /* Transparent black background */
       background-image: url('/static/project_images/Profile.jpg');
-      background-size: cover;
-      background-position: center;
       background-repeat: no-repeat;
-      padding-top: 120px;
+      background-size: cover;
     }
 
-    h1 {
-      font-size: 1.5em;
+    .form-group {
+      background-color: rgba(255, 255, 255, 0.5);
+     
+      padding: 40px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+     
     }
 
-    .content {
-      display: inline-block;
-      text-align: left;
-      /* background-color: whitesmoke; */
-      background-color:  #eaecee ; /* Transparent white background */
-      border-radius: .7em;
-      padding: 3rem 3rem 3rem;
+
+    .form-group input[type="password"] {
+      margin-bottom: 10px;
     }
+
+    .form-group input[type="submit"] {
+      color: blue;
+    }
+
+    .form-group p {
+      color: #430fbb;
+      position: relative;
+    }
+
+    .form-group p .bi {
+      font-size: 25px;
+      position: absolute;
+      top: -6.5px;
+    }
+
+
 
     .fld,
     .slt {
@@ -136,60 +149,100 @@
             background-color: #e74c3c;
         }
 
- 
   </style>
 </head>
+<body>
 
-
-{% include 'navbar.html' %}
-{% include 'base.html' %}
-
-
-<br>
-<br>
-<br>
-<br>
-
-
-<body id="body">
-<center>
-  <div class="container">
-    <form action="" method="POST" class="content" enctype="multipart/form-data">
-      {% csrf_token %}
-
+  {% include 'navbar.html' %}
+  {% include 'base.html' %}
   
-      <h4 style="color: #3498db;">Edit Your Profile Here</h4>
-      <div>
+  <br>
+  <br>
+  <br>  
+  <br>  
+  <br>  
 
-        <div class="name">
-          <label for="name">Username</label><br />
-          <input value="{{user.username}}" name="username" class="fld" placeholder="Enter your username" id="name" required />
-        </div>
+ 
 
-        <div class="name">
-          <label for="name">First Name</label><br />
-          <input value="{{user.first_name}}" name="first_name" class="fld" placeholder="Enter your first name" id="name" required />
-        </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
 
-        <div class="name">
-          <label for="last-name">Last Name</label><br />
-          <input value="{{user.last_name}}" name="last_name" class="fld" placeholder="Enter your last name" id="last-name" required />
-        </div>
+        
+  <div class="form-group">
 
-
-        <div class="contact">
-          <label for="contact">Contact</label><br />
-          <input value="{{user.contact}}" name="contact" class="fld" type="tel" placeholder="Enter your contact number" id="contact" required />
-        </div>
-
+    <div id="popup-container">
+	    <img id="help-icon" title="help desk" src="https://www.stanthony.ca/wp-content/uploads/2020/06/108-1089780_business-insurance-form-checklist-icon-transparent-background-clipart.png" width="30px">
+		</div>
+		
+		<!-- CSS -->
+		<style>
+		  #popup-container {
+			position: relative;
+			display: inline-block;
+		  }
+		  
+		  #popup-content {
+			width: 360px;
+			display: none;
+			position: absolute;
+      color:rgb(45, 45, 77);
+      font-weight: lighter;
+			left: 50%;
+			transform: translateX(-50%);
+			background-color: #f9f9f9;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+			z-index: 1;
+		  }
+		</style>
+		
+		<!-- JavaScript -->
+		<script>
+		  // Get the help icon and popup content
+		  const helpIcon = document.getElementById('help-icon');
+		  const popupContent = document.createElement('div');
+		  popupContent.id = 'popup-content';
+		  popupContent.innerHTML = 'Keep in mind that your username and password are essential credentials for logging into your account. Its important to provide both accurately every time you sign in to maintain account security.';
+		
+		  // Append the popup content to the popup container
+		  const popupContainer = document.getElementById('popup-container');
+		  popupContainer.appendChild(popupContent);
+		
+		  // Show the popup content when clicking on the help icon
+		  helpIcon.addEventListener('click', function() {
+			popupContent.style.display = 'block';
+		  });
+		
+		  // Hide the popup content when clicking outside of it
+		  document.addEventListener('click', function(event) {
+			if (!popupContainer.contains(event.target)) {
+			  popupContent.style.display = 'none';
+			}
+		  });
+		</script>
+    <form action="" method="POST" class="content" enctype="multipart/form-data">
+      <br>
+      {% csrf_token %}
+      Username
+      <input value="{{user.username}}" name="username"  class="form-control" placeholder="Enter your username" id="name" required />
+      First Name
+        <input value="{{user.first_name}}" name="first_name" class="form-control" placeholder="Enter your first name" id="name" required />
+        Last Name
+        <input value="{{user.last_name}}" name="last_name" class="form-control" placeholder="Enter your last name" id="last-name" required />
+        Contact
+        <input value="{{user.contact}}" name="contact" class="form-control" type="tel" placeholder="Enter your contact number" id="contact" required />
+<br>
         <div class="image">
           
           <div class="col-xs-12">
               <label class="cabinet center-block">
                   <figure>
-                    <img src="" id="item-img-output" style="max-width: 100px; max-height: 100px;" />
+                  
                     
-                      <figcaption>Select image &nbsp;&nbsp; <i style="font-size: larger;" title="Select image" class="fa fa-camera"></i></figcaption>
+                      <figcaption style="color: #0d0b85;">Select image &nbsp;&nbsp; <i style="font-size: larger;" title="Select image" class="fa fa-camera"></i></figcaption>
                   </figure>
                   {% if user.image %}
                   <img src="{{ user.image.url }}" width="100px"> 
@@ -197,6 +250,7 @@
                   <img src="/static/project_images/Noprofile.png" width="100px">
               {% endif %}
               <p>Current image</p>
+                <img src="" id="item-img-output" style="max-width: 100px; max-height: 100px;" />
               <input style="display: none;" type="file" class="item-img file center-block" name="image" id="image-input" onchange="previewImage(this)" />
               </label>
           </div>
@@ -236,22 +290,12 @@
      });
  </script>
 
-    
-
-        <div class="submit-button">
-          <button class="btn btn-primary" id="btn" type="submit">Submit</button>
-        </div>
-      </div>
+      <input type="submit" class="form-control" value="Submit">
     </form>
- 
   </div>
-</center>
 
-
-
-
-
+  </div></div></div>
+ 
+  
 </body>
-
 </html>
-

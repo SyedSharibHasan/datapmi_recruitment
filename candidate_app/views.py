@@ -435,7 +435,7 @@ class Createcandidate(LoginRequiredMixin,CreateView):
     def get(self, request):
         return render(request, self.template_name)      
 
-    def post(self, reqauest):
+    def post(self, request):
         if request.method == "POST":
             
             designation = request.POST.get("designation")
@@ -1050,7 +1050,7 @@ from celery_once import QueueOnce
 
 
 ############# email sending to user before 15 days of end work date
-@shared_task(base=QueueOnce)
+@shared_task
 def send_notification(employee_id,finance_user_email):  # Default delay is 180 seconds (3 minutes)
     try:    
         employee = Employee.objects.get(pk=employee_id)
