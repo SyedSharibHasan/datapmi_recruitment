@@ -60,6 +60,7 @@ class Candidate(models.Model):
     rejection_reason_for_r1_r4 = models.CharField(max_length=100, null=True,blank=True)        ## hidden 
     offer = models.CharField(max_length=100, null=True,blank=True)
     offer_reject_reason = models.CharField(max_length=100, null=True,blank=True)
+
     
     def __str__(self):
         return self.email
@@ -111,7 +112,7 @@ class Employee(models.Model):
 
 
 
-
+####hii new changes
 
 
 
