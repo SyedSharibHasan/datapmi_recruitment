@@ -41,7 +41,7 @@
             box-shadow: 0 0 10px rgba(172, 29, 29, 0.1);
             border-radius: 8px;
             overflow: hidden;
-            background: transparent !;
+            background: transparent;
         }
 
         th,
@@ -69,12 +69,56 @@
         }
 
         label {
-            color: rgb(238, 6, 6);
+            color: #00070c;
         }
 
-        .dataTables_wrapper .dataTables_length select {
-            background-color: #ced4da;
+        .dark-mode label {
+            color: blue;
         }
+
+
+        .dataTables_wrapper .dataTables_info {
+            color: #00090f;
+        }
+
+        .dark-mode .dataTables_wrapper .dataTables_info {
+            color: blue;
+        }
+
+
+        .dataTables_wrapper .dataTables_length select {
+            background-color: #ecf0f1;
+        }
+
+        .dark-mode .dataTables_wrapper .dataTables_length select {
+            background-color: #ecf0f1;
+        }
+
+        #employee-table_info {
+            text-transform: capitalize;
+        }
+
+
+        .dataTables_wrapper .dataTables_paginate {
+            cursor: default;
+            color: #e01414 !important;
+            border: 1px solid transparent;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .dark-mode .dataTables_wrapper .dataTables_paginate {
+            cursor: default;
+            color: blue !important;
+            border: 1px solid transparent;
+            background: transparent;
+            box-shadow: none;
+        }
+
+
+        /* wwwwwwwwwwwwwwwwwwwww */
+
+
 
         table.dataTable {
             width: 1700px;
@@ -152,23 +196,14 @@
         }
 
         #each {
-    margin-top: 80px; /* Adjust the margin as needed */
-    
-}
+            margin-top: 80px;
+            /* Adjust the margin as needed */
 
-/* qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq */
-
-/* element {
-  width: 1500px;
-}
-
-table.dataTable thead .sorting_asc {
-    width: 1px;
-    
-}
+        }
     </style>
 
-</head> */
+</head>
+
 
 <body>
 
@@ -187,13 +222,17 @@ table.dataTable thead .sorting_asc {
         <br><br>
 
         <div style="display:none;" class="none">
-            <input id="select-all" type="checkbox"> <label for="select-all">Select All</label>      <button title="This Will Export Selected Employee Details To Excel." style="font-size: 13px;color: #1815ce;" class="btn btn-light" id="export-link" onclick="exportSelected()">Export to Excel <i class="bi bi-download"></i></button>
+            <input id="select-all" type="checkbox"> <label for="select-all">Select All</label> <button
+                title="This Will Export Selected Employee Details To Excel." style="font-size: 13px;color: #1815ce;"
+                class="btn btn-light" id="export-link" onclick="exportSelected()">Export to Excel <i
+                    class="bi bi-download"></i></button>
             <br>
         </div>
         <br>
         <div class="table-responsive">
             <table id="employee-table" class="table">
-                
+
+
                 <thead>
                     <tr>
 
@@ -245,10 +284,10 @@ table.dataTable thead .sorting_asc {
             </table>
         </div>
     </div>
-
+    <!-- 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script> -->
+    <!-- <script>
         $(document).ready(function () {
             // Initialize DataTable
             $('#employee-table').DataTable({
@@ -270,13 +309,65 @@ table.dataTable thead .sorting_asc {
                         '<option value="-1">All</option>' +
                         '</select> '
                 }
-            });
+            }); 
 
             // Assign incrementing numbers to elements with class "snno"
-            $('.snno').each(function (index) {
-                $(this).text(index + 1);
+        //     $('.snno').each(function (index) {
+        //         $(this).text(index + 1);
+        //     });
+        // });
+
+
+        // Re-render serial numbers after DataTable initialization
+        table.on('order.dt search.dt', function () {
+            table.column(1, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
             });
-        });
+        }).draw();
+    });-->
+
+    <script>
+      $(document).ready(function () {
+    // Initialize DataTable
+    let table = $('#employee-table').DataTable({
+        "columnDefs": [
+            { "orderable": false, "targets": 8 } // Disable sorting on actions column
+        ],
+        "stateSave": true, // Enable state saving
+        language: {
+            'paginate': {
+                'previous': '<span class="fa fa-chevron-left"></span>',
+                'next': '<span class="fa fa-chevron-right"></span>'
+            },
+            //customize number of elements to be displayed
+            "lengthMenu": 'Display <select>' +
+                '<option value="10">10</option>' +
+                '<option value="20">20</option>' +
+                '<option value="30">30</option>' +
+                '<option value="40">40</option>' +
+                '<option value="50">50</option>' +
+                '<option value="-1">All</option>' +
+                '</select> '
+        },
+        
+        "drawCallback": function (settings) {
+            let api = this.api();
+            let rows = api.rows({ page: 'current' }).nodes();
+            let currentPage = api.page.info().page;
+            let pageLength = api.page.info().length;
+            let startNumber = currentPage * pageLength;
+
+            // Update serial numbers
+            $(rows).each(function (index) {
+                $(this).find('.snno').text(startNumber + index + 1);
+            });
+
+        }
+    });
+});
+
+    </script>
+
     </script>
 
     <script src="{% static 'js/script.js' %}"></script>
