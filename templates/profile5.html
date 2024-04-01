@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        /* CSS for profile container */
+        .profile-container {
+            width: 400px; /* Set the width to the desired value */
+            height: 600px; /* Set the height to the desired value */
+            margin: 0 auto;
+            margin-top: 200px;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px); /* Apply blur effect */
+            background-color: rgba(255, 255, 255, 0.2); /* Transparent background color with opacity */
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Add box shadow for glassy effect */
+            backdrop-filter: blur(5px); /* Adjust blur effect as needed */
+            /* Add more styles for the profile container if needed */
+        }
+        
+        /* CSS for profile picture */
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden; /* Ensure the image stays within the circular container */
+            border: 5px solid #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .profile-picture img {
+            width: 100%; /* Make the image fill the container */
+            height: 100%; /* Make the image fill the container */
+            object-fit: cover; /* Maintain aspect ratio and cover container */
+        }
+
+        /* CSS for text */
+        .profile-text {
+            margin-top: 50px;
+            margin-bottom: 10px;
+            font-size: 1em; /* 1em is equivalent to the default font size */
+            text-align: center; /* Center-align the text */
+        }
+
+        .profile-text strong {
+            font-weight: 700;
+            animation: glow 2s alternate infinite;
+        }
+        
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 5px #ff0000;
+            }
+            100% {
+                text-shadow: 0 0 5px #0026ff;
+            }
+        }
+        /* CSS for buttons */
+        .profile-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .profile-button:hover {
+            background-color: #004080;
+        }
+        
+        /* Dark mode button style */
+        .dark-mode-button {
+            background-color: #343a40;
+        }
+
+        .dark-mode {
+            background-color: #222; /* Dark background color */
+            color: #fff; /* Light text color */
+        }
+
+
+        /* Add margin-top to the buttons container */
+        .buttons-container {
+            margin-top: 100px;
+            text-align: center;
+        }
+
+           /* Responsive */
+           @media screen and (max-width: 450px) {
+            .profile-container {
+                width: 90%;
+                height: auto;
+            }
+
+            .profile-text {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container"><br><br>
+        <!-- Profile picture -->
+        <div class="profile-picture">
+            <img src="https://www.livemint.com/lm-img/img/2023/08/08/1600x900/SRK_Don_1691477516548_1691477524040.png" alt="Profile Picture">
+        </div>
+        
+        <!-- User name -->
+        <div class="profile-text"><strong>User Name:</strong> JohnDoe</div>
+        
+        <!-- Full name -->
+        <div class="profile-text"><strong>Full Name:</strong> John Doe</div>
+        
+        <!-- Email -->
+        <div class="profile-text"><strong>Email:</strong> johndoe@example.com</div>
+        
+        <!-- Contact number -->
+        <div class="profile-text"><strong>Contact Number:</strong> +1234567890</div>
+
+        <br><br><br>
+        
+        <!-- Buttons -->
+        <div style="margin-top: 20px; text-align: center;">
+            <!-- Edit button -->
+            <a href="#" class="profile-button">Edit</a>
+            
+            <!-- Manage button -->
+            <a href="#" class="profile-button">Manage</a>
+            
+            <!-- Dark mode button -->
+            <button class="profile-button dark-mode-button" onclick="toggleDarkMode()">Dark Mode</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript function to toggle dark mode
+        function toggleDarkMode() {
+            // Toggle dark mode by adding/removing a class to the body element
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
