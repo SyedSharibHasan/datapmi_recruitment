@@ -55,6 +55,7 @@
             background-color: #0aac17;
             color: #ecf0f1;
             font-size: 13px;
+            /* width: 60px; */
         }
 
         tr:hover {
@@ -68,9 +69,16 @@
         }
 
         label {
-            color: white;
+            color: rgb(238, 6, 6);
         }
 
+        .dataTables_wrapper .dataTables_length select {
+            background-color: #ced4da;
+        }
+
+        table.dataTable {
+            width: 1700px;
+        }
 
 
 
@@ -142,9 +150,25 @@
                 background-repeat: no-repeat;
             }
         }
+
+        #each {
+    margin-top: 80px; /* Adjust the margin as needed */
+    
+}
+
+/* qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq */
+
+/* element {
+  width: 1500px;
+}
+
+table.dataTable thead .sorting_asc {
+    width: 1px;
+    
+}
     </style>
 
-</head>
+</head> */
 
 <body>
 
@@ -163,24 +187,25 @@
         <br><br>
 
         <div style="display:none;" class="none">
-            <input id="select-all" type="checkbox"> <label for="select-all">Select All</label>      <button title="This will export selected employee details to excel" style="font-size: 13px;color: #1815ce;" class="btn btn-light" id="export-link" onclick="exportSelected()">Export to Excel <i class="bi bi-download"></i></button>
+            <input id="select-all" type="checkbox"> <label for="select-all">Select All</label>      <button title="This Will Export Selected Employee Details To Excel." style="font-size: 13px;color: #1815ce;" class="btn btn-light" id="export-link" onclick="exportSelected()">Export to Excel <i class="bi bi-download"></i></button>
             <br>
         </div>
         <br>
         <div class="table-responsive">
             <table id="employee-table" class="table">
+                
                 <thead>
                     <tr>
 
                         <th style="display:none;" class="none">#</th>
-                        <th>sl no</th>
+                        <th>Sl No</th>
                         <th>Name</th>
                         <th>Client Name</th>
                         <th>Client Location</th>
                         <th>Contact</th>
                         <th>Fees</th>
                         <th>Project Director</th>
-                        <th>start Date Of Work Order</th>
+                        <th>Start Date Of Work Order</th>
                         <th>End Date Of Work Order</th>
                         <th>Last Updated</th>
                         <th>Actions</th>
@@ -270,7 +295,7 @@
                 let url = "{% url 'export_selected_to_excel' %}?ids=" + selectedIds.join(',');
                 window.location.href = url;
             } else {
-                alert("Please select at least one candidate.");
+                alert("Please Select At Least One Candidate.");
             }
         }
 

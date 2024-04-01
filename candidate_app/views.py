@@ -435,7 +435,7 @@ class Createcandidate(LoginRequiredMixin,CreateView):
     def get(self, request):
         return render(request, self.template_name)      
 
-    def post(self, reqauest):
+    def post(self, request):
         if request.method == "POST":
             
             designation = request.POST.get("designation")
