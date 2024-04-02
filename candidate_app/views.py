@@ -287,6 +287,7 @@ def process_excel_file(full_file_path):
     
     if file_extension in ['.xlsx', '.xls','.xltx','.xlt','.xlsm']:
         empexceldata = pd.read_excel(full_file_path)
+        empexceldata.reset_index(drop=True, inplace=True)
     elif file_extension == '.ods':
         odsdata = pyexcel.get_records(file_name=full_file_path)
         empexceldata = pd.DataFrame(odsdata)
@@ -296,9 +297,39 @@ def process_excel_file(full_file_path):
     return empexceldata
 
 
+import re
 
+
+
+def extract_integer_value(text):
+    if isinstance(text, int):
+        # If the input is already an integer, return it as it is
+        return text
+    elif isinstance(text, float):
+        # If the input is a float, return it as it is
+        return text
+    elif isinstance(text, str):
+        if text.strip() == "":
+            print("Empty string detected.")
+            # If the input string is empty, return None
+            return None
+        # Regular expression to match integer values
+        integer_match = re.search(r'\b\d+\b', text)
+        if integer_match:
+            return int(integer_match.group())  # Convert the matched value to an integer
+        else:
+            # If no integer value found, return None
+            return None
+    else:
+        # If the input is not text, integer, or float, return None
+        return None
+
+
+
+
+
+import re
 from io import BytesIO
-
 
 @recruiter_login_required
 def mycandidates(request):
@@ -318,11 +349,13 @@ def mycandidates(request):
                     email = row.get('Email')
                     if email and Candidate.objects.filter(email=email).exists():
                         continue
+
                 
-                    mode_of_work = row.loc['Mode of Work'] if 'Mode of Work' in row else (row.loc['mode of work'] if 'mode of work' in row else (row.loc['Mode of work'] if 'Mode of work' in row else row.loc['MODE OF WORK']))
-                    client_name = row.loc['Client Name'] if 'Client Name' in row else (row.loc['client name'] if 'client name' in row else (row.loc['Client name'] if 'Client name' in row else row.loc['CLIENT NAME']))
-                    first_name = row.loc['First Name'] if 'First Name' in row else (row.loc['first name'] if 'first name' in row else (row.loc['First name'] if 'First name' in row else row.loc['FIRST NAME']))
-                    last_name = row.loc['Last Name'] if 'Last Name' in row else (row.loc['last name'] if 'last name' in row else (row.loc['Last name'] if 'Last name' in row else row.loc['LAST NAME']))
+                
+                    # mode_of_work = row.loc['Mode of Work'] if 'Mode of Work' in row else (row.loc['mode of work'] if 'mode of work' in row else (row.loc['Mode of work'] if 'Mode of work' in row else row.loc['MODE OF WORK']))
+                    client_name = row.loc['Client Name'] if 'Client Name' in row else (row.loc['client name'] if 'client name' in row else (row.loc['Client'] if 'Client' in row else row.loc['CLIENT NAME']))
+                    first_name = row.loc['Candidate Name'] if 'Candidate Name' in row else (row.loc['first name'] if 'first name' in row else (row.loc['First name'] if 'First name' in row else row.loc['FIRST NAME']))
+                    # last_name = row.loc['Last Name'] if 'Last Name' in row else (row.loc['last name'] if 'last name' in row else (row.loc['Last name'] if 'Last name' in row else row.loc['LAST NAME']))
                     graduation_year = row.loc['Graduation year'] if 'Graduation year' in row else (row.loc['Graduation Year'] if 'Graduation Year' in row else (row.loc['graduation year'] if 'graduation year' in row else row.loc['GRADUATION YEAR']))
                     current_company = row.loc['Current company'] if 'Current company' in row else (row.loc['Current Company'] if 'Current Company' in row else (row.loc['current company'] if 'current company' in row else row.loc['CURRENT COMPANY']))
                     total_experience = (
@@ -372,35 +405,46 @@ def mycandidates(request):
                             saved_resume = fs.save(resume_file_name, resume_file)
                     else:
                         # If there's no resume, set the saved_resume to None
-                        saved_resume = None             
+                        saved_resume = None  
+
+
+                    total_experience_text = extract_integer_value(total_experience)           
+                    relevant_experience_text = extract_integer_value(relevent_experience) 
+
+
+
+            
 
                     obj = Candidate.objects.create(
                         user=request.user,
-                        email=row.Email,
-                        designation=row.Designation,
+                        date_of_excel=row.Date,
                         client_name=client_name,
-                        mode_of_work=mode_of_work,
-                        first_name=first_name,
-                        last_name=last_name,
+                        gender = row.Due,
+                        updated_by = row.Recruiter,
+                        designation=row.Designation,
+                        candidate_name=first_name,
+                        email=row.Email,
                         phone=row.Phone,
-                        gender=row.Gender,
                         location=row.Location,
                         college=row.College,
                         qualification=row.Qualification,
                         graduation_year=graduation_year,
                         current_company=current_company,
-                        experience=total_experience,
-                        relevent_experience=relevent_experience,
+                        experience=total_experience_text,
+                        relevent_experience=relevant_experience_text,
                         notice_period=notice_period,
                         current_ctc=current_ctc,
                         expected_ctc=expected_ctc,
-                        status=row.Status,
+                        offer = row.Offer,
+                        screen = row.Screening,
+                        status=row.Option,
+                        rejection_reason= row.RejectReason,
                         resume = saved_resume
                     )
 
-                    skill_names = row.Skills.split(',')  # Split comma-separated skills into a list
+                    skill_names = str(row.Skills).split(',')
 
-                    # Create or get Skill objects and store them in a list
+                 
                     skills = [Skill.objects.get_or_create(name=skill_name.strip(), user=request.user)[0] for skill_name in skill_names]
 
                     # Assign skills to the candidate object
@@ -414,7 +458,8 @@ def mycandidates(request):
         except ValueError as e:
             return HttpResponseServerError("ValueError: Unable to process the Excel file. Please ensure the file contains valid data.")
         except AttributeError as e:
-            return HttpResponseServerError("AttributeError: " + str(e))
+            row_index = index  # Get the index of the row where the error occurred
+            return HttpResponseServerError(f"AttributeError in row {row_index + 1}: {e}")
                 
         return redirect('list')
 
@@ -442,7 +487,6 @@ class Createcandidate(LoginRequiredMixin,CreateView):
             client_name = request.POST.get("client_name")
             mode_of_work = request.POST.get("mode_of_work_1")
             first_name = request.POST.get("first_name")
-            last_name = request.POST.get("last_name")
             email = request.POST.get("email")
             phone = request.POST.get("phone")
             gender = request.POST.get("gender")
@@ -465,14 +509,16 @@ class Createcandidate(LoginRequiredMixin,CreateView):
 
             if Candidate.objects.filter(email=email).exists():
                 return HttpResponse({'Candidate with current Email address already exists'})
+            
+            if experience == "":
+                experience=None
                  
             candidate = Candidate(
 
                 designation=designation,
                 client_name=client_name,
                 mode_of_work=mode_of_work,
-                first_name=first_name,
-                last_name=last_name,
+                candidate_name=first_name,
                 email=email,
                 phone=phone,
                 gender=gender,
@@ -550,8 +596,7 @@ class Updatecandidate(LoginRequiredMixin,UpdateView):
         candidate.designation = request.POST.get("designation")
         candidate.client_name = request.POST.get("client_name")
         candidate.mode_of_work = request.POST.get("mode_of_works")
-        candidate.first_name = request.POST.get("first_name")
-        candidate.last_name = request.POST.get("last_name")
+        candidate.candidate_name = request.POST.get("first_name")
         candidate.email = request.POST.get("email")
         candidate.phone = request.POST.get("phone")
         candidate.gender = request.POST.get("gender")

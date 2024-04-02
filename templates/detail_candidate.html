@@ -91,9 +91,11 @@
         
         <div class="submission-details">
            
-
             <div class="field">
-                <span>Name:</span> {{detail.first_name}} {{detail.last_name}}
+                <span>Date of Excel Added:</span> {{detail.date_of_excel}}
+            </div>
+            <div class="field">
+                <span>Name:</span> {{detail.candidate_name}} 
             </div>
 
             <div class="field">
@@ -187,6 +189,11 @@
                 <span>Remarks:</span> {{detail.remarks}}
             </div>
 
+            <div class="field">
+                <span>Updated By:</span> {{detail.updated_by}}
+            </div>
+
+
             {% if request.user == detail.user %}
             <div class="field">
             <span>Recruiter:</span> {{request.user}}
@@ -204,6 +211,11 @@
                 {% else %}
                 <span>Status:</span>  status not updated
             {% endif %}
+            </div>
+
+
+            <div class="field">
+                <span>Screening:</span> {{detail.screen}}
             </div>
 
           
