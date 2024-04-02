@@ -17,7 +17,6 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        
         .fixed-navbar {
             position: fixed;
             top: 0;
@@ -93,6 +92,26 @@
             color: blue;
         }
 
+        .dropdown-toggle::after {
+            display: inline-block;
+            margin-left: 10px;
+            /* vertical-align: .255em; */
+            /* content: ""; */
+            border-top: .6em solid;
+            border-right: .3em solid transparent;
+            border-bottom: 0;
+            border-left: .3em solid transparent;
+        }
+
+        /* sssssssssssssssssssssssssssssssssssssssssssssssssssssssss */
+        #dropdownMenu {
+            /* Set the width of the dropdown menu */
+            width: 200px;
+        }
+
+
+        /* sssssssssssssssssssssssssssssssssssssssssssssssssssssssss */
+
         #menu-icon {
             color: #FFF;
             font-size: 38px;
@@ -105,14 +124,14 @@
             padding: 0 15%;
         }
 
-        .hero {
+        /* .hero {
             height: 100vh;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-        }
+        } */
 
         .m-text h1 {
             font-size: 90px;
@@ -154,22 +173,22 @@
         }
 
 
-
+/* 
         #employee {
             border: 1px solid black;
             border-radius: 20px;
             padding: 30px;
-            /* background-color: #3863db; */
+            
         }
 
         #employee:hover {
-            border: 1px solid black;
+            border: 1px solid rgb(226, 17, 17);
             border-radius: 20px;
             transform: scale(1.2);
             transition: .4s;
             cursor: pointer;
 
-        }
+        } */
 
 
         @media (max-width:1350px) {
@@ -212,7 +231,7 @@
                 right: 0;
                 display: flex;
                 flex-direction: column;
-                background: #00C9E0;
+                background: #77e000;
                 text-align: left;
                 transition: all 0.50s ease;
             }
@@ -244,16 +263,19 @@
         .dropdown {
             position: relative;
             display: inline-block;
+            /* border-color: #f70505; */
+            
         }
 
         .dropdown-toggle {
             background-color: #f1f1f1;
-            color: #333;
-            padding: .5rem 1.5rem;
-            border: none;
-            border-radius: .2rem;
+            border-color: white;
+            padding: 5.5rem 5.5rem;
+            /* border: none; */
+            border-radius: 5.2rem;
             cursor: pointer;
             width: 200px;
+            color: white;
         }
 
         .dropdown-menu {
@@ -273,13 +295,14 @@
 
 
         .menu-item {
-            width: 250px;
+            width: 200px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: .5rem 2rem;
-            background-color: white;
-            border: none;
+            padding: .5rem .8rem;
+            background-color: transparent;
+            /* border: none; */
+            border: .01 solid white; /* Border color change kiya gaya hai */
             font-size: 1.1rem;
         }
 
@@ -294,7 +317,7 @@
 
         .menu-item:hover {
             cursor: pointer;
-            color: rgb(19, 98, 255);
+            /* color: rgb(19, 98, 255); */
         }
 
         .card {
@@ -422,7 +445,7 @@
         <h4 style="font-weight: 500;"><i class="bi bi-bank2"></i> &nbsp;Finance</h4>
 
         <ul class="nav-list">
-            <li><a href=""><span class="logo-text">D A T A P M I</span></a></li>
+            <li><a><span class="logo-text">D A T A P M I</a></li>
         </ul>
 
 
@@ -431,14 +454,13 @@
             <button class="dropdown-toggle menu-item" id="dropdownToggle">
                 <span class="item-icon">
                     {% if user.image %}
-                    <img style="border-radius: 50%;" src="{{user.image.url}}" / width=36px">
+                    <img style="border-radius: 100%;" src="{{user.image.url}}" / width=30px">
                     {% else %}
                     <img src="/static/project_images/Noprofile.png" width="25px">
                     {% endif %}
                 </span>
-                <span class="item-txt">
-                    {{request.user}}
-                </span>
+                <span id="username">{{ request.user }}</span>
+
             </button>
             <ul class="dropdown-menu" id="dropdownMenuContent">
                 <li class="menu-item">
@@ -480,7 +502,7 @@
 
 
 
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             var dropdownToggle = document.getElementById('dropdownToggle');
             var dropdownMenuContent = document.getElementById('dropdownMenuContent');
@@ -495,7 +517,7 @@
                 }
             });
         });
-    </script>
+    </script> -->
 
     <br>
     <br>
@@ -591,6 +613,28 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/script.js' %}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    var dropdownToggle = document.getElementById('dropdownToggle');
+    var dropdownMenuContent = document.getElementById('dropdownMenuContent');
+    var usernameText = document.getElementById('username').innerText;
+
+    dropdownToggle.addEventListener('click', function () {
+        dropdownMenuContent.classList.toggle('show');
+        var usernameWidth = usernameText.offsetWidth;
+        dropdownMenuContent.style.width = usernameWidth + 'px';
+    });
+
+    window.addEventListener('click', function (event) {
+        if (!dropdownToggle.contains(event.target) && !dropdownMenuContent.contains(event.target)) {
+            dropdownMenuContent.classList.remove('show');
+        }
+    });
+});
+
+    </script>
+    
 
 </body>
 
