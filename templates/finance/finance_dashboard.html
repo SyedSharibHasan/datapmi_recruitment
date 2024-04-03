@@ -67,7 +67,7 @@
         }
 
         .dark-mode .text-muted {
-            color: #f70505 !important;
+            color: yellow !important;
         }
 
 
@@ -92,12 +92,17 @@
             color: blue;
         }
 
+        .dropdown {
+            width: 100px;
+            font-size: 10px;
+        }
+
         .dropdown-toggle::after {
             display: inline-block;
             margin-left: 10px;
             /* vertical-align: .255em; */
             /* content: ""; */
-            border-top: .6em solid;
+            border-top: 1.6em solid;
             border-right: .3em solid transparent;
             border-bottom: 0;
             border-left: .3em solid transparent;
@@ -106,7 +111,8 @@
         /* sssssssssssssssssssssssssssssssssssssssssssssssssssssssss */
         #dropdownMenu {
             /* Set the width of the dropdown menu */
-            width: 200px;
+            width: 135px;
+            font-size: 10px;
         }
 
 
@@ -173,7 +179,7 @@
         }
 
 
-/* 
+        /* 
         #employee {
             border: 1px solid black;
             border-radius: 20px;
@@ -231,7 +237,7 @@
                 right: 0;
                 display: flex;
                 flex-direction: column;
-                background: #77e000;
+                background: #0961e6;
                 text-align: left;
                 transition: all 0.50s ease;
             }
@@ -254,18 +260,20 @@
             }
         }
 
-        @media (max-width:750px) {
+        @media (min-width:400px) {
+
+            #dropdownToggle {
+            
+            font-size: 5px;
+        }
+
             .m-text h1 {
                 font-size: 50px;
             }
         }
 
-        .dropdown {
-            position: relative;
-            display: inline-block;
-            /* border-color: #f70505; */
-            
-        }
+     
+
 
         .dropdown-toggle {
             background-color: #f1f1f1;
@@ -295,15 +303,17 @@
 
 
         .menu-item {
-            width: 200px;
+            width: 150px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: .5rem .8rem;
             background-color: transparent;
             /* border: none; */
-            border: .01 solid white; /* Border color change kiya gaya hai */
-            font-size: 1.1rem;
+            border: .01 solid white;
+            /* Border color change kiya gaya hai */
+            font-size: .9rem;
+            border-radius: 100rem;
         }
 
         .item-icon {
@@ -321,13 +331,18 @@
         }
 
         .card {
-            border-radius: 10px;
+            border:1px solid rgb(2, 60, 146);
+            border-radius: 1rem;
+            
         }
 
         /* aaaaaaaaaaaaaaaaaaaaaa */
 
         /* Add this media query for adjusting styles on smaller devices */
         @media only screen and (max-width: 600px) {
+
+
+     
             nav {
                 padding: 10px 5%;
                 /* Adjust padding for smaller screens */
@@ -349,20 +364,22 @@
             }
 
             .dropdown-menu {
-                /* border: solid black; */
+                /* border: solid rgb(3, 1, 1); */
                 /* border-radius: 1rem; */
                 /* padding: 0; */
+                
             }
 
             .menu-item {
                 width: 150px;
                 /* Adjust width for smaller screens */
-                /* padding: .5rem 2rem; */
+                /* padding: -.5rem -2rem; */
             }
 
             .card img {
                 width: 70px;
                 /* Adjust image width for smaller screens */
+                /* position: center; */
             }
 
             .container {
@@ -431,9 +448,17 @@
             .container,
             .card {
                 opacity: 0.9;
-                /* Adjust opacity for dark mode */
+        
+               
             }
         }
+
+
+        #dropdownToggle {
+            color: white;
+            font-size: 10px;
+        }
+
 
     </style>
 </head>
@@ -445,16 +470,18 @@
         <h4 style="font-weight: 500;"><i class="bi bi-bank2"></i> &nbsp;Finance</h4>
 
         <ul class="nav-list">
-            <li><a><span class="logo-text">D A T A P M I</a></li>
+            <li><a><span class="logo-text">D A T A P M I</span></a></li>
         </ul>
 
 
 
+      
+
         <div class="dropdown" id="dropdownMenu">
-            <button class="dropdown-toggle menu-item" id="dropdownToggle">
+            <button class="menu-item" id="dropdownToggle">
                 <span class="item-icon">
                     {% if user.image %}
-                    <img style="border-radius: 100%;" src="{{user.image.url}}" / width=30px">
+                    <img style="border-radius: 100%;" src="{{user.image.url}}" width="30px">
                     {% else %}
                     <img src="/static/project_images/Noprofile.png" width="25px">
                     {% endif %}
@@ -463,14 +490,14 @@
 
             </button>
             <ul class="dropdown-menu" id="dropdownMenuContent">
-                <li class="menu-item">
+                <!-- <li class="menu-item">
                     <span class="item-icon">
                         <i class='bx bxs-dashboard'></i>
                     </span>
                     <span class="item-txt">
                         Dashboard
                     </span>
-                </li>
+                </li> -->
 
                 <a href="{% url 'signout' %}">
                     <li style="color: red;" class="menu-item">
@@ -497,7 +524,7 @@
             </ul>
         </div>
 
-        </div>
+
     </nav>
 
 
@@ -616,25 +643,25 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-    var dropdownToggle = document.getElementById('dropdownToggle');
-    var dropdownMenuContent = document.getElementById('dropdownMenuContent');
-    var usernameText = document.getElementById('username').innerText;
+            var dropdownToggle = document.getElementById('dropdownToggle');
+            var dropdownMenuContent = document.getElementById('dropdownMenuContent');
+            var usernameText = document.getElementById('username').innerText;
 
-    dropdownToggle.addEventListener('click', function () {
-        dropdownMenuContent.classList.toggle('show');
-        var usernameWidth = usernameText.offsetWidth;
-        dropdownMenuContent.style.width = usernameWidth + 'px';
-    });
+            dropdownToggle.addEventListener('click', function () {
+                dropdownMenuContent.classList.toggle('show');
+                var usernameWidth = usernameText.offsetWidth;
+                dropdownMenuContent.style.width = usernameWidth + 'px';
+            });
 
-    window.addEventListener('click', function (event) {
-        if (!dropdownToggle.contains(event.target) && !dropdownMenuContent.contains(event.target)) {
-            dropdownMenuContent.classList.remove('show');
-        }
-    });
-});
+            window.addEventListener('click', function (event) {
+                if (!dropdownToggle.contains(event.target) && !dropdownMenuContent.contains(event.target)) {
+                    dropdownMenuContent.classList.remove('show');
+                }
+            });
+        });
 
     </script>
-    
+
 
 </body>
 
