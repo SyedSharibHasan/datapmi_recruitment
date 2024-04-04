@@ -985,6 +985,10 @@ def list_of_candidates(request, status):
 
 
 
+
+
+
+
 # from django.contrib.auth import update_session_auth_hash
 # ############### delete user account and change password function
 # @login_required(login_url='login_default')

@@ -22,11 +22,11 @@
             color: #000;
         }
 
-        .container {
+        .containers {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 10px;
         }
 
         .profile-info {
@@ -87,10 +87,23 @@
     <br>
     <br>
 
-    <div class="container">
+    <div class="containers">
         
         <div class="submission-details">
            
+<center>
+    {% if request.user == detail.user %}
+    <div class="field">
+    <span style="color: #0e50dd;font-weight: lighter;">Recruiter:</span> {{request.user}}
+</div>
+    {% else %}
+    <div class="field">
+                    <span  style="color: #0c18c2;font-weight: lighter;">Recruiter:</span> {{detail.user}}
+                </div>
+
+    {% endif %}
+</center>
+
             <div class="field">
                 <span>Date of Excel Added:</span> {{detail.date_of_excel}}
             </div>
@@ -199,16 +212,7 @@
             </div>
 
 
-            {% if request.user == detail.user %}
-            <div class="field">
-            <span>Recruiter:</span> {{request.user}}
-        </div>
-            {% else %}
-            <div class="field">
-                            <span>Recruiter:</span> {{detail.user}}
-                        </div>
-
-            {% endif %}
+        
 
             <div class="field">
                 {% if detail.status %}
