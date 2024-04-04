@@ -65,6 +65,62 @@
             color: white;
         }
 
+
+        #select-all {
+            display: none;
+        }
+
+        /* Style the label to create a custom checkbox */
+        #select-all+label {
+            display: inline-block;
+            position: relative;
+            padding-left: 25px;
+            /* Adjust according to your preference */
+            cursor: pointer;
+        }
+
+        /* Create the custom checkbox */
+        #select-all+label:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            /* Adjust vertical alignment */
+            width: 18px;
+            height: 18px;
+            border: 1px solid #aaa;
+            /* Border color */
+            background-color: #fff;
+            /* Background color */
+        }
+
+        /* Style the checkbox when checked */
+        #select-all:checked+label:before {
+            background-color: #2196F3;
+            /* Change background color when checked */
+            border-color: #2196F3;
+            /* Change border color when checked */
+        }
+
+        /* Create the checkmark icon */
+        #select-all+label:after {
+            content: '\2713';
+            /* Unicode for checkmark symbol */
+            position: absolute;
+            top: 0;
+            left: 4px;
+            font-size: 14px;
+            color: #fff;
+            /* Checkmark color */
+            display: none;
+        }
+
+        /* Show the checkmark when checkbox is checked */
+        #select-all:checked+label:after {
+            display: block;
+        }
+
+
         /* Responsive styles */
         @media only screen and (max-width: 600px) {
             .container {
@@ -89,26 +145,55 @@
 <br>
 <br>
 <br>
-<center><a href="/create"><button class="btn btn-light">Create&nbsp; <i class="bi bi-person-plus"></i></button></a></center><br>
+<center><a href="{% url 'create' %}"><button class="btn btn-light">Create&nbsp; <i class="bi bi-person-plus"></i></button></a></center><br>
 <center>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" name="myfile"  accept=".xlsx, .xls, .xltx, .xlt, .xlsm, .ods , .pdf" required/>
+        <input type="file" name="myfile"  accept=".xlsx, .xls, .xltx, .xlt, .xlsm" required/>
         <button type="submit" class="btn btn-success">Submit Excel</button>       
     </form>
 </center>
 
+
+
 <br>    
 <div class="container">
+
+    <button onclick="myfunction()" style="font-size: 13px;" class="btn btn-light">Manage<i
+        style="color: green;font-size: 19px;" class="bi bi-file-earmark-excel-fill"></i></button>
+    <br><br>
+    
+    <script>
+        function myfunction() {
+            let nones = document.querySelectorAll('.none');
+            nones.forEach(function (element) {
+                if (element.style.display === 'block' || getComputedStyle(element).display === 'block') {
+                    element.style.display = 'none';
+                } else {
+                    element.style.display = 'block';
+                }
+            });
+        }
+    </script>
+    
+    
+    <div style="display:none;" class="none">
+    <input id="select-all" type="checkbox"> <label for="select-all">Select All</label>      <button title="This will export selected employee details to excel" style="font-size: 13px;color: #df0a2d;" class="btn btn-light" id="export-link" onclick="exportSelected()">Delete<i class="bi bi-trash3"></i></button>
+    </div>
+    
+    <br>
+
     <table class="table">
         <thead>
             <tr>
-                <th>#</th>
+                <th style="display:none;" class="none">#</th>
+                <th>sl no</th>
                 <th>Name</th>
                 <th>Location</th>
                 <th>Designation</th>
                 <th>Contact</th>
                 <th>Skills</th>
+                <th>Total experience</th>
                 <th>Last Updated</th>
                 <th>Manage</th>
             </tr>
@@ -117,6 +202,9 @@
         <tbody>
             {% for i in list %}
             <tr>
+
+                <td class="none" style="display:none;"><input id="each" class="select-all" name="export"
+                    type="checkbox" value="{{ i.id }}"></td>
                 <td id="snno" ></td>
                 <td>{{i.candidate_name}}</td>
                 <td>{{i.location}} </td>
@@ -135,6 +223,8 @@
                         {% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </td>
+
+                    <td>{{i.experience}}y</td>
                   
                     <td>{{i.formatted_updated_on}}</td>
                     <td>  
@@ -204,6 +294,38 @@
             });
         });
     </script>
+
+
+
+<script>
+    function exportSelected() {
+        let selectedIds = [];
+        document.querySelectorAll('#each:checked').forEach(function (checkbox) {
+            selectedIds.push(checkbox.value);
+        });
+
+        if (selectedIds.length > 0) {
+            let url = "{% url 'selected_delete' %}?ids=" + selectedIds.join(',');
+            window.location.href = url;
+        } else {
+            alert("Please select at least one candidate.");
+        }
+    }
+
+    let selectAllCheckbox = document.getElementById('select-all');
+
+    // Get all the checkboxes with class "each"
+    let eachCheckboxes = document.querySelectorAll('#each');
+
+    // Add event listener to the "Select All" checkbox
+    selectAllCheckbox.addEventListener('change', function () {
+        // Set the state of each checkbox to be the same as the "Select All" checkbox
+        eachCheckboxes.forEach(function (checkbox) {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    });
+
+</script>
 
 {% endblock %}
 </body>

@@ -104,6 +104,7 @@
                     <th>Designation</th>
                     <th>Contact</th>
                     <th>Skills</th>
+                    <th>Total experience</th>
                     <th>Last Updated</th>
                     <th>View</th>
                 </tr>
@@ -129,7 +130,7 @@
                         {{ skill.name }}
                         {% if not forloop.last %}, {% endif %}
                         {% endfor %}</td>
-
+                        <td>{{i.experience}} Years</td>
                     <td>{{i.formatted_updated_on}}</td>
                     <td>
 

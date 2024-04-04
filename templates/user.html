@@ -1009,7 +1009,7 @@
 
 				</div>
 				<div class="app-header-right">
-					<a href="/create">
+					<a href="{% url 'create' %}">
 						<button class="add-btn custom-btn" title="Add New Candidate">
 							<svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 								viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
@@ -1021,7 +1021,7 @@
 					</a>
 
 
-					<a href="/profile" class="profile-link">
+					<a href="{% url 'profile' %}" class="profile-link">
 						<button class="profile-btn">
 							{% if user.image %}
 							<img src="{{user.image.url}}" alt="Profile Image" />
@@ -1107,7 +1107,7 @@
 								</div>
 							</div>
 							<div>
-								<p class="box-content-header">Hired Candidates</p>
+								<p class="box-content-header">Selected Candidates</p>
 
 							</div>
 
@@ -1171,7 +1171,7 @@
 									</div>
 								</a>
 								<div class="col">
-
+									
 								</div>
 							</div>
 						</div>
@@ -1243,7 +1243,7 @@
 							</div>
 
 							<div>
-								<p class="box-content-header">Saved Candidates</p>
+								<p class="box-content-header">Onboarded Candidates</p>
 
 							</div>
 
@@ -1259,19 +1259,7 @@
 
 											</div>
 											<span id="saved_candidates" class="status-number"></span>
-											<script>
-
-												fetch('/savedcandidates')
-													.then(response => response.json())
-													.then(data => {
-														// update the count in the HTML
-														document.getElementById('saved_candidates').textContent = data.count;
-													})
-													.catch(error => {
-														console.error('Error fetching candidate count:', error);
-													});
-
-											</script>
+										
 										</button>
 
 									</div>
@@ -1320,19 +1308,7 @@
 											</div>
 											<span id="allcandidates_count" class="status-number"></span>
 										</button>
-										<script>
-
-											fetch('/allcandidates_count')
-												.then(response => response.json())
-												.then(data => {
-													// update the count in the HTML
-													document.getElementById('allcandidates_count').textContent = data.count;
-												})
-												.catch(error => {
-													console.error('Error fetching candidate count:', error);
-												});
-
-										</script>
+									
 									</div>
 								</a>
 								<div class="col">
@@ -1452,6 +1428,96 @@
 	</script>
 
 
+
+
+
+<script>
+	
+
+   // make an AJAX request to your Django view that returns the count of items in the cart
+   
+   const apiUrl = "{% url 'mycandidates_count' %}";
+   fetch(apiUrl)
+   .then(response => response.json())
+   .then(data => {
+     // update the count in the HTML
+     document.getElementById('mycandidates_count').textContent = data.count;
+   })
+   .catch(error => {
+     console.error('Error fetching candidate count:', error);
+   });
+
+
+
+
+
+  
+   const apiUrl2 = "{% url 'inprogress_candidates' %}";
+   fetch(apiUrl2)
+   .then(response => response.json())
+   .then(data => {
+     // update the count in the HTML
+     document.getElementById('inprogressCandidatesCount').textContent = data.count;
+   })
+   .catch(error => {
+     console.error('Error fetching candidate count:', error);
+   });
+
+
+   
+
+  
+   const apiUrl3 = "{% url 'rejected_candidates' %}";
+   fetch(apiUrl3)
+   .then(response => response.json())
+   .then(data => {
+     // update the count in the HTML
+     document.getElementById('rejectedCandidatesCount').textContent = data.count;
+   })
+   .catch(error => {
+     console.error('Error fetching candidate count:', error);
+   });
+
+   
+ 
+   const apiUrl4 = "{% url 'selected_candidates' %}";
+   fetch(apiUrl4)
+   .then(response => response.json())
+   .then(data => {
+     // update the count in the HTML
+     document.getElementById('selectedCandidatesCount').textContent = data.count;
+   })
+   .catch(error => {
+     console.error('Error fetching candidate count:', error);
+   });
+   
+
+
+
+const apiUrl5 = "{% url 'allcandidates_count' %}";
+   fetch(apiUrl5)
+	.then(response => response.json())
+	.then(data => {
+		// update the count in the HTML
+		document.getElementById('allcandidates_count').textContent = data.count;
+	})
+	.catch(error => {
+		console.error('Error fetching candidate count:', error);
+	});
+
+	const apiUrl6 = "{% url 'savedcandidates' %}";
+   fetch(apiUrl6)
+	.then(response => response.json())
+	.then(data => {
+		// update the count in the HTML
+		document.getElementById('saved_candidates').textContent = data.count;
+	})
+	.catch(error => {
+		console.error('Error fetching candidate count:', error);
+	});
+
+
+</script>
 
 </body>
 

@@ -99,7 +99,7 @@
                 {% csrf_token %}
                 <button class="button delete-button">Delete</button>
             </form>
-            <a href="/list"> <button class="button cancel-button">Cancel</button></a>
+            <a href="{% url 'list' %}"> <button class="button cancel-button">Cancel</button></a>
         </div>
     </div>
 
@@ -114,3 +114,6 @@
 
 </body>
 </html>
+
+
+

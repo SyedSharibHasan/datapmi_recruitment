@@ -396,14 +396,15 @@
   <!-- Total Years of Experience -->
   <div class="form-group">
     <label for="experience">Total Years of Experience:</label>
-    <input  type="number" id="experience" name="experience" >
+    <input  type="number" id="experience" name="experience" step="0.01">
     <div class="error-message" id="experience-error"></div>
   </div>
+
 
   <!-- Relevant Experience -->
   <div class="form-group">
     <label for="relevant-experience">Relevant Years Of Experience:</label>
-    <input type="number" id="relevant-experience" name="relevent_experience" required>
+    <input type="number" id="relevant-experience" name="relevent_experience" step="0.01">
     <div class="error-message" id="relevant-experience-error"></div>
   </div>
 
@@ -427,7 +428,8 @@
     var selectedSkillsContainer;
   
      function fetchSkillsFromAPI() {
-    fetch('/get_skills_api/')
+      const apiUrl = "{% url 'get_skills_api' %}";
+    fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
         initializeSkills(data.skills);
@@ -544,11 +546,7 @@
             <!-- Offer in hands -->
             <div class="form-group">
               <label for="offer">Offer In Hands:</label>
-              <select id="offer" name="offer_in_hands">
-                <option value="">Select</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
+              <input type="text" id="expected-ctc" name="offer_in_hands">
               <div class="error-message" id="offer-error"></div>
             </div>
     
@@ -606,42 +604,30 @@
           <div class="error-message" id="remarks-error"></div>
         </div>
 
-
-
-
-        <!-- Select Time -->
-        <div class="form-group">
+    
 
           <!-- Status -->
           <label for="status">Status:</label>
-          <select id="status" name="status" onchange="showHideClientDetails()" required>
+          <select id="status" name="status">
             <option value="">Select</option>
+            <option value="Screen Select">Screen Select</option>
+            <option value="Screen Reject">Screen Reject</option>
+            <option value="Shared to Client">Shared to Client</option>
             <option value="Interview Ongoing">Interview Ongoing</option>
             <option value="Client Select">client Select</option>
             <option value="Client Reject">client Reject</option>
-            <option value="Store Data">Store Data</option>
+            <option value="On Hold">On Hold</option>
+            <option value="On Boarded">On Boarded</option>
+            <option value="Offer Rejected">Offer Rejected</option>
           </select>
 
-          <!-- additional status  -->
-          <div id="client-selection" style="display: none;">
-            <label for="additional-status">Client Selection & offer Details</label>
-            <textarea id="client-details" name="client-details"></textarea>
-          </div>
-          
-          <script>
-            function showHideClientDetails() {
-              var statusDropdown = document.getElementById("status");
-              var clientSelectionDiv = document.getElementById("client-selection");
-          
-              if (statusDropdown.value === "Screen Select") {
-                clientSelectionDiv.style.display = "block";
-              } else {
-                clientSelectionDiv.style.display = "none";
-              }
-            } 
-          </script>
-        
+          <br> <br>
 
+        
+          <div id="client-selection" >
+            <label for="additional-status">Reason For Rejection <span style="color:red;font-size: 13px;">If rejected by any round.</span></label>
+            <textarea id="client-details" name="rejection_reason"></textarea>
+          </div>     
   
 <br>
 

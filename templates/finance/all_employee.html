@@ -163,7 +163,8 @@
         <br><br>
 
         <div style="display:none;" class="none">
-            <input id="select-all" type="checkbox"> <label for="select-all">Select All</label>      <button title="This will export selected employee details to excel" style="font-size: 13px;color: #1815ce;" class="btn btn-light" id="export-link" onclick="exportSelected()">Export to Excel <i class="bi bi-download"></i></button>
+            <input id="select-all" type="checkbox"> <label for="select-all">Select All</label>  
+                <button title="This will export selected employee details to excel" style="font-size: 13px;color: #1815ce;" class="btn btn-light" id="export-link" onclick="exportSelected()"> <i class="bi bi-download"></i></button>
             <br>
         </div>
         <br>
@@ -270,7 +271,7 @@
                 let url = "{% url 'export_selected_to_excel' %}?ids=" + selectedIds.join(',');
                 window.location.href = url;
             } else {
-                alert("Please select at least one candidate.");
+                alert("Please select at least one employee.");
             }
         }
 

@@ -295,14 +295,15 @@
         <!-- Total Years of Experience -->
         <div class="form-group">
           <label for="experience">Total Years of Experience:</label>
-          <input value="{{candidate.experience}}" type="number" id="experience" name="experience" >
+          <input value="{{candidate.experience}}" type="number" id="experience" name="experience" step=".01">
           <div class="error-message" id="experience-error"></div>
         </div>
+
 
         <!-- Relevant Experience -->
         <div class="form-group">
           <label for="relevant-experience">Relevant Years Of Experience:</label>
-          <input value="{{candidate.relevent_experience}}" type="number" id="relevant-experience" name="relevent_experience" required>
+          <input value="{{candidate.relevent_experience}}" type="number" id="relevant-experience" name="relevent_experience" step=".01">
           <div class="error-message" id="relevant-experience-error"></div>
         </div>
  
@@ -325,7 +326,8 @@
         var selectedSkillsContainer;
       
         function fetchSkillsFromAPI() {
-    fetch('/get_skills_api/')
+          const apiUrl = "{% url 'get_skills_api' %}";
+      fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
         initializeSkills(data.skills);
@@ -439,11 +441,7 @@
             <!-- Offer in hands -->
             <div class="form-group">
               <label for="offer">Offer In Hands:</label>
-              <select id="offer" name="offer_in_hands">
-                <option value="" {% if not candidate.offer_in_hands %}selected{% endif %} >Select</option>
-                <option value="yes" {% if candidate.offer_in_hands == 'yes' %}selected{% endif %}>Yes</option>
-                <option value="no"{% if candidate.offer_in_hands == 'no' %}selected{% endif %}>No</option>
-              </select>
+                 <input value="{{candidate.offer_in_hands}}" type="text" id="expected-offer_in_hands" name="offer_in_hands">
               <div class="error-message" id="offer-error"></div>
             </div>
     
@@ -517,50 +515,34 @@
         <!-- Remarks -->
         <div class="form-group">
           <label for="remarks">Remarks:</label>
-          <textarea id="remarks" name="remarks">{{candidate.expected_ctc}}</textarea>
+          <textarea id="remarks" name="remarks">{{candidate.remarks}}</textarea>
           <div class="error-message" id="remarks-error"></div>
         </div>
 
-
-        <!-- Select Time -->
-        <div class="form-group">
 
           <!-- Status -->
           <label for="status">Status:</label>
           <select id="status" name="status" onchange="showHideClientDetails()" required>
             <option value="" {% if not candidate.status %}selected{% endif %}>Select</option>
+            <option value="Screen Select" {% if candidate.status == 'Screen Select' %}selected{% endif %}>Screen Select</option>
+            <option value="Screen Reject" {% if candidate.status == 'Screen Reject' %}selected{% endif %}>Screen Reject</option>
+            <option value="Shared to Client" {% if candidate.status == 'Shared to Client' %}selected{% endif %}>Shared to Client</option>
             <option value="Interview Ongoing" {% if candidate.status == 'Interview Ongoing' %}selected{% endif %}>Interview Ongoing</option>
             <option value="Client Select" {% if candidate.status == 'Client Select' %}selected{% endif %}>Client Select</option>
             <option value="Client Reject" {% if candidate.status == 'Client Reject' %}selected{% endif %}>Client Reject</option>
-            <option value="Store Data" {% if candidate.status == 'Store Data' %}selected{% endif %}>Store Data</option>
+            <option value="On Hold" {% if candidate.status == 'On Hold' %}selected{% endif %}>On Hold</option>
+            <option value="On Boarded" {% if candidate.status == 'On Boarded' %}selected{% endif %}>On Boarded</option>
+            <option value="Offer Rejected" {% if candidate.status == 'Offer Rejected' %}selected{% endif %}>Offer Rejected</option>
           </select>
+
+          <br><br>
           
-          <div id="client-selection" style="display: none;">
-            <label for="additional-status">Client Selection & offer Details:</label>
-            <textarea id="client-details" name="client-details">{{candidate.additional_status}}</textarea>
+          <div id="rejection_reason">
+            <label for="rejection_reason">Rejection Reason: <span style="color:red;font-size: 13px;">If rejected by any round.</span></label>
+            <textarea id="rejection_reason" name="rejection_reason">{{candidate.rejection_reason}}</textarea>
           </div>
           
-          <script>
-            document.addEventListener("DOMContentLoaded", function() {
-              showHideClientDetails();  // Call the function on page load
-          
-              var statusDropdown = document.getElementById("status");
-              statusDropdown.addEventListener("change", showHideClientDetails);  // Call the function on dropdown change
-            });
-          
-            function showHideClientDetails() {
-              var statusDropdown = document.getElementById("status");
-              var clientSelectionDiv = document.getElementById("client-selection");
-          
-              // Check if the selected option is "Screen Select"
-              if (statusDropdown.value === "Screen Select") {
-                clientSelectionDiv.style.display = "block";
-              } else {
-                clientSelectionDiv.style.display = "none";
-              }
-            }
-          </script>
-          
+        
 
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

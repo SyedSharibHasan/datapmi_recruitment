@@ -104,7 +104,7 @@
             {% csrf_token %}
             <button class="button delete-button">Delete</button>
         </form>
-        <a href="/all_employee"> <button class="button cancel-button">Cancel</button></a>
+        <a href="{% url 'all_employee' %}"> <button class="button cancel-button">Cancel</button></a>
     </div>
 </div>
 

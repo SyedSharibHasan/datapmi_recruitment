@@ -14,21 +14,7 @@ class CandidateForm(forms.ModelForm):
 
 
 
-
-from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
-
-
-class CustomUserForm(forms.ModelForm):
-    class Meta:
-        model = CustomUser
-        fields = ['username', 'first_name', 'last_name', 'email', 'contact']
-
-
-
-
-####filter
+####  filter
 class SkillSearchForm(forms.Form):
     skills_search = forms.CharField(label='Search skillsets', max_length=100)
 

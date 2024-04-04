@@ -72,11 +72,6 @@
             
         }
 
-        /* .box {
-          border: 1px solid green;
-          border-radius: 5px;
-          padding: 20px;
-        } */
     </style>
 </head>
 <body>
@@ -111,10 +106,11 @@
               <script>
                 $(document).ready(function () {
     var selectedSkills = [];
+    let apiUrl = "{% url 'autocomplete_skills' %}";
 
     $("#select_skill").autocomplete({
         source: function (request, response) {
-            $.getJSON("/autocomplete-skills/", { term: request.term }, function (data) {
+            $.getJSON(apiUrl, { term: request.term }, function (data) {
                 response(data.suggestions);
             });
         },
@@ -166,7 +162,6 @@
         $("form").append(hiddenInput);
     }
 });
-
 
               </script>
 

@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'candidate_app',
+    'finance_app',
+    'account_app'
 ]
+
 
 SITE_ID = 1  # Use the correct ID of the Site object you created
 
@@ -164,7 +167,7 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 
-AUTH_USER_MODEL = 'candidate_app.CustomUser'
+AUTH_USER_MODEL = 'account_app.CustomUser'
 
 
 
@@ -179,3 +182,5 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 
 
 CELERY_BEAT_SCHEDULE = {}
+
+
