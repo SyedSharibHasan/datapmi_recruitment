@@ -338,7 +338,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 @recruiter_login_required
 def mycandidates(request):
-    candidates = Candidate.objects.all()
+    candidates = Candidate.objects.filter(user=request.user).all()
     if request.method == 'POST' and request.FILES['myfile']:      
         myfile = request.FILES['myfile']
         fs = FileSystemStorage()
@@ -641,7 +641,7 @@ class Updatecandidate(LoginRequiredMixin,UpdateView):
       
         new_resume = request.FILES.get('new_resume')
         keep_resume = request.POST.get('keep_resume')
-
+        
 
         candidate_pk = candidate.pk
 
@@ -685,7 +685,7 @@ class Updatecandidate(LoginRequiredMixin,UpdateView):
             print(f"Error saving candidate: {e}")
             # Return an error response
             return render(request, self.template_name, {'error': 'Error: Could not save the candidate.'})
-
+        
 
 
 

@@ -59,6 +59,14 @@ EMAIL_HOST_PASSWORD = HOST_PASSWORD
 
 
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024  # 6 MB
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024  # 6 MB
+
+
+
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
