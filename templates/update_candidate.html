@@ -522,7 +522,7 @@
 
           <!-- Status -->
           <label for="status">Status:</label>
-          <select id="status" name="status" onchange="showHideClientDetails()" required>
+          <select id="status" name="status" onchange="showHideClientDetails()">
             <option value="" {% if not candidate.status %}selected{% endif %}>Select</option>
             <option value="Screen Select" {% if candidate.status == 'Screen Select' %}selected{% endif %}>Screen Select</option>
             <option value="Screen Reject" {% if candidate.status == 'Screen Reject' %}selected{% endif %}>Screen Reject</option>

@@ -334,6 +334,7 @@ def extract_integer_value(text):
 import re
 from io import BytesIO
 
+
 @recruiter_login_required
 def mycandidates(request):
     candidates = Candidate.objects.all()

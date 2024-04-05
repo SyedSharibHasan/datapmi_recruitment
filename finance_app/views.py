@@ -94,7 +94,6 @@ def add_employee(request):
         uploadWorkOrder=request.FILES.get('uploadWorkOrder')
         uploadNDA=request.FILES.get('uploadNDA')
         uploadResume=request.FILES.get('uploadResume')
-
         joiningDate_str = request.POST.get('joiningDate')
         lastWorkingDate_str = request.POST.get('lastWorkingDate')
         workOrderStartDate_str = request.POST.get('workOrderStartDate')
@@ -169,13 +168,13 @@ def add_employee(request):
         
             workOrderEndDate_aware = timezone.make_aware(timezone.datetime.combine(workOrderEndDate, datetime.time()))
                 
-        
-            finance_user = request.user.email
-
+            finance_user_email = request.user.email
+            
             # Calculate the notification date (15 days before end_date_of_work_order)
             notification_date = workOrderEndDate_aware - timedelta(days=15)
             
-            send_notification.apply_async(args=[employee.pk, finance_user], eta=notification_date)
+            # Call the task with the calculated countdown
+            send_notification.apply_async(args=[employee.pk, finance_user_email], eta=notification_date)
         else:
             # Handle the case where workOrderEndDate is None (no calculation or notification needed)
             pass
