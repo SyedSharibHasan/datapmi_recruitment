@@ -411,7 +411,7 @@ def mycandidates(request):
                         # Saving the file to the desired location
                         with open(resume_file_path, 'rb') as resume_file:
                             saved_resume = fs.save(resume_file_name, resume_file)
-                            
+
 
                     total_experience_text = extract_integer_value(total_experience)           
                     relevant_experience_text = extract_integer_value(relevent_experience) 
