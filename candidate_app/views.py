@@ -334,7 +334,7 @@ def extract_integer_value(text):
 import re
 from io import BytesIO
 from django.core.files.uploadedfile import SimpleUploadedFile
-from pathlib import Path
+
 
 @recruiter_login_required
 def mycandidates(request):
@@ -400,13 +400,18 @@ def mycandidates(request):
                         row.loc['EXPECTED CTC'] if 'EXPECTED CTC' in row else None))
                     )
 
-                    resume_path = row.get('Resume')
-                    if resume_path and Path(resume_path).is_file():
-                        with open(resume_path, 'rb') as resume_file:
-                            saved_resume = SimpleUploadedFile(Path(resume_path).name, resume_file.read())
-                    else:
-                        saved_resume = None
+                    if row.Resume and isinstance(row.Resume, str) and os.path.exists(row.Resume):
+                        # Extracting file name from the path
+                        resume_file_path = row.Resume
+                        resume_file_name = os.path.basename(resume_file_path)
 
+                        # Creating FileSystemStorage object
+                        fs = FileSystemStorage()
+
+                        # Saving the file to the desired location
+                        with open(resume_file_path, 'rb') as resume_file:
+                            saved_resume = fs.save(resume_file_name, resume_file)
+                            
 
                     total_experience_text = extract_integer_value(total_experience)           
                     relevant_experience_text = extract_integer_value(relevent_experience) 
