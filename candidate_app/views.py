@@ -400,6 +400,8 @@ def mycandidates(request):
                         row.loc['EXPECTED CTC'] if 'EXPECTED CTC' in row else None))
                     )
 
+                    saved_resume = None  
+
                     if row.Resume and isinstance(row.Resume, str) and os.path.exists(row.Resume):
                         # Extracting file name from the path
                         resume_file_path = row.Resume
