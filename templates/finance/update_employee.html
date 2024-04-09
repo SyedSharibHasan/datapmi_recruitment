@@ -195,9 +195,9 @@ opacity: 1 !important;
 
 
         {% if employee.upload_work_order %}
-        <label for="workorder">Current work order:</label>   <a href="{{ employee.upload_work_order.url }}" target="_blank">View work order</a>
+        <label for="workorder">Current work order:</label>   <a href="{{ employee.upload_work_order.url }}" target="_blank">View Work Order</a>
         {% else %}
-            Currently No work order uploaded.
+            Currently No Work Order Uploaded.
         {% endif %}
         <br><br>
 
@@ -208,7 +208,7 @@ opacity: 1 !important;
         {% if employee.upload_nda %}
         <label for="nda">Current NDA:</label>   <a href="{{ employee.upload_nda.url }}" target="_blank">View NDA</a>
         {% else %}
-        Currently  No NDA uploaded.
+        Currently No NDA Uploaded.
         {% endif %}
         <br><br>
 
@@ -219,14 +219,14 @@ opacity: 1 !important;
         {% if employee.upload_resume %}
         <label for="resume">Current Resume:</label>   <a href="{{ employee.upload_resume.url }}" target="_blank">View Resume</a>
         {% else %}
-        Currently  No resume uploaded.
+        Currently No Resume Uploaded.
         {% endif %}
         <br><br>
 
         <label for="uploadResume">New Resume:</label>
         <input type="file" id="uploadResume" name="uploadResume" >
 
-        <label for="active_inactive">Active Status:   <span style="font-size: 12px;color: red;">Currently the employee in cotract</span></label>   
+        <label for="active_inactive">Active Status:   <span style="font-size: 12px;color: red;">Currently The Employee Is In Cotract...</span></label>   
        
         <select id="active_inactive" name="active_inactive">
             <option value="">Select Status</option>

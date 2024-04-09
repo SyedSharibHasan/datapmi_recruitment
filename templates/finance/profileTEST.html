@@ -15,7 +15,7 @@
 
 body {
   /* background-color: #fcfcfd; */
-  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToIfywD7J7WTIBhBmDJjX5UD-o50cSeGKoSGEC69jWBg&s');
+  background-image: url('/static/project_images/Profile.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -30,10 +30,7 @@ body {
   margin: 0;
 }
 
-.card-container h3,h6,
-.card-container p {
-  color: #000000; /* Change to your desired text color */
-}
+
 
 .buttons {
   margin-bottom: 20px; /* Adjust the value to your preference */
@@ -60,7 +57,6 @@ p {
   background-color: rgba(35, 30, 57, 0); /* Fully transparent */
   border-radius: 5px;
   box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.75);
-  color: #B3B8CD;
   padding-top: 30px;
   position: relative;
   width: 350px;
@@ -84,6 +80,8 @@ p {
   border: 1px solid #cb0324;
   border-radius: 50%;
   padding: 7px;
+  height: auto;
+    width: 170px;
 }
 
 button.primary {
@@ -158,43 +156,52 @@ footer a {
     text-decoration: none;
 }
 
+#zoom {
+      border-radius: 50%;
+      transition: transform 0.5s ease;
+    }
+
+    #zoom:hover {
+      cursor: pointer;
+      transform: scale(1.4);
+      border-radius: 1%;
+      transition: .4s;
+    }
 
   </style>
 </head>
 <body>
   
+    {% include 'navbar.html' %}
+    {% include 'base.html' %}
 
 <div class="card-container">
   <span class="pro">DATAPMI</span>
   <br>
   <br>
-  <img class="round" src="https://randomuser.me/api/portraits/women/79.jpg" alt="user" />
-  <h3>Syed Sharib Hasan</h3>
-  <h6>syed chapri Sharib Hasan</h6>
-  <p>Email: syeds@datapmi.com <br/> Mobile: 9875322344</p>
+  <img class="round" id="zoom" src="{% if user.image %}{{ request.user.image.url }}{% else %}/static/project_images/Noprofile.png{% endif %}" alt="user" />
+  <h5 >Username : {{request.user.username}}</h5>
+  
+  <h6>Full Name : {{request.user.first_name}} {{request.user.last_name}}</h6>
+  <p>Email : {{request.user.email}} <br/> Mobile: {{request.user.contact}}</p>
   <div class="buttons">
-    <button class="primary">
-      Edit
-    </button>
-    <button class="primary ghost">
-      Manage
-    </button>
-    <button class="dark-mode-button">
-      Dark Mode
+
+    <a href="{% url 'edit_account' request.user.id %}">
+    <button title="Make Changes"  class="primary">
+        <i class="bi bi-pencil-square"></i> Edit
+    </button></a>
+
+    <a href="{% url 'manage_account' action='delete' %}">
+    <button class="primary ghost" >
+        Manage 
+    </button></a>
+
+    <button title="Apply Dark Mode" class="dark-mode-button" onclick="toggleDarkMode()">
+        <i  style="font-size: 20px;" id="darkModeIcon" class="bi bi-toggle2-off"></i> Dark Mode
     </button>
   </div>
 </div>
 
-<footer>
-  <p>
-    Created with <i class="fa fa-heart"></i> by
-    <a target="_blank" href="https://florin-pop.com">Syed & Denil</a>
-    - Read how I created this
-    <a target="_blank" href="https://florin-pop.com/blog/2019/04/profile-card-design">here</a>
-    - Design made by
-    <a target="_blank" href="https://dribbble.com/shots/6276930-Profile-Card-UI-Design">DataPMI</a>
-  </p>
-</footer>
 
 
 </body>

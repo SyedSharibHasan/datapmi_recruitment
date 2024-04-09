@@ -165,7 +165,7 @@
                         Work Order:
                         <a href="{{ detail.upload_work_order.url }}" target="_blank">Download</a>
                     {% else %}
-                        No uploaded.
+                        No Work Order Uploaded.
                     {% endif %}
                 </span>
             </div>
@@ -177,7 +177,7 @@
                         NDA:
                         <a href="{{ detail.upload_nda.url }}" target="_blank">Download</a>
                     {% else %}
-                        No Nda uploaded.
+                        No Nda Uploaded.
                     {% endif %}
                 </span>
             </div>
@@ -189,13 +189,13 @@
                         Resume:
                         <a href="{{ detail.upload_resume.url }}" target="_blank">Download</a>
                     {% else %}
-                        No resume uploaded.
+                        No Resume Uploaded.
                     {% endif %}
                 </span>
             </div>
 
             <div class="field">
-                <span>Last updated on:</span> {{ detail.created }}
+                <span>Last Updated On:</span> {{ detail.created }}
             </div>
             
 
@@ -221,7 +221,7 @@
                 {% else %}
                 
                 <!-- User is not the creator, display a message or change style -->
-                <p class="not-allowed-message">You do not have permission to edit this candidate.</p>
+                <p class="not-allowed-message">You Do Not Have Permission To Edit This Candidate.</p>
                 {% endif %}
                 {% endif %}
 
