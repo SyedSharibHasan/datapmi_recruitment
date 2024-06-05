@@ -23,6 +23,7 @@ Challenges Overcome:
 • Performance Optimization: Optimized database queries and application logic to maintain high performance even with large datasets.
 
 Outcome:
+
 The DataPMI Talent Track project resulted in a significant improvement in the company's recruitment process, reducing the time required for candidate management and providing valuable
 
 insights into hiring trends. The web application became a central tool for the recruitment team, enhancing their efficiency and effectiveness.
