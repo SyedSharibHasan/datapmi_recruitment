@@ -7,6 +7,7 @@ Technology Used: Python, Django
 Role: Junior Developer
 
 Project Description:
+
 Developed a comprehensive web application designed to store and manage candidate data, track hiring status, and provide insights into the recruitment process. This project was integral to enhancing the efficiency of DataPMI's recruitment processes.
 
 Key Responsibilities:
