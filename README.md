@@ -1,7 +1,9 @@
 # datapmi_recruitment
 
 Project: DataPMI Talent Track
+
 Technology Used: Python, Django
+
 Role: Junior Developer
 
 Project Description:
